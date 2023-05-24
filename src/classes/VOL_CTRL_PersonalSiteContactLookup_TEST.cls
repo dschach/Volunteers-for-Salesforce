@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2016, Salesforce.org
     All rights reserved.
     
@@ -26,11 +26,10 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 
-@isTest
+@IsTest
 private with sharing class VOL_CTRL_PersonalSiteContactLookup_TEST {
-
     //==================== TEST METHOD(s) ======================================
 
     @IsTest
@@ -58,15 +57,25 @@ private with sharing class VOL_CTRL_PersonalSiteContactLookup_TEST {
         email.setPlainTextBody(expectedDescription);
 
         Task actualTask = VOL_CTRL_PersonalSiteContactLookup.toTask(email);
-        System.assert(actualTask.Subject.contains(expectedSubject), 'Expected the Task subject to contain the Email\'s subject.');
-        System.assert(actualTask.Description.contains(expectedDescription), 'Expected the Task subject to contain the Email\'s subject.');
+        System.assert(
+            actualTask.Subject.contains(expectedSubject),
+            'Expected the Task subject to contain the Email\'s subject.'
+        );
+        System.assert(
+            actualTask.Description.contains(expectedDescription),
+            'Expected the Task subject to contain the Email\'s subject.'
+        );
     }
 
     @IsTest
     private static void shouldReturnDefaultClosedStatus() {
         final String defaultClosedStatus = 'Completed';
 
-        System.assertEquals(defaultClosedStatus, VOL_CTRL_PersonalSiteContactLookup.getClosedTaskStatus(), 'Expected the system to find the default closed task status.');
+        System.assertEquals(
+            defaultClosedStatus,
+            VOL_CTRL_PersonalSiteContactLookup.getClosedTaskStatus(),
+            'Expected the system to find the default closed task status.'
+        );
     }
 
     @IsTest
@@ -74,63 +83,66 @@ private with sharing class VOL_CTRL_PersonalSiteContactLookup_TEST {
         final String defaultClosedStatus = 'Completed';
 
         System.runAs(UTIL_UnitTest.guestUser) {
-            System.assertEquals(defaultClosedStatus, VOL_CTRL_PersonalSiteContactLookup.getClosedTaskStatus(), 'Expected the system to find the default closed task status when ran as a guest user.');
+            System.assertEquals(
+                defaultClosedStatus,
+                VOL_CTRL_PersonalSiteContactLookup.getClosedTaskStatus(),
+                'Expected the system to find the default closed task status when ran as a guest user.'
+            );
         }
     }
-    
-    @isTest(SeeAllData=true)  // SeeAllData so the CSS file is viewable
+
+    @SuppressWarnings('PMD.ApexUnitTestShouldNotUseSeeAllDataTrue')
+    @IsTest(SeeAllData=true) // SeeAllData so the CSS file is viewable
     /*******************************************************************************************************
-    * @description test the visualforce page controller, running as the Sites Guest User, if such as user
-    * exists.  if not, will run under the current user.
-    * @return void
-    ********************************************************************************************************/
+     * @description test the visualforce page controller, running as the Sites Guest User, if such as user
+     * exists.  if not, will run under the current user.
+     ********************************************************************************************************/
     private static void testPageWithSitesGuestUser() {
         /** Without the ability to create sharing records in apex when owd sharing is public read/write or controlled by parent, we can no longer
          * run this test as the guest user and will only run it as the admin. Commenting out so that we can reinstate
          * if / when the ability to do so becomes available
-         * list<User> listU = [Select Username, UserType, Name, IsActive, Id From User where IsActive = true and UserType = 'Guest' and
+         * List<User> listU = [Select Username, UserType, Name, IsActive, Id From User where IsActive = true and UserType = 'Guest' and
         Name like '%Site Guest User%'];
         if (listU.size() > 0) {
             UTIL_UnitTest.enableElevateGuestUserAccess();
-            system.debug('Running test as Sites Guest User: ' + listU[0]);
-            system.runAs(listU[0]) {
+            System.debug('Running test as Sites Guest User: ' + listU[0]);
+            System.runAs(listU[0]) {
                 TestPersonalSiteContactLookup();
             }
         } else {
         */
-            system.debug('Running test as system.');
-            TestPersonalSiteContactLookup();
+        System.debug('Running test as System.');
+        testPersonalSiteContactLookup();
         //}
     }
 
-    private static void TestPersonalSiteContactLookup() {
-
+    private static void testPersonalSiteContactLookup() {
         //point to our VF page
         PageReference p = new PageReference('Page.PersonalSiteContactLookup');
         Test.setCurrentPageReference(p);
-        
+
         //instantiate the controller for this page
         VOL_CTRL_PersonalSiteContactLookup ctrl = new VOL_CTRL_PersonalSiteContactLookup();
-        system.assertNotEquals(null, ctrl.strURLtoCSSFile);
-        system.assertNotEquals(null, ctrl.contact);
-        system.assertNotEquals(null, ctrl.strLanguage);
-        system.assertEquals(null, ctrl.strResult);
-        system.assertNotEquals(null, ctrl.emailTemplateId);
-        system.assert(ctrl.orgWideEmailId == ctrl.orgWideEmailId);
-        
+        System.assertNotEquals(null, ctrl.strURLtoCSSFile);
+        System.assertNotEquals(null, ctrl.contact);
+        System.assertNotEquals(null, ctrl.strLanguage);
+        System.assertEquals(null, ctrl.strResult);
+        System.assertNotEquals(null, ctrl.emailTemplateId);
+        System.assert(ctrl.orgWideEmailId == ctrl.orgWideEmailId);
+
         // test empty contact
         ctrl.contact.Firstname = null;
         ctrl.contact.Lastname = null;
         ctrl.contact.Email = null;
-        system.assertEquals(null, ctrl.LookupContact());
-        system.assertEquals(System.Label.labelContactLookupAmbiguous, ctrl.strResult);
-        
+        System.assertEquals(null, ctrl.LookupContact());
+        System.assertEquals(System.Label.labelContactLookupAmbiguous, ctrl.strResult);
+
         // test bogus contact
         ctrl.contact.Firstname = 'Not There';
         ctrl.contact.Lastname = 'Not There';
         ctrl.contact.Email = 'NotThere@NotThere.com';
-        system.assertEquals(null, ctrl.LookupContact());
-        system.assertEquals(System.Label.labelContactLookupAmbiguous, ctrl.strResult);
+        System.assertEquals(null, ctrl.LookupContact());
+        System.assertEquals(System.Label.labelContactLookupAmbiguous, ctrl.strResult);
 
         // create a temp contact
         Contact con = new Contact();
@@ -138,14 +150,14 @@ private with sharing class VOL_CTRL_PersonalSiteContactLookup_TEST {
         con.LastName = 'LookupTestLastName';
         con.Email = 'LookupTestEmail@email.com';
         insert con;
-        
+
         // test existing contact
         ctrl.contact.FirstName = 'LookupTestFirstName';
         ctrl.contact.LastName = 'LookupTestLastName';
         ctrl.contact.Email = 'LookupTestEmail@email.com';
-        system.assertEquals(null, ctrl.LookupContact());
-        system.assertEquals(System.Label.labelContactLookupAmbiguous, ctrl.strResult);
-                    
+        System.assertEquals(null, ctrl.LookupContact());
+        System.assertEquals(System.Label.labelContactLookupAmbiguous, ctrl.strResult);
+
         // test error email handling
         con.Email = null;
         if (VOL_SharedCode.IsNPSPInstalled) {
@@ -155,7 +167,6 @@ private with sharing class VOL_CTRL_PersonalSiteContactLookup_TEST {
         }
         update con;
         ctrl.SendEmailToContact(con);
-        system.assertNotEquals(System.Label.labelContactLookupAmbiguous, ctrl.strResult);
+        System.assertNotEquals(System.Label.labelContactLookupAmbiguous, ctrl.strResult);
     }
-        
 }

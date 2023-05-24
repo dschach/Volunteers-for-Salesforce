@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2020, Salesforce.org
     All rights reserved.
     
@@ -26,17 +26,16 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 /**
-* @author Salesforce.org
-* @date 2020
-* @group Utilities
-* @description The UTIL_HtmlOutput_CTRL is used to safely unescape any allowlisted tags and urls
-*/
+ * @author Salesforce.org
+ * @date 2020
+ * @group Utilities
+ * @description The UTIL_HtmlOutput_CTRL is used to safely unescape any allowlisted tags and urls
+ */
 public with sharing class UTIL_HtmlOutput_CTRL {
-
     /** @description The map of allowed tags and their temporary substitution values */
-    private static final Map<String, String> SUBSTITUTION_BY_ALLOWED_TAG = new Map<String, String> {
+    private static final Map<String, String> SUBSTITUTION_BY_ALLOWED_TAG = new Map<String, String>{
         '/>' => '|backClose|',
         '</' => '|closeFront|',
         '>' => '|emptyClose|',
@@ -52,7 +51,7 @@ public with sharing class UTIL_HtmlOutput_CTRL {
     };
 
     /** @description The map of allowed urls and their temporary substitution values */
-    private static final Map<String, String> SUBSTITUTION_BY_ALLOWED_URL = new Map<String, String> {
+    private static final Map<String, String> SUBSTITUTION_BY_ALLOWED_URL = new Map<String, String>{
         '<a href="/ui/setup/apex/batch/ScheduleBatchApexPage' => '|schedBatch|',
         '<a href="/08e?setupid=ScheduledJobs' => '|schedJobs|',
         '" target="_blank"' => '|blankTarget|',
@@ -61,8 +60,8 @@ public with sharing class UTIL_HtmlOutput_CTRL {
     };
 
     /** @description The unescaped html passed in by the page. */
-    public String unsafeHtml { 
-        get; 
+    public String unsafeHtml {
+        get;
         set {
             if (value != null) {
                 unsafeHtml = value;
@@ -72,7 +71,7 @@ public with sharing class UTIL_HtmlOutput_CTRL {
 
     /** @description True when the html contains a url that should be safely escaped. */
     public Boolean hasURL {
-        get; 
+        get;
         set {
             if (value != null) {
                 hasURL = value;
@@ -83,8 +82,8 @@ public with sharing class UTIL_HtmlOutput_CTRL {
     }
 
     /*******************************************************************************************************************
-    * @description Returns the escaped html with the unescaped allowlisted tags and url
-    */
+     * @description Returns the escaped html with the unescaped allowlisted tags and url
+     */
     public String getSafeHtml() {
         if (String.isBlank(unsafeHtml)) {
             return '';
@@ -98,8 +97,8 @@ public with sharing class UTIL_HtmlOutput_CTRL {
     }
 
     /*******************************************************************************************************************
-    * @description Returns the unescaped html with the allowlisted tags and url replaced with temporary values
-    */
+     * @description Returns the unescaped html with the allowlisted tags and url replaced with temporary values
+     */
     private String replaceAllowlist(String unescapedHtml) {
         String replacedHtml = unescapedHtml.normalizeSpace();
 
@@ -117,8 +116,8 @@ public with sharing class UTIL_HtmlOutput_CTRL {
     }
 
     /*******************************************************************************************************************
-    * @description Returns the escaped html with the temporary tags and url to their original allowlisted values
-    */
+     * @description Returns the escaped html with the temporary tags and url to their original allowlisted values
+     */
     private String resetAllowlist(String escapedHtml) {
         String html = escapedHtml;
 
@@ -134,5 +133,4 @@ public with sharing class UTIL_HtmlOutput_CTRL {
 
         return html;
     }
-
 }

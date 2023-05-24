@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2016, Salesforce.org
     All rights reserved.
     
@@ -26,211 +26,221 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 
-@isTest
+@IsTest
 private with sharing class VOL_CTRL_SendBulkEmail_TEST {
-    
     //==================== TEST METHOD(s) ======================================
-    private static testmethod void TestJobAndShift() {
-    
+    @IsTest
+    private static void testJobAndShift() {
         // set up intial test data
-        Account acc = new Account(name='Individual Test Account');
+        Account acc = new Account(name = 'Individual Test Account');
         insert acc;
-        Contact con = new Contact(Lastname='Testy', Email='testy@foo.com', AccountId=acc.Id);
+        Contact con = new Contact(Lastname = 'Testy', Email = 'testy@foo.com', AccountId = acc.Id);
         insert con;
-        Campaign cmp = new Campaign(recordtypeid=VOL_SharedCode.recordtypeIdVolunteersCampaign, 
-            name='Test Job And Shift Campaign', IsActive=true);
+        Campaign cmp = new Campaign(
+            recordtypeid = VOL_SharedCode.recordtypeIdVolunteersCampaign,
+            name = 'Test Job And Shift Campaign',
+            IsActive = true
+        );
         insert cmp;
-        Volunteer_Job__c job = new Volunteer_Job__c(name='Job1', campaign__c=cmp.Id);
+        Volunteer_Job__c job = new Volunteer_Job__c(name = 'Job1', campaign__c = cmp.Id);
         insert job;
-        Volunteer_Shift__c shift = new Volunteer_Shift__c(Volunteer_Job__c=job.Id, Duration__c=1, Start_Date_Time__c=System.now());
+        Volunteer_Shift__c shift = new Volunteer_Shift__c(
+            Volunteer_Job__c = job.Id,
+            Duration__c = 1,
+            Start_Date_Time__c = System.now()
+        );
         insert shift;
-        list<Volunteer_Hours__c> listHours = new list<Volunteer_Hours__c>();   
-        integer cHours = 1;     
-        for (integer i = 0; i < cHours; i++) {
+        List<Volunteer_Hours__c> listHours = new List<Volunteer_Hours__c>();
+        Integer cHours = 1;
+        for (Integer i = 0; i < cHours; i++) {
             Volunteer_Hours__c hours = new Volunteer_Hours__c(
-                Volunteer_Job__c=job.id, 
-                Volunteer_Shift__c=shift.Id,
-                Contact__c=con.Id,
-                Number_of_Volunteers__c=3,
-                Start_Date__c=System.today(), 
-                Status__c='Confirmed'
-                );
+                Volunteer_Job__c = job.id,
+                Volunteer_Shift__c = shift.Id,
+                Contact__c = con.Id,
+                Number_of_Volunteers__c = 3,
+                Start_Date__c = System.today(),
+                Status__c = 'Confirmed'
+            );
             listHours.add(hours);
-        }                       
+        }
         insert listHours;
-        
+
         //point to our VF page
         PageReference p = new PageReference('Page.SendBulkEmail');
         p.getParameters().put('jobId', job.id);
         p.getParameters().put('shiftId', shift.id);
         Test.setCurrentPageReference(p);
-        
+
         //instantiate the controller for this opp
         VOL_CTRL_SendBulkEmail ctrl = new VOL_CTRL_SendBulkEmail();
         System.AssertEquals(job.Id, ctrl.jobId);
         System.AssertEquals(shift.Id, ctrl.shiftId);
         System.Assert(ctrl.getlistSOTemplates().size() > 1);
         System.Assert(ctrl.getlistSOFromEmails().size() >= 1);
-        
+
         // load a template
-        EmailTemplate et = [select Id from EmailTemplate where DeveloperName='Volunteer_Shift_Reminder'];
+        EmailTemplate et = [SELECT Id FROM EmailTemplate WHERE DeveloperName = 'Volunteer_Shift_Reminder'];
         ctrl.templateId = et.Id;
         ctrl.LoadEmailTemplate();
         System.assert(ctrl.subject != null);
         System.assert(ctrl.message != null);
-        
+
         // find contacts
         ctrl.hourStatus.Status__c = 'Confirmed';
         ctrl.StatusChanged();
         System.assertEquals(1, ctrl.numberOfContacts);
-        
+
         PageReference p1 = ctrl.Cancel();
-        system.assert(p1 != null);
-        
+        System.assert(p1 != null);
+
         ctrl.fLogActivity = false; // upgraders might not have Activities on for Jobs and Shifts
         PageReference p2 = ctrl.SendMail();
-        system.assertEquals(null, p2);
+        System.assertEquals(null, p2);
 
         // test no template
         ctrl.templateId = null;
         ctrl.LoadEmailTemplate();
         System.assert(ctrl.subject == null);
         System.assert(ctrl.message == null);
-        system.assertEquals(null, ctrl.SendMail());
-        
+        System.assertEquals(null, ctrl.SendMail());
+
         // test no contacts found
         ctrl.hourStatus.Status__c = 'Bogus';
         ctrl.StatusChanged();
         System.assertEquals(0, ctrl.numberOfContacts);
-        system.assertEquals(null, ctrl.SendMail()); 
-        
+        System.assertEquals(null, ctrl.SendMail());
     }
 
-    private static testmethod void TestJobOnly() {
-    
+    @IsTest
+    private static void testJobOnly() {
         // set up intial test data
-        Account acc = new Account(name='Individual Test Account');
+        Account acc = new Account(name = 'Individual Test Account');
         insert acc;
-        Contact con = new Contact(Lastname='Testy', Email='testy@foo.com', AccountId=acc.Id);
+        Contact con = new Contact(Lastname = 'Testy', Email = 'testy@foo.com', AccountId = acc.Id);
         insert con;
-        Campaign cmp = new Campaign(recordtypeid=VOL_SharedCode.recordtypeIdVolunteersCampaign, 
-            name='Test Campaign Job Only', IsActive=true);
+        Campaign cmp = new Campaign(
+            recordtypeid = VOL_SharedCode.recordtypeIdVolunteersCampaign,
+            name = 'Test Campaign Job Only',
+            IsActive = true
+        );
         insert cmp;
-        Volunteer_Job__c job = new Volunteer_Job__c(name='Job1', campaign__c=cmp.Id);
+        Volunteer_Job__c job = new Volunteer_Job__c(name = 'Job1', campaign__c = cmp.Id);
         insert job;
-        list<Volunteer_Hours__c> listHours = new list<Volunteer_Hours__c>();   
-        integer cHours = 1;     
-        for (integer i = 0; i < cHours; i++) {
+        List<Volunteer_Hours__c> listHours = new List<Volunteer_Hours__c>();
+        Integer cHours = 1;
+        for (Integer i = 0; i < cHours; i++) {
             Volunteer_Hours__c hours = new Volunteer_Hours__c(
-                Volunteer_Job__c=job.id, 
-                Contact__c=con.Id,
-                Number_of_Volunteers__c=3,
-                Start_Date__c=System.today(), 
-                Status__c='Confirmed'
-                );
+                Volunteer_Job__c = job.id,
+                Contact__c = con.Id,
+                Number_of_Volunteers__c = 3,
+                Start_Date__c = System.today(),
+                Status__c = 'Confirmed'
+            );
             listHours.add(hours);
-        }                       
+        }
         insert listHours;
-        
+
         //point to our VF page
         PageReference p = new PageReference('Page.SendBulkEmail');
         p.getParameters().put('jobId', job.id);
         Test.setCurrentPageReference(p);
-        
+
         //instantiate the controller for this opp
         VOL_CTRL_SendBulkEmail ctrl = new VOL_CTRL_SendBulkEmail();
         System.AssertEquals(job.Id, ctrl.jobId);
         System.AssertEquals(null, ctrl.shiftId);
         System.Assert(ctrl.getlistSOTemplates().size() > 1);
         System.Assert(ctrl.getlistSOFromEmails().size() >= 1);
-        
+
         // load a template
-        EmailTemplate et = [select Id from EmailTemplate where DeveloperName='Volunteer_Shift_Reminder'];
+        EmailTemplate et = [SELECT Id FROM EmailTemplate WHERE DeveloperName = 'Volunteer_Shift_Reminder'];
         ctrl.templateId = et.Id;
         ctrl.LoadEmailTemplate();
         System.assert(ctrl.subject != null);
         System.assert(ctrl.message != null);
-        
+
         // find contacts
         ctrl.hourStatus.Status__c = 'Confirmed';
         ctrl.StatusChanged();
         System.assertEquals(1, ctrl.numberOfContacts);
-        
+
         PageReference p1 = ctrl.Cancel();
-        system.assert(p1 != null);
-        
+        System.assert(p1 != null);
+
         ctrl.fLogActivity = false; // upgraders might not have Activities on for Jobs and Shifts
         PageReference p2 = ctrl.SendMail();
-        system.assertEquals(null, p2);
-        
+        System.assertEquals(null, p2);
+
         // test bounced email handling
         con.EmailBouncedReason = 'testing';
-        con.EmailBouncedDate = system.Today();
+        con.EmailBouncedDate = System.today();
         update con;
-        system.assertEquals(null, ctrl.SendMail());
-        
+        System.assertEquals(null, ctrl.SendMail());
     }
 
-    private static testmethod void TestCampaign() {
-    
+    @IsTest
+    private static void testCampaign() {
         // set up intial test data
-        Account acc = new Account(name='Individual Test Account');
+        Account acc = new Account(name = 'Individual Test Account');
         insert acc;
-        Contact con = new Contact(Lastname='Testy', Email='testy@foo.com', AccountId=acc.Id);
+        Contact con = new Contact(Lastname = 'Testy', Email = 'testy@foo.com', AccountId = acc.Id);
         insert con;
-        Campaign cmp = new Campaign(recordtypeid=VOL_SharedCode.recordtypeIdVolunteersCampaign, 
-            name='Test Campaign', IsActive=true);
+        Campaign cmp = new Campaign(
+            recordtypeid = VOL_SharedCode.recordtypeIdVolunteersCampaign,
+            name = 'Test Campaign',
+            IsActive = true
+        );
         insert cmp;
-        Volunteer_Job__c job = new Volunteer_Job__c(name='Job1', campaign__c=cmp.Id);
+        Volunteer_Job__c job = new Volunteer_Job__c(name = 'Job1', campaign__c = cmp.Id);
         insert job;
-        list<Volunteer_Hours__c> listHours = new list<Volunteer_Hours__c>();   
-        integer cHours = 3;     
-        for (integer i = 0; i < cHours; i++) {
+        List<Volunteer_Hours__c> listHours = new List<Volunteer_Hours__c>();
+        Integer cHours = 3;
+        for (Integer i = 0; i < cHours; i++) {
             Volunteer_Hours__c hours = new Volunteer_Hours__c(
-                Volunteer_Job__c=job.id, 
-                Contact__c=con.Id,
-                Number_of_Volunteers__c=3,
-                Start_Date__c=System.today(), 
-                Status__c='Confirmed'
-                );
+                Volunteer_Job__c = job.id,
+                Contact__c = con.Id,
+                Number_of_Volunteers__c = 3,
+                Start_Date__c = System.today(),
+                Status__c = 'Confirmed'
+            );
             listHours.add(hours);
-        }                       
+        }
         insert listHours;
-        
+
         //point to our VF page
         PageReference p = new PageReference('Page.SendBulkEmail');
         p.getParameters().put('campaignId', cmp.id);
         Test.setCurrentPageReference(p);
-        
+
         //instantiate the controller for this opp
         VOL_CTRL_SendBulkEmail ctrl = new VOL_CTRL_SendBulkEmail();
         System.AssertEquals(cmp.Id, ctrl.campaignId);
         System.AssertEquals(null, ctrl.jobId);
         System.AssertEquals(null, ctrl.shiftId);
         System.Assert(ctrl.strJobName != null);
-        
+
         // load a template
-        EmailTemplate et = [select Id from EmailTemplate where DeveloperName='Volunteer_Shift_Reminder'];
+        EmailTemplate et = [SELECT Id FROM EmailTemplate WHERE DeveloperName = 'Volunteer_Shift_Reminder'];
         ctrl.templateId = et.Id;
         ctrl.LoadEmailTemplate();
         System.assert(ctrl.subject != null);
         System.assert(ctrl.message != null);
-        
+
         // find contacts
         ctrl.fEmailContactsOnlyOnce = false;
         ctrl.hourStatus.Status__c = 'Confirmed';
         ctrl.StatusChanged();
         System.assertEquals(cHours, ctrl.numberOfContacts);
-        
+
         PageReference p1 = ctrl.Cancel();
-        system.assert(p1 != null);
-        
+        System.assert(p1 != null);
+
         ctrl.fLogActivity = false; // upgraders might not have Activities on for Jobs and Shifts
         PageReference p2 = ctrl.SendMail();
-        system.assertEquals(null, p2);
-        
+        System.assertEquals(null, p2);
+
         // test fEmailContactsOnlyOnce
         ctrl.fEmailContactsOnlyOnce = true;
         ctrl.StatusChanged();
@@ -238,9 +248,9 @@ private with sharing class VOL_CTRL_SendBulkEmail_TEST {
     }
 
     /*******************************************************************************************************************
-    * @description Verifies the job related to the id provided is returned
-    */
-    @isTest
+     * @description Verifies the job related to the id provided is returned
+     */
+    @IsTest
     private static void returnsJobWhenAnIdIsProvided() {
         Campaign campaign = new Campaign(Name = 'Job Id Provided');
         insert campaign;
@@ -257,11 +267,19 @@ private with sharing class VOL_CTRL_SendBulkEmail_TEST {
 
         VOL_CTRL_SendBulkEmail sendBulkEmail = new VOL_CTRL_SendBulkEmail();
         sendBulkEmail.shiftId = shift.Id;
-        System.assertEquals(job.Id, sendBulkEmail.getRelatedJob().Id, 'The job related to the shift should be returned.');
+        System.assertEquals(
+            job.Id,
+            sendBulkEmail.getRelatedJob().Id,
+            'The job related to the shift should be returned.'
+        );
 
         sendBulkEmail.shiftId = null;
         sendBulkEmail.campaignId = campaign.Id;
-        System.assertEquals(job.Id, sendBulkEmail.getRelatedJob().Id, 'The job related to the campaign should be returned.');
+        System.assertEquals(
+            job.Id,
+            sendBulkEmail.getRelatedJob().Id,
+            'The job related to the campaign should be returned.'
+        );
 
         sendBulkEmail.campaignId = null;
         sendBulkEmail.jobId = job.Id;
@@ -269,9 +287,9 @@ private with sharing class VOL_CTRL_SendBulkEmail_TEST {
     }
 
     /*******************************************************************************************************************
-    * @description Verifies a job is not returned when an id is not provided
-    */
-    @isTest
+     * @description Verifies a job is not returned when an id is not provided
+     */
+    @IsTest
     private static void returnsNullWhenAnIdIsNotProvided() {
         VOL_CTRL_SendBulkEmail sendBulkEmail = new VOL_CTRL_SendBulkEmail();
         sendBulkEmail.shiftId = null;
@@ -282,9 +300,9 @@ private with sharing class VOL_CTRL_SendBulkEmail_TEST {
     }
 
     /*******************************************************************************************************************
-    * @description Verifies tags that are not allowlisted are removed from the template html value
-    */
-    @isTest
+     * @description Verifies tags that are not allowlisted are removed from the template html value
+     */
+    @IsTest
     private static void returnsEscapedHtml() {
         VOL_CTRL_SendBulkEmail sendBulkEmail = new VOL_CTRL_SendBulkEmail();
         EmailTemplate template = new EmailTemplate(TemplateType = 'custom');
@@ -297,14 +315,20 @@ private with sharing class VOL_CTRL_SendBulkEmail_TEST {
 
         System.assertNotEquals(template.HtmlValue, escapeHtml, 'Html string should be modified: ' + escapeHtml);
         System.assert(escapeHtml.contains('BAD XSS:'), 'Html string should contain valid text: ' + escapeHtml);
-        System.assert(!escapeHtml.contains('<img src=x onerror=alert(document.cookie)>'), 'Html string should not contain tags that are not allowlisted: ' + escapeHtml);
-        System.assert([SELECT Id FROM Volunteer_Job__c].isEmpty(), 'The database should be rolled back and the record created to clean the html has been removed.');
+        System.assert(
+            !escapeHtml.contains('<img src=x onerror=alert(document.cookie)>'),
+            'Html string should not contain tags that are not allowlisted: ' + escapeHtml
+        );
+        System.assert(
+            [SELECT Id FROM Volunteer_Job__c].isEmpty(),
+            'The database should be rolled back and the record created to clean the html has been removed.'
+        );
     }
 
     /*******************************************************************************************************************
-    * @description Verifies the subject, message and isHtmlTemplate are loaded from the template passed in
-    */
-    @isTest
+     * @description Verifies the subject, message and isHtmlTemplate are loaded from the template passed in
+     */
+    @IsTest
     private static void loadsEmailDetailsFromTemplate() {
         VOL_CTRL_SendBulkEmail sendBulkEmail = new VOL_CTRL_SendBulkEmail();
         EmailTemplate template = new EmailTemplate(TemplateType = 'text');

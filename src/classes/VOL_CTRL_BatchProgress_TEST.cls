@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2016, Salesforce.org
     All rights reserved.
     
@@ -26,35 +26,37 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 
-@isTest
+@IsTest
 private with sharing class VOL_CTRL_BatchProgress_TEST {
-
     //--------------------TEST METHOD------------------------
-    private static testMethod void batchStatusBarTest(){
+    @IsTest
+    private static void batchStatusBarTest() {
         UTIL_JobProgress_CTRL controller = new UTIL_JobProgress_CTRL();
         controller.getBatchJobs();
         controller.numberOfJobs = 10;
-        system.assertEquals(10, controller.numberOfJobs);
+        System.assertEquals(10, controller.numberOfJobs);
         controller.batchComponentLabel = 'my label';
-        system.assertEquals('my label', controller.batchComponentLabel);
+        System.assertEquals('my label', controller.batchComponentLabel);
         // Verify defaults
-        system.assertEquals(0, controller.getBatchJobs().size());
-        system.assertEquals(null, controller.bj);
-        system.assertEquals(false, controller.rerenderoncomplete);
-        system.assertEquals(false, controller.hasExtendedStatus);
-        system.assertEquals(true, controller.allCompleted);
+        System.assertEquals(0, controller.getBatchJobs().size());
+        System.assertEquals(null, controller.bj);
+        System.assertEquals(false, controller.rerenderoncomplete);
+        System.assertEquals(false, controller.hasExtendedStatus);
+        System.assertEquals(true, controller.allCompleted);
     }
 
-    private static testMethod void testRollup() {
+    @IsTest
+    private static void testRollup() {
         VOL_CTRL_BatchProgress controller = new VOL_CTRL_BatchProgress();
-        system.assertEquals(true, controller.batching);
-        system.assertEquals(false, controller.batchRunning);
-        system.assertEquals(null, controller.rollup());
+        System.assertEquals(true, controller.batching);
+        System.assertEquals(false, controller.batchRunning);
+        System.assertEquals(null, controller.rollup());
     }
 
-    private static testMethod void testJobProgressController() {
+    @IsTest
+    private static void testJobProgressController() {
         VOL_BATCH_Recurrence_TEST.createRecurringJob();
         PageReference bPage = Page.VolunteersBatchJobsProgress;
         Test.setCurrentPage(bPage);
@@ -70,8 +72,9 @@ private with sharing class VOL_CTRL_BatchProgress_TEST {
         System.assertEquals(null, rollup, 'The rollup button should always return null.');
     }
 
-    private static testMethod void testPageMessagesController() {
-        ApexPages.addMessage(new ApexPages.message(ApexPages.severity.WARNING,'summary'));
+    @IsTest
+    private static void testPageMessagesController() {
+        ApexPages.addMessage(new ApexPages.message(ApexPages.severity.WARNING, 'summary'));
         UTIL_PageMessages_CTRL controller = new UTIL_PageMessages_CTRL();
         List<UTIL_PageMessages_CTRL.Message> messages = controller.getPageMessages();
 

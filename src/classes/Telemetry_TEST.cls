@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2019, Salesforce.org
     All rights reserved.
 
@@ -26,7 +26,7 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 @IsTest(IsParallel=true)
 private class Telemetry_TEST {
     private static QueryBuilder.Stub mockQB = new QueryBuilder.Stub();
@@ -38,44 +38,75 @@ private class Telemetry_TEST {
     private static void constructorSetsPropertiesWithSObjectTypeAndDevName() {
         accountTelemetry = new Telemetry(SOBJECT_TYPE, DEV_NAME);
         System.assertEquals(SOBJECT_TYPE, accountTelemetry.sObjType, 'Expected the sObject Type to be set.');
-        System.assertEquals(DEV_NAME.name(), accountTelemetry.developerName.name(), 'Expected the developer name to be set.');
+        System.assertEquals(
+            DEV_NAME.name(),
+            accountTelemetry.developerName.name(),
+            'Expected the developer name to be set.'
+        );
     }
 
     @IsTest
     private static void constructorSetsPropertiesWithDevName() {
         accountTelemetry = new Telemetry(DEV_NAME);
-        System.assertEquals(DEV_NAME.name(), accountTelemetry.developerName.name(), 'Expected the developer name to be set.');
+        System.assertEquals(
+            DEV_NAME.name(),
+            accountTelemetry.developerName.name(),
+            'Expected the developer name to be set.'
+        );
     }
 
     @IsTest
     private static void getDeveloperNameRemovesUnderscores() {
         accountTelemetry = new Telemetry(SOBJECT_TYPE, DEV_NAME);
-        System.assert(!accountTelemetry.getDeveloperName().contains('_'), 'Did not expect the string to have any underscores.');
+        System.assert(
+            !accountTelemetry.getDeveloperName().contains('_'),
+            'Did not expect the string to have any underscores.'
+        );
     }
 
     @IsTest
     private static void getDeveloperNameReturnsAnEmptyStringWhenNull() {
         accountTelemetry = new Telemetry(SOBJECT_TYPE, null);
-        System.assertEquals('', accountTelemetry.getDeveloperName(), 'Expected an empty string to be returned when a null value is provided.');
+        System.assertEquals(
+            '',
+            accountTelemetry.getDeveloperName(),
+            'Expected an empty string to be returned when a null value is provided.'
+        );
     }
 
     @IsTest
     private static void getCountQueryReturnsValidQuery() {
         accountTelemetry = new Telemetry(SOBJECT_TYPE, DEV_NAME);
-        System.assertEquals(0, Database.countQuery(accountTelemetry.getCountQuery()), 'Expected the query not to find any records.');
+        System.assertEquals(
+            0,
+            Database.countQuery(accountTelemetry.getCountQuery()),
+            'Expected the query not to find any records.'
+        );
 
         insert new Account(Name = 'Count me!');
-        System.assertEquals(1, Database.countQuery(accountTelemetry.getCountQuery()), 'Expected the query to find one record.');
+        System.assertEquals(
+            1,
+            Database.countQuery(accountTelemetry.getCountQuery()),
+            'Expected the query to find one record.'
+        );
     }
 
     @IsTest
     private static void getCountQueryReturnsValidQueryWithCriteria() {
         accountTelemetry = new Telemetry(SOBJECT_TYPE, DEV_NAME).withCriteria('Type = \'Prospect\'');
-        System.assertEquals(0, Database.countQuery(accountTelemetry.getCountQuery()), 'Expected the query not to find any records.');
+        System.assertEquals(
+            0,
+            Database.countQuery(accountTelemetry.getCountQuery()),
+            'Expected the query not to find any records.'
+        );
 
         insert new Account(Name = 'Count me!', Type = 'Prospect');
         insert new Account(Name = 'Do NOT Count me!', Type = 'Customer');
-        System.assertEquals(1, Database.countQuery(accountTelemetry.getCountQuery()), 'Expected the query to find one record.');
+        System.assertEquals(
+            1,
+            Database.countQuery(accountTelemetry.getCountQuery()),
+            'Expected the query to find one record.'
+        );
     }
 
     @IsTest
@@ -89,6 +120,4 @@ private class Telemetry_TEST {
         System.assertEquals(criteria, mockQB.condition, 'Expected the criteria to be sent to the query builder.');
         System.assertEquals(0, actualCount, 'Did not expect any records to have been created in the future!');
     }
-
-
 }

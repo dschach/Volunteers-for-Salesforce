@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2016, Salesforce.org
     All rights reserved.
     
@@ -26,17 +26,16 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 
 public with sharing class VOL_CTRL_BatchProgress {
-	
     // properties for page
-    public boolean batching { get; set; }
-    public boolean batchRunning { get; set; }
+    public Boolean batching { get; set; }
+    public Boolean batchRunning { get; set; }
 
-    // object id passed in via parameter
-    string objectId;
-    id oid;
+    // object Id passed in via parameter
+    String objectId;
+    Id oid;
 
     // constructor
     public VOL_CTRL_BatchProgress() {
@@ -46,22 +45,22 @@ public with sharing class VOL_CTRL_BatchProgress {
         try {
             objectId = ApexPages.currentPage().getParameters().get('id');
             oid = objectId;
-        } catch (exception e) {     
-        }  
-        
+        } catch (exception e) {
+            System.debug('');
+        }
+
         if (oid != null) {
-            batching = false;           
+            batching = false;
         } else {
             batching = true;
         }
     }
 
     public PageReference rollup() {
-    	
-    	VOL_BATCH_Recurrence r = new VOL_BATCH_Recurrence();
-    	r.execute(null);
+        VOL_BATCH_Recurrence r = new VOL_BATCH_Recurrence();
+        r.execute(null);
         batchRunning = true;
-        return null;                
+        return null;
     }
 
     public PageReference cancel() {
@@ -69,5 +68,4 @@ public with sharing class VOL_CTRL_BatchProgress {
         ref.setRedirect(true);
         return ref;
     }
-
 }

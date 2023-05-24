@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2016, Salesforce.org
     All rights reserved.
     
@@ -26,21 +26,22 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 
+@SuppressWarnings('PMD.AvoidGlobalModifier')
 global with sharing class VOL_CTRL_PersonalSiteJobListing {
-
     // constructor
     global VOL_CTRL_PersonalSiteJobListing() {
+        // initial values for potential parameters
+        strLanguage = 'en-us';
 
-		// initial values for potential parameters
-    	strLanguage = 'en-us'; 
-
-        // handle optional page parameters (must use string, not ID, to handle null)
-        map<string, string> params = ApexPages.currentPage().getParameters();
-        string p = params.get('Language');
-        if (p != null && p != '') strLanguage = p;
+        // handle optional page parameters (must use String, not Id, to handle null)
+        Map<String, String> params = ApexPages.currentPage().getParameters();
+        String p = params.get('Language');
+        if (p != null && p != '') {
+            strLanguage = p;
+        }
     }
-    
-    global string strLanguage { get; set; }
+
+    global String strLanguage { get; set; }
 }

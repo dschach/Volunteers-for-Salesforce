@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2016, Salesforce.org
     All rights reserved.
     
@@ -26,13 +26,17 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 
-trigger VOL_VolunteerHours_ShiftRollups on Volunteer_Hours__c (before delete, after insert, after undelete, after update) {
-	
+trigger VOL_VolunteerHours_ShiftRollups on Volunteer_Hours__c(
+	before delete,
+	after insert,
+	after undelete,
+	after update
+) {
 	// the trigger logic was moved to a seperate class so that we
 	// can also use it in scenarios where Salesforce doesn't fire the trigger:
 	// ie, deleting, undeleting, and merging a Contact doesn't fire triggers on its children (Hours)
-	VOL_SharedCode.VolunteerHoursTrigger(trigger.old, trigger.new, false);
+	VOL_SharedCode.VolunteerHoursTrigger(Trigger.old, Trigger.new, false);
 
 }

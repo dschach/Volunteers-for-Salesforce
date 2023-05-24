@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2016, Salesforce.org
     All rights reserved.
     
@@ -26,18 +26,17 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 
-trigger VOL_Job_Before on Volunteer_Job__c (before delete) {
-	
+trigger VOL_Job_Before on Volunteer_Job__c(before delete) {
 	// since Volunteer Recurrence Schedules are not true children of Jobs,
 	// and only hold a lookup field to Job, we must manually delete them.
-	if (trigger.isDelete) {
-		set<ID> setJobId = new set<ID>();
-		for (SObject obj : trigger.old) {
+	if (Trigger.isDelete) {
+		Set<Id> setJobId = new Set<Id>();
+		for (SObject obj : Trigger.old) {
 			setJobId.add(obj.Id);
 		}
-		delete [select Id from Volunteer_Recurrence_Schedule__c where Volunteer_Job__c in :setJobId];
+		delete [SELECT Id FROM Volunteer_Recurrence_Schedule__c WHERE Volunteer_Job__c IN :setJobId];
 	}
 
 }

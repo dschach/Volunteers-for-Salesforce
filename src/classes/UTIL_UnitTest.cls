@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2019, Salesforce.org
     All rights reserved.
 
@@ -26,7 +26,7 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 @IsTest
 public class UTIL_UnitTest {
     private static Map<SObjectType, Map<Id, SObject>> sObjectByIdByType = new Map<SObjectType, Map<Id, SObject>>();
@@ -59,7 +59,7 @@ public class UTIL_UnitTest {
         // The OOB guest user profile depends on the type of org
         // packaging org has Standard Guest and Dev orgs have Guest License User
         // scratch orgs have both
-        List<Profile> profiles = getProfiles(new Set<String> { 'Standard Guest', 'Guest License User' });
+        List<Profile> profiles = getProfiles(new Set<String>{ 'Standard Guest', 'Guest License User' });
         if (profiles.isEmpty()) {
             return null;
         }
@@ -104,8 +104,11 @@ public class UTIL_UnitTest {
 
     @TestVisible
     private static User findGuestSiteUser() {
-        List<User> guestUsers = [Select Username, UserType, Name, IsActive, Id From User where IsActive = true and UserType = 'Guest' and
-        Name like '%Site Guest User%'];
+        List<User> guestUsers = [
+            SELECT Username, UserType, Name, IsActive, Id
+            FROM User
+            WHERE IsActive = TRUE AND UserType = 'Guest' AND Name LIKE '%Site Guest User%'
+        ];
 
         if (guestUsers.isEmpty()) {
             return null;
@@ -150,11 +153,17 @@ public class UTIL_UnitTest {
 
         Job_Recurrence_Schedule__c jrsRecord = createJobRecurrence(jobRecord.Id);
         insert jrsRecord;
-        sObjectByIdByType.put(Job_Recurrence_Schedule__c.SObjectType, new Map<Id, SObject>{ jrsRecord.Id => jrsRecord });
+        sObjectByIdByType.put(
+            Job_Recurrence_Schedule__c.SObjectType,
+            new Map<Id, SObject>{ jrsRecord.Id => jrsRecord }
+        );
 
         Volunteer_Recurrence_Schedule__c vrsRecord = createVolunteerRecurrence(contactRecord.Id, jobRecord.Id);
         insert vrsRecord;
-        sObjectByIdByType.put(Volunteer_Recurrence_Schedule__c.SObjectType, new Map<Id, SObject>{ vrsRecord.Id => vrsRecord });
+        sObjectByIdByType.put(
+            Volunteer_Recurrence_Schedule__c.SObjectType,
+            new Map<Id, SObject>{ vrsRecord.Id => vrsRecord }
+        );
 
         return sObjectByIdByType;
     }
@@ -189,26 +198,15 @@ public class UTIL_UnitTest {
     }
 
     public static Contact createContact(String lastName) {
-        return new Contact(
-            FirstName = 'Andy',
-            LastName = lastName,
-            Email = 'andy@test.com');
+        return new Contact(FirstName = 'Andy', LastName = lastName, Email = 'andy@test.com');
     }
 
     public static Campaign createCampaign(String name) {
-        return new Campaign(
-            RecordTypeId = VOL_SharedCode.recordtypeIdVolunteersCampaign,
-            Name = name,
-            IsActive = true
-        );
+        return new Campaign(RecordTypeId = VOL_SharedCode.recordtypeIdVolunteersCampaign, Name = name, IsActive = true);
     }
 
     public static Volunteer_Job__c createJob(String name, Id campaignId) {
-        return new Volunteer_Job__c(
-            Name = name,
-            Campaign__c = campaignId,
-            Display_on_Website__c = true
-        );
+        return new Volunteer_Job__c(Name = name, Campaign__c = campaignId, Display_on_Website__c = true);
     }
 
     public static Volunteer_Hours__c createHours(Id contactId, Id jobId, Id shiftId) {
@@ -225,30 +223,27 @@ public class UTIL_UnitTest {
     }
 
     public static Volunteer_Shift__c createShift(Id jobId) {
-        return new Volunteer_Shift__c(
-            Volunteer_Job__c = jobId,
-            Duration__c = 1,
-            Start_Date_Time__c = System.now()
-        );
+        return new Volunteer_Shift__c(Volunteer_Job__c = jobId, Duration__c = 1, Start_Date_Time__c = System.now());
     }
 
-    public static Job_Recurrence_Schedule__c createJobRecurrence(Id jobId){
+    public static Job_Recurrence_Schedule__c createJobRecurrence(Id jobId) {
         return new Job_Recurrence_Schedule__c(
             Volunteer_Job__c = jobId,
             Days_of_Week__c = 'Monday;Friday',
             Duration__c = 1.5,
             Schedule_Start_Date_Time__c = datetime.now(),
-            Weekly_Occurrence__c = '1st');
+            Weekly_Occurrence__c = '1st'
+        );
     }
 
-    public static Volunteer_Recurrence_Schedule__c createVolunteerRecurrence(Id contactId, Id jobid){
+    public static Volunteer_Recurrence_Schedule__c createVolunteerRecurrence(Id contactId, Id jobid) {
         return new Volunteer_Recurrence_Schedule__c(
             Contact__c = contactId,
             Volunteer_Job__c = jobId,
             Days_of_Week__c = 'Monday;Friday',
             Duration__c = 1.5,
             Schedule_Start_Date_Time__c = datetime.now(),
-            Weekly_Occurrence__c = '1st');
+            Weekly_Occurrence__c = '1st'
+        );
     }
-
 }

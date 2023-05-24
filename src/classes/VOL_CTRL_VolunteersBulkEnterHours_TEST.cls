@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2016, Salesforce.org
     All rights reserved.
     
@@ -26,48 +26,54 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 
-@isTest
+@IsTest
 private with sharing class VOL_CTRL_VolunteersBulkEnterHours_TEST {
-    
     //==================== TEST METHOD(s) ======================================
-    private static testmethod void CodeCoverageTests() {
-    
+    @IsTest
+    private static void codeCoverageTests() {
         // set up intial test data
-        Account acc = new Account(name='Individual Test Account');
+        Account acc = new Account(name = 'Individual Test Account');
         insert acc;
-        Contact con = new Contact(Lastname='Testy', AccountId=acc.Id);
+        Contact con = new Contact(Lastname = 'Testy', AccountId = acc.Id);
         insert con;
-        Campaign cmp = new Campaign(recordtypeid=VOL_SharedCode.recordtypeIdVolunteersCampaign, 
-        	name='Test Campaign', IsActive=true);
+        Campaign cmp = new Campaign(
+            recordtypeid = VOL_SharedCode.recordtypeIdVolunteersCampaign,
+            name = 'Test Campaign',
+            IsActive = true
+        );
         insert cmp;
-        Volunteer_Job__c job = new Volunteer_Job__c(name='Job1', campaign__c=cmp.Id);
+        Volunteer_Job__c job = new Volunteer_Job__c(name = 'Job1', campaign__c = cmp.Id);
         insert job;
-        Volunteer_Shift__c shift = new Volunteer_Shift__c(Volunteer_Job__c=job.Id, Duration__c=1, Start_Date_Time__c=System.now());
+        Volunteer_Shift__c shift = new Volunteer_Shift__c(
+            Volunteer_Job__c = job.Id,
+            Duration__c = 1,
+            Start_Date_Time__c = System.now()
+        );
         insert shift;
-        list<Volunteer_Hours__c> listHours = new list<Volunteer_Hours__c>();   
-        integer cHours = 5;     
-        for (integer i = 0; i < cHours; i++) {
+        List<Volunteer_Hours__c> listHours = new List<Volunteer_Hours__c>();
+        Integer cHours = 5;
+        for (Integer i = 0; i < cHours; i++) {
             Volunteer_Hours__c hours = new Volunteer_Hours__c(
-                Volunteer_Job__c=job.id, 
-                Volunteer_Shift__c=shift.Id,
-                Contact__c=con.Id,
-                Number_of_Volunteers__c=3,
-                Start_Date__c=System.today(), 
-                Status__c='Confirmed'
-                );
+                Volunteer_Job__c = job.id,
+                Volunteer_Shift__c = shift.Id,
+                Contact__c = con.Id,
+                Number_of_Volunteers__c = 3,
+                Start_Date__c = System.today(),
+                Status__c = 'Confirmed'
+            );
             listHours.add(hours);
-        }                       
+        }
         insert listHours;
-        
+
         //point to our VF page
         PageReference p = new PageReference('Page.VolunteersBulkEnterHours');
         p.getParameters().put('campaignId', cmp.id);
         p.getParameters().put('volunteerJobId', job.id);
         p.getParameters().put('volunteerShiftId', shift.id);
         Test.setCurrentPageReference(p);
-        
+
         //instantiate the controller for this opp
         VOL_CTRL_VolunteersBulkEnterHours ctrl = new VOL_CTRL_VolunteersBulkEnterHours();
         System.AssertEquals(cmp.Id, ctrl.campaignId);
@@ -77,20 +83,20 @@ private with sharing class VOL_CTRL_VolunteersBulkEnterHours_TEST {
         System.AssertEquals(2, ctrl.listSOVolunteerJobs.size());
         System.AssertEquals(2, ctrl.listSOVolunteerShifts.size());
         System.AssertEquals(cHours + ctrl.cEmptyVolunteerHourRecords, ctrl.listVolunteerHours.size());
-        
+
         ctrl.AddMoreEmptyRows();
         System.AssertEquals(cHours + (2 * ctrl.cEmptyVolunteerHourRecords), ctrl.listVolunteerHours.size());
         System.AssertEquals(true, ctrl.fHasListVolunteerHours);
         System.Assert(ctrl.Cancel() == null);
         System.AssertEquals(0, ctrl.numberOfRecordsDirty);
-        System.AssertEquals(null, ctrl.strSaveResults); 
+        System.AssertEquals(null, ctrl.strSaveResults);
 
         ctrl.campaignId = null;
         ctrl.ChangeCampaign();
         System.AssertEquals(null, ctrl.volunteerJobId);
         System.AssertEquals(null, ctrl.volunteerShiftId);
         System.AssertEquals(null, ctrl.listVolunteerHours);
-        
+
         ctrl.campaignId = cmp.Id;
         ctrl.ChangeCampaign();
         ctrl.volunteerJobId = job.Id;
@@ -100,18 +106,18 @@ private with sharing class VOL_CTRL_VolunteersBulkEnterHours_TEST {
         ctrl.ChangeVolunteerShift();
         System.AssertEquals(cHours + ctrl.cEmptyVolunteerHourRecords, ctrl.listVolunteerHours.size());
         System.AssertEquals(0, ctrl.numberOfRecordsDirty);
-        
+
         ctrl.listVolunteerHours.get(0).Hours_Worked__c = 2;
         p.getParameters().put('volunteerHoursIdDirtied', ctrl.listVolunteerHours.get(0).id);
         ctrl.VolunteerHoursRecordModified();
         System.AssertEquals(1, ctrl.setVolunteerHoursIdDirty.size());
-        
+
         Volunteer_Hours__c vh = ctrl.listVolunteerHours.get(5);
         vh.Contact__c = con.id;
         vh.Volunteer_Job__c = job.id;
         vh.Volunteer_Shift__c = shift.id;
         vh.Status__c = 'Completed';
-        vh.Start_Date__c = system.today();
+        vh.Start_Date__c = System.today();
         vh.Hours_Worked__c = null; // to test failure
         p.getParameters().put('volunteerHoursIdDirtied', null);
         ctrl.VolunteerHoursRecordModified();
@@ -120,12 +126,10 @@ private with sharing class VOL_CTRL_VolunteersBulkEnterHours_TEST {
 
         // test the save!
         ctrl.SaveVolunteerHours();
-        system.debug(ctrl.strSaveResults);
+        System.debug(ctrl.strSaveResults);
         System.assert(ctrl.strSaveResults.contains(Label.labelMassEditErrorOnSave), 'An error is expected.');
         vh.Hours_Worked__c = 2.5;
-        ctrl.SaveAndCloseVolunteerHours();      
+        ctrl.SaveAndCloseVolunteerHours();
         System.AssertEquals(0, ctrl.numberOfRecordsDirty);
-        
     }
-
 }

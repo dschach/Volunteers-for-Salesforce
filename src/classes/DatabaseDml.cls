@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2019, Salesforce.org
     All rights reserved.
 
@@ -26,17 +26,18 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 /*
     This class was created for situations where we need to run in system
     mode.
 */
 /* sfge-disable ApexFlsViolationRule */
 public without sharing virtual class DatabaseDml {
-
-    protected DatabaseDml() {}
-
-    @TestVisible private static DatabaseDml instance = null;
+    // prettier-ignore
+    protected DatabaseDml() { //NOPMD
+    }
+    @TestVisible
+    private static DatabaseDml instance = null;
 
     public static DatabaseDml getInstance() {
         if (instance == null) {
@@ -46,35 +47,35 @@ public without sharing virtual class DatabaseDml {
     }
 
     /*******************************************************************************************************
-    * @description Commits a list of updated SObjects
-    * @param List of SObjects to update
-    ********************************************************************************************************/
+     * @description Commits a list of updated SObjects
+     * @param sObjects List of SObjects to update
+     ********************************************************************************************************/
     public void updateRecords(List<SObject> sObjects) {
         update sObjects;
     }
 
     /*******************************************************************************************************
-    * @description Commits a list of updated SObjects
-    * @param List of SObjects to update
-    * @param DML Options for handling duplicates
-    ********************************************************************************************************/
+     * @description Commits a list of updated SObjects
+     * @param sObjects List of SObjects to update
+     * @param dmlDuplicateOptions Options for handling duplicates
+     ********************************************************************************************************/
     public void updateRecords(List<SObject> sObjects, Database.DMLOptions dmlDuplicateOptions) {
         Database.update(sObjects, dmlDuplicateOptions);
     }
 
     /*******************************************************************************************************
-    * @description Commits a list of SObjects
-    * @param List of SObjects to insert
-    ********************************************************************************************************/
+     * @description Commits a list of SObjects
+     * @param sObjects List of SObjects to insert
+     ********************************************************************************************************/
     public void insertRecords(List<SObject> sObjects) {
         insert sObjects;
     }
 
     /*******************************************************************************************************
-    * @description Commits a list of SObjects
-    * @param List of SObjects to insert
-    * @param DML Options for handling duplicates
-    ********************************************************************************************************/
+     * @description Commits a list of SObjects
+     * @param sObjects List of SObjects to insert
+     * @param dmlDuplicateOptions DML Options for handling duplicates
+     ********************************************************************************************************/
     public void insertRecords(List<SObject> sObjects, Database.DMLOptions dmlDuplicateOptions) {
         Database.insert(sObjects, dmlDuplicateOptions);
     }

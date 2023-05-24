@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2016, Salesforce.org
     All rights reserved.
     
@@ -26,37 +26,40 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 
+@SuppressWarnings('PMD.AvoidGlobalModifier')
 global with sharing class VOL_CTRL_PersonalSiteTemplate {
+    global VOL_CTRL_PersonalSiteTemplate() {
+        String language = 'en-us';
+        Map<String, String> params = ApexPages.currentPage().getParameters();
+        String p = params.get('Language');
+        if (p != null && p != '') {
+            language = p;
+        }
+    }
 
-	global VOL_CTRL_PersonalSiteTemplate() {
-    	Language = 'en-us'; 
-        map<string, string> params = ApexPages.currentPage().getParameters();
-        string p;
-        p = params.get('Language');
-        if (p != null && p != '') Language = p;
-		
-	}
-	
- 	global string Language { get; set; }
+    global String language { get; set; }
 
-	// returns the correct URL for the CSS override file
-    global string strURLtoCSSFile { 
-        get { 
+    // returns the correct URL for the CSS override file
+    global String strURLtoCSSFile {
+        get {
             if (strURLtoCSSFile == null) {
-                list<Document> listDocs = [SELECT Name, Id From Document WHERE Name = 'VolunteersPersonalSiteCSS.css' LIMIT 1 ];
+                List<Document> listDocs = [
+                    SELECT Name, Id
+                    FROM Document
+                    WHERE Name = 'VolunteersPersonalSiteCSS.css'
+                    LIMIT 1
+                ];
                 if (listDocs.size() > 0) {
                     Document doc = listDocs[0];
-                    string imageid = doc.id;
-                    imageid = imageid.substring(0,15);
+                    String imageid = doc.id;
+                    imageid = imageid.substring(0, 15);
                     strURLToCSSFile = '/servlet/servlet.FileDownload?file=' + imageid;
                 }
             }
             return strURLtoCSSFile;
-        }  
-        
+        }
         set;
     }
-	
 }

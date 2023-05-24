@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2019, Salesforce.org
     All rights reserved.
 
@@ -26,7 +26,7 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 public without sharing class Telemetry {
     public enum DeveloperName {
         CAMPAIGNS_WITH_JOBS,
@@ -40,8 +40,7 @@ public without sharing class Telemetry {
         JOB_RECURRENCE_SCHEDULES,
         GRANT_GUEST_USERS_UPDATE_ACCESS
     }
-    private static final String TELEMETRY_PARAM_ERROR =
-        'The telemetry param type {0} is already in use, only one type can be sent at a time.';
+    private static final String TELEMETRY_PARAM_ERROR = 'The telemetry param type {0} is already in use, only one type can be sent at a time.';
     @TestVisible
     private SObjectType sObjType;
     @TestVisible
@@ -72,7 +71,7 @@ public without sharing class Telemetry {
 
     public Telemetry withCriteria(String criteria) {
         if (booleanValue != null) {
-            throw new TelemetryException(String.format(TELEMETRY_PARAM_ERROR, new List<String>{ 'boolean' }));
+            throw new TelemetryException(String.format(TELEMETRY_PARAM_ERROR, new List<String>{ 'Boolean' }));
         }
 
         this.criteria = criteria;
@@ -100,7 +99,6 @@ public without sharing class Telemetry {
     private static void send(String developerName, Boolean booleanValue) {
         try {
             FeatureManagement.setPackageBooleanValue(developerName, booleanValue);
-
         } catch (Exception ex) {
             throw new TelemetryException(System.Label.TelemetryException);
         }
@@ -110,7 +108,6 @@ public without sharing class Telemetry {
     private static void send(String developerName, String query) {
         try {
             FeatureManagement.setPackageIntegerValue(developerName, Database.countQuery(query));
-
         } catch (Exception ex) {
             throw new TelemetryException(System.Label.TelemetryException);
         }
@@ -133,15 +130,15 @@ public without sharing class Telemetry {
         return developerName.name().remove('_');
     }
 
-    public class TelemetryException extends Exception {}
-
+    public class TelemetryException extends Exception {
+    }
 
     //////////////////// -------------------- ////////////////////
 
     public class Stub implements System.StubProvider {
         public Integer sendCount = 0;
 
-        public Object handleMethodCall(
+        public Object handleMethodCall( //NOPMD
             Object stubbedObject,
             String stubbedMethodName,
             Type returnType,
@@ -153,12 +150,11 @@ public without sharing class Telemetry {
                 when 'send' {
                     sendCount++;
                     return null;
-
-                } when else {
+                }
+                when else {
                     return null;
                 }
             }
         }
     }
-
 }

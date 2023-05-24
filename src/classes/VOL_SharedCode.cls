@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2016, Salesforce.org
     All rights reserved.
 
@@ -26,43 +26,60 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 
+@SuppressWarnings('PMD.AvoidGlobalModifier, PMD.ExcessiveClassLength')
 global with sharing class VOL_SharedCode {
     @TestVisible
     private static VOL_Access access = VOL_Access.getInstance();
 
     // the list of Campaigns that have Volunteer Jobs
-    global list<SelectOption> listSOCampaignsWithJobs {
+    global List<SelectOption> listSOCampaignsWithJobs {
         get {
-            list<SelectOption> listSO = new list<SelectOption>();
+            List<SelectOption> listSO = new List<SelectOption>();
             listSO.add(new SelectOption('', ''));
 
             // Ensure the user has access to the object before querying
-            if (Campaign.SObjectType.getDescribe().isAccessible() && Campaign.Name.getDescribe().isAccessible() &&
-                Campaign.IsActive.getDescribe().isAccessible() && Campaign.StartDate.getDescribe().isAccessible() &&
-                Campaign.RecordTypeId.getDescribe().isAccessible()) {
-                for (Campaign c : [select Name, Id from Campaign where RecordTypeId = :recordtypeIdVolunteersCampaign
-                    and IsActive = true order by StartDate desc, Name asc limit 999]) {
+            if (
+                Campaign.SObjectType.getDescribe().isAccessible() &&
+                Campaign.Name.getDescribe().isAccessible() &&
+                Campaign.IsActive.getDescribe().isAccessible() &&
+                Campaign.StartDate.getDescribe().isAccessible() &&
+                Campaign.RecordTypeId.getDescribe().isAccessible()
+            ) {
+                for (Campaign c : [
+                    SELECT Name, Id
+                    FROM Campaign
+                    WHERE RecordTypeId = :recordtypeIdVolunteersCampaign AND IsActive = TRUE
+                    ORDER BY StartDate DESC, Name ASC
+                    LIMIT 999
+                ]) {
                     listSO.add(new SelectOption(c.id, c.name));
                 }
             }
-            
+
             return listSO;
         }
     }
 
     // the list of Volunteer Jobs for the specified Campaign
-    global list<SelectOption> listSOVolunteerJobsOfCampaignId(ID campaignId) {
-        list<SelectOption> listSO = new list<SelectOption>();
+    global List<SelectOption> listSOVolunteerJobsOfCampaignId(Id campaignId) {
+        List<SelectOption> listSO = new List<SelectOption>();
         listSO.add(new SelectOption('', ''));
 
         // Ensure the user has access to the object before querying
-        if (Volunteer_Job__c.SObjectType.getDescribe().isAccessible()
-            && Volunteer_Job__c.Name.getDescribe().isAccessible()
-            && Volunteer_Job__c.Campaign__c.getDescribe().isAccessible()) {
-
-            for (Volunteer_Job__c vj : [select Name, Id from Volunteer_Job__c where Campaign__c = :campaignId order by name limit 999]) {
+        if (
+            Volunteer_Job__c.SObjectType.getDescribe().isAccessible() &&
+            Volunteer_Job__c.Name.getDescribe().isAccessible() &&
+            Volunteer_Job__c.Campaign__c.getDescribe().isAccessible()
+        ) {
+            for (Volunteer_Job__c vj : [
+                SELECT Name, Id
+                FROM Volunteer_Job__c
+                WHERE Campaign__c = :campaignId
+                ORDER BY name
+                LIMIT 999
+            ]) {
                 listSO.add(new SelectOption(vj.id, vj.name));
             }
         }
@@ -70,23 +87,42 @@ global with sharing class VOL_SharedCode {
     }
 
     // the list of Volunteer Job Shifts for the specified Job
-    global list<SelectOption> listSOVolunteerShiftsOfVolunteerJobId(ID volunteerJobId, Date dtStart, Date dtEnd, boolean fIncludeShiftName, boolean fIncludeNumberNeeded) {
-        return listSOVolunteerShiftsOfVolunteerJobIdFormat(volunteerJobId, dtStart, dtEnd, fIncludeShiftName, fIncludeNumberNeeded, null, null);
+    global List<SelectOption> listSOVolunteerShiftsOfVolunteerJobId( //NOPMD
+        Id volunteerJobId,
+        Date dtStart,
+        Date dtEnd,
+        Boolean fIncludeShiftName,
+        Boolean fIncludeNumberNeeded
+    ) {
+        return listSOVolunteerShiftsOfVolunteerJobIdFormat(
+            volunteerJobId,
+            dtStart,
+            dtEnd,
+            fIncludeShiftName,
+            fIncludeNumberNeeded,
+            null,
+            null
+        );
     }
 
     // list of select options of Shifts for the specified job, using the date & time format strings for the shifts
-    public static list<SelectOption> listSOVolunteerShiftsOfVolunteerJobIdFormat(ID volunteerJobId, Date dtStart, Date dtEnd,
-            boolean fIncludeShiftName, boolean fIncludeNumberNeeded, string strDateFormat, string strTimeFormat) {
+    public static List<SelectOption> listSOVolunteerShiftsOfVolunteerJobIdFormat( //NOPMD
+        Id volunteerJobId,
+        Date dtStart,
+        Date dtEnd,
+        Boolean fIncludeShiftName,
+        Boolean fIncludeNumberNeeded,
+        String strDateFormat,
+        String strTimeFormat
+    ) {
+        List<Volunteer_Job__c> listVolunteerJobs = new List<Volunteer_Job__c>();
 
-        list<Volunteer_Job__c> listVolunteerJobs = new List<Volunteer_Job__c>();
-
-        list<SelectOption> listSO = new list<SelectOption>();
+        List<SelectOption> listSO = new List<SelectOption>();
         listSO.add(new SelectOption('', ''));
 
         // Ensure the user has access to the object before querying
         try {
             UTIL_Describe.checkObjectReadAccess(String.valueOf(Volunteer_Shift__c.SObjectType));
-
         } catch (Exception ex) {
             // we will return an empty list vs throwing an error
             return listSO;
@@ -96,73 +132,102 @@ global with sharing class VOL_SharedCode {
         Boolean canReadNumberNeeded = Schema.sObjectType.Volunteer_Shift__c.fields.Number_of_Volunteers_Still_Needed__c.isAccessible();
 
         // ensure valid date ranges
-        if (dtStart == null)
-            dtStart = system.today();
-        if (dtEnd == null)
-            dtEnd = system.today().addMonths(12);
+        if (dtStart == null) {
+            dtStart = System.today();
+        }
+        if (dtEnd == null) {
+            dtEnd = System.today().addMonths(12);
+        }
         dtEnd = dtEnd.addDays(1);
 
         // get our shifts in a Job query, so we can use our common date/time formatting routine.
-        listVolunteerJobs = [select Id, Campaign__r.IsActive, Campaign__r.Volunteer_Website_Time_Zone__c,
-            Volunteer_Website_Time_Zone__c,
-            (Select Id, Name, Start_Date_Time__c, Duration__c, Number_of_Volunteers_Still_Needed__c,
-                Description__c, System_Note__c From Volunteer_Job_Slots__r
-                where Start_Date_Time__c >= :dtStart and Start_Date_Time__c < :dtEnd
-                order by Start_Date_Time__c LIMIT 999)
-            from Volunteer_Job__c where Id = :volunteerJobId];
+        listVolunteerJobs = [
+            SELECT
+                Id,
+                Campaign__r.IsActive,
+                Campaign__r.Volunteer_Website_Time_Zone__c,
+                Volunteer_Website_Time_Zone__c,
+                (
+                    SELECT
+                        Id,
+                        Name,
+                        Start_Date_Time__c,
+                        Duration__c,
+                        Number_of_Volunteers_Still_Needed__c,
+                        Description__c,
+                        System_Note__c
+                    FROM Volunteer_Job_Slots__r
+                    WHERE Start_Date_Time__c >= :dtStart AND Start_Date_Time__c < :dtEnd
+                    ORDER BY Start_Date_Time__c
+                    LIMIT 999
+                )
+            FROM Volunteer_Job__c
+            WHERE Id = :volunteerJobId
+        ];
 
         // bail out if no jobs found
-        if (listVolunteerJobs.size() == 0)
+        if (listVolunteerJobs.size() == 0) {
             return listSO;
+        }
 
         // whether to use our datetime formatting, or salesforce default for the current user
-        boolean useDateTimeFixup = (strDateFormat != null && strTimeFormat != null);
+        Boolean useDateTimeFixup = (strDateFormat != null && strTimeFormat != null);
 
         // put correct date/time format with appropriate timezone in system note field (in memory only)
-        if (useDateTimeFixup)
-            dateTimeFixup(listVolunteerJobs, strDateFormat, strTimeFormat);
+        if (useDateTimeFixup) {
+            {
+                dateTimeFixup(listVolunteerJobs, strDateFormat, strTimeFormat);
+            }
+        }
 
         for (Volunteer_Shift__c vs : listVolunteerJobs[0].Volunteer_Job_Slots__r) {
-            SelectOption so = new SelectOption(vs.id,
+            SelectOption so = new SelectOption(
+                vs.id,
                 (canReadDate ? (useDateTimeFixup ? vs.System_Note__c : vs.Start_Date_Time__c.format()) : '') +
-                (fIncludeShiftName ? '&nbsp;&nbsp;&nbsp;&nbsp;(' + vs.name + ')' : '' ) +
-                (fIncludeNumberNeeded && canReadNumberNeeded ? '&nbsp;&nbsp;' +
-                    (vs.Number_of_Volunteers_Still_Needed__c > 0 ?
-                        system.label.labelCalendarStillNeeded + vs.Number_of_Volunteers_Still_Needed__c : system.label.labelCalendarShiftFull) +
-                    ' ' : '' ));
+                    (fIncludeShiftName ? '&nbsp;&nbsp;&nbsp;&nbsp;(' + vs.name + ')' : '') +
+                    (fIncludeNumberNeeded && canReadNumberNeeded
+                        ? '&nbsp;&nbsp;' +
+                          (vs.Number_of_Volunteers_Still_Needed__c > 0
+                              ? System.Label.labelCalendarStillNeeded + vs.Number_of_Volunteers_Still_Needed__c
+                              : System.Label.labelCalendarShiftFull) +
+                          ' '
+                        : '')
+            );
             so.setEscapeItem(false);
             listSO.add(so);
         }
         return listSO;
     }
 
-    // routine to go through all the shifts, and create the display string
+    // routine to go through all the shifts, and create the display
     // for the shifts start date & time - end date & time, using the appropriate
     // time zone that might be specified on the Job, Campaign, or Site Guest User.
-    // Note that it stores this string in the Shift's System_Note__c field (in memory only).
-    public static void dateTimeFixup(list<Volunteer_Job__c> listJob, string strDateFormat, string strTimeFormat) {
+    // Note that it stores this  in the Shift's System_Note__c field (in memory only).
+    public static void dateTimeFixup(List<Volunteer_Job__c> listJob, String strDateFormat, String strTimeFormat) {
         // get default time zone for site guest user
-        User u = [Select TimeZoneSidKey From User where id =: Userinfo.getUserId()];
+        User u = [SELECT TimeZoneSidKey FROM User WHERE Id = :Userinfo.getUserId()];
 
         // javascript formatting used 'tt' for am/pm, whereas apex formatting uses 'a'.
-        string strFormat = strDateFormat + ' ' + strTimeFormat.replace('tt','a');
-        string strFormatEndTime = strTimeFormat.replace('tt','a');
+        String strFormat = strDateFormat + ' ' + strTimeFormat.replace('tt', 'a');
+        String strFormatEndTime = strTimeFormat.replace('tt', 'a');
 
         for (Volunteer_Job__c job : listJob) {
-            string strTimeZone = job.Volunteer_Website_Time_Zone__c;
-            if (strTimeZone == null) strTimeZone = job.Campaign__r.Volunteer_Website_Time_Zone__c;
-            if (strTimeZone == null) strTimeZone = u.TimeZoneSidKey;
-
+            String strTimeZone = job.Volunteer_Website_Time_Zone__c;
+            if (strTimeZone == null) {
+                strTimeZone = job.Campaign__r.Volunteer_Website_Time_Zone__c;
+            }
+            if (strTimeZone == null) {
+                strTimeZone = u.TimeZoneSidKey;
+            }
             for (Volunteer_Shift__c shift : job.Volunteer_Job_Slots__r) {
-
-                DateTime dtEnd = shift.Start_Date_Time__c.addMinutes(integer.valueOf(shift.Duration__c * 60));
-                string strStart = shift.Start_Date_Time__c.format(strFormat, strTimeZone);
+                DateTime dtEnd = shift.Start_Date_Time__c.addMinutes(Integer.valueOf(shift.Duration__c * 60));
+                String strStart = shift.Start_Date_Time__c.format(strFormat, strTimeZone);
 
                 // see if start and end are on the same day
                 if (shift.Start_Date_Time__c.format('d', strTimeZone) == dtEnd.format('d', strTimeZone)) {
-                    shift.System_Note__c =  strStart + ' - ' + dtEnd.format(strFormatEndTime, strTimeZone);
+                    shift.System_Note__c = strStart + ' - ' + dtEnd.format(strFormatEndTime, strTimeZone);
                 } else {
-                    shift.System_Note__c =  strStart + ' - ' + dtEnd.format(strFormat, strTimeZone);
+                    shift.System_Note__c = strStart + ' - ' + dtEnd.format(strFormat, strTimeZone);
                 }
             }
         }
@@ -170,7 +235,7 @@ global with sharing class VOL_SharedCode {
 
     // return the GMT datetime for a datetime in the specified timezone
     public static DateTime dtGmtFromDtTimeZone(DateTime dt, TimeZone tz) {
-        integer offset = tz.getOffset(dt);
+        Integer offset = tz.getOffset(dt);
         return dt.addSeconds(-offset / 1000);
     }
 
@@ -210,34 +275,41 @@ global with sharing class VOL_SharedCode {
             }
             return VolunteersSettings;
         }
-
         set;
     }
 
     // helper to get the AccoutId of the Bucket Account specified in Custom Settings.
-    global static ID SettingsBucketAccountId {
+    global static Id settingsBucketAccountId {
         get {
-            if (SettingsBucketAccountId == null) {
-                if (VolunteersSettings.Signup_Bucket_Account_On_Create__c != null
-                    && Account.getSObjectType().getDescribe().isAccessible()) {
-                    Account[] acc = [select Id from Account where name = :VolunteersSettings.Signup_Bucket_Account_On_Create__c limit 1];
-                    if (acc.size() > 0) SettingsBucketAccountId = acc[0].Id;
+            if (settingsBucketAccountId == null) {
+                if (
+                    VolunteersSettings.Signup_Bucket_Account_On_Create__c != null &&
+                    Account.getSObjectType().getDescribe().isAccessible()
+                ) {
+                    Account[] acc = [
+                        SELECT Id
+                        FROM Account
+                        WHERE name = :VolunteersSettings.Signup_Bucket_Account_On_Create__c
+                        LIMIT 1
+                    ];
+                    if (acc.size() > 0) {
+                        settingsBucketAccountId = acc[0].Id;
+                    }
                 }
             }
-            return SettingsBucketAccountId;
+            return settingsBucketAccountId;
         }
-
         set;
     }
 
     // test helper that allows one to override the users's Custom Settings with the settings we want to test with.
     global static Volunteers_Settings__c getVolunteersSettingsForTests(Volunteers_Settings__c mySettings) {
         //clear out whatever settings exist
-        delete [select id from Volunteers_Settings__c];
+        delete [SELECT Id FROM Volunteers_Settings__c];
         SettingsBucketAccountId = null;
 
         //create our own based on what's passed in from the test
-        VolunteersSettings = new Volunteers_Settings__c (
+        VolunteersSettings = new Volunteers_Settings__c(
             Signup_Matches_Existing_Contacts__c = mySettings.Signup_Matches_Existing_Contacts__c,
             Signup_Creates_Contacts_If_No_Match__c = mySettings.Signup_Creates_Contacts_If_No_Match__c,
             Signup_Bucket_Account_On_Create__c = mySettings.Signup_Bucket_Account_On_Create__c,
@@ -247,18 +319,19 @@ global with sharing class VOL_SharedCode {
             Contact_Matching_Rule__c = mySettings.Contact_Matching_Rule__c,
             Personal_Site_Org_Wide_Email_Name__c = mySettings.Personal_Site_Org_Wide_Email_Name__c,
             Personal_Site_Report_Hours_Filtered__c = mySettings.Personal_Site_Report_Hours_Filtered__c
-            );
+        );
 
         insert VolunteersSettings;
         return VolunteersSettings;
     }
 
     // global helper to get the Volunteers Campaign recordtype.
-    private class MyException extends Exception {}
+    private class MyException extends Exception {
+    }
     global static Id recordtypeIdVolunteersCampaign {
         get {
             if (recordtypeIdVolunteersCampaign == null) {
-                list<RecordType> listRT = [SELECT Id FROM RecordType WHERE DeveloperName='Volunteers_Campaign'];
+                List<RecordType> listRT = [SELECT Id FROM RecordType WHERE DeveloperName = 'Volunteers_Campaign'];
                 if (listRT.size() == 0) {
                     throw (new MyException('The Volunteers Campaign Record Type is missing and must be restored.'));
                 }
@@ -271,8 +344,8 @@ global with sharing class VOL_SharedCode {
 
     // shared routine to get all Fields names from the specified Field Set on Contact
     // also explicitly adds additional Contact fields that we will always use in our Sites pages.
-    global static list<string> listStrFieldsFromContactFieldSet(Schema.FieldSet fs) {
-        set<string> setStrFields = new set<string>();
+    global static List<String> listStrFieldsFromContactFieldSet(Schema.FieldSet fs) {
+        Set<String> setStrFields = new Set<String>();
         for (Schema.FieldSetMember f : fs.getFields()) {
             setStrFields.add(f.getFieldPath().toLowerCase());
         }
@@ -283,14 +356,14 @@ global with sharing class VOL_SharedCode {
         setStrFields.add('email');
         //setStrFields.add(VOL_SharedCode.StrTokenNSPrefix('volunteer_status__c').tolowerCase());
         //setStrFields.add(VOL_SharedCode.StrTokenNSPrefix('volunteer_notes__c').toLowerCase());
-        list<string> listStrFields = new list<string>();
+        List<String> listStrFields = new List<String>();
         listStrFields.addAll(setStrFields);
         return listStrFields;
     }
 
     // shared routine to get all Fields names form the specified Field Set
-    global static list<string> listStrFieldsFromFieldSet(Schema.FieldSet fs) {
-        list<string> listStrFields = new list<string>();
+    global static List<String> listStrFieldsFromFieldSet(Schema.FieldSet fs) {
+        List<String> listStrFields = new List<String>();
         for (Schema.FieldSetMember f : fs.getFields()) {
             listStrFields.add(f.getFieldPath());
         }
@@ -303,157 +376,211 @@ global with sharing class VOL_SharedCode {
     // matching existing contacts, and create contacts vs. leads.  this is because the two pages have different use cases.
     // it also assumes that the contact that is passed in is the dummy record from the web page, and thus isn't real, and
     // uses the Department field to track the user's company name.
-    global static ID CreateContactOrLead(Contact contact, boolean fMatchExistingContacts, boolean fCreateContacts) {
+    global static Id createContactOrLead(Contact contact, Boolean fMatchExistingContacts, Boolean fCreateContacts) {
         // update the date before we start
-        contact.Volunteer_Last_Web_Signup_Date__c = system.today();
+        contact.Volunteer_Last_Web_Signup_Date__c = System.today();
 
         // let's see if we can find any matching Contacts.
-        list<Contact> listCon = [select Id, Lastname, Firstname, Email, Phone, HomePhone,
-                Volunteer_Availability__c, Volunteer_Notes__c, Volunteer_Last_Web_Signup_Date__c,
-                Volunteer_Status__c, Volunteer_Skills__c, Volunteer_Organization__c from Contact
-                where Lastname=:contact.Lastname and Firstname=:contact.Firstname and Email=:contact.Email];
+        List<Contact> listCon = [
+            SELECT
+                Id,
+                Lastname,
+                Firstname,
+                Email,
+                Phone,
+                HomePhone,
+                Volunteer_Availability__c,
+                Volunteer_Notes__c,
+                Volunteer_Last_Web_Signup_Date__c,
+                Volunteer_Status__c,
+                Volunteer_Skills__c,
+                Volunteer_Organization__c
+            FROM Contact
+            WHERE Lastname = :contact.Lastname AND Firstname = :contact.Firstname AND Email = :contact.Email
+        ];
 
-        Set<String> setFlds = new Set<String>{'Lastname', 'Firstname', 'Email', 'Phone', 'HomePhone',
+        Set<String> setFlds = new Set<String>{
+            'Lastname',
+            'Firstname',
+            'Email',
+            'Phone',
+            'HomePhone',
             UTIL_Describe.StrTokenNSPrefix('Volunteer_Availability__c'),
             UTIL_Describe.StrTokenNSPrefix('Volunteer_Notes__c'),
             UTIL_Describe.StrTokenNSPrefix('Volunteer_Last_Web_Signup_Date__c'),
             UTIL_Describe.StrTokenNSPrefix('Volunteer_Status__c'),
             UTIL_Describe.StrTokenNSPrefix('Volunteer_Skills__c'),
-            UTIL_Describe.StrTokenNSPrefix('Volunteer_Organization__c')};
+            UTIL_Describe.StrTokenNSPrefix('Volunteer_Organization__c')
+        };
 
         // if we can match existing contacts, and we found a match, update them.
         if (fMatchExistingContacts && listCon.size() > 0) {
             for (Contact con : listCon) {
                 con.Volunteer_Last_Web_Signup_Date__c = contact.Volunteer_Last_Web_Signup_Date__c;
                 con.Volunteer_Availability__c = contact.Volunteer_Availability__c;
-                string strNotes = con.Volunteer_Notes__c;
-                if (strNotes != '') strNotes += '  ';
+                String strNotes = con.Volunteer_Notes__c;
+                if (strNotes != '') {
+                    strNotes += '  ';
+                }
                 if (contact.Volunteer_Notes__c != null) {
-                    con.Volunteer_Notes__c = strNotes + '[' + string.valueof(System.today()) + ']: ' + contact.Volunteer_Notes__c;
+                    con.Volunteer_Notes__c =
+                        strNotes +
+                        '[' +
+                        String.valueOf(System.today()) +
+                        ']: ' +
+                        contact.Volunteer_Notes__c;
                 }
                 con.Volunteer_Skills__c = contact.Volunteer_Skills__c;
-                if (con.Volunteer_Status__c == null) con.Volunteer_Status__c = 'New Sign Up';
-                if (contact.Phone != null) con.Phone = contact.Phone;
-                if (contact.HomePhone != null) con.HomePhone = contact.HomePhone;
-                // NOTE: if we find existing contact(s), we don't worry about doing anything with Company.
+                if (con.Volunteer_Status__c == null) {
+                    con.Volunteer_Status__c = 'New Sign Up';
+                }
+                if (contact.Phone != null) {
+                    con.Phone = contact.Phone;
+                }
+                if (contact.HomePhone != null) {
+                    con.HomePhone = contact.HomePhone;
+                } // NOTE: if we find existing contact(s), we don't worry about doing anything with Company.
                 // but we can at least put it in the new Volunteer_Organization__c field.
-                if (contact.Department != null) con.Volunteer_Organization__c = contact.Department;
+                if (contact.Department != null) {
+                    con.Volunteer_Organization__c = contact.Department;
+                }
             }
 
             checkUpdateAccessSites('Contact', setFlds);
             access.updateRecords(listCon, dmlDuplicateOptions);
- 
+
             return listCon[0].Id;
-        } else if (fCreateContacts) {  // No Match found, create a Contact
+        } else if (fCreateContacts) {
+            // No Match found, create a Contact
             contact.LeadSource = 'Web Volunteer Signup';
             contact.Volunteer_Status__c = 'New Sign Up';
 
             Account accToUse = null;
 
             // see if we can find their company (which we assume the form used Department to record.)
-            if (contact.Department != null
-                && Account.getSObjectType().getDescribe().isAccessible()) {
-                list<Account> listAccount = [select Id, Name from Account where Name = :contact.Department limit 1];
-                if (listAccount.size() > 0) accToUse = listAccount.get(0);
+            if (contact.Department != null && Account.getSObjectType().getDescribe().isAccessible()) {
+                List<Account> listAccount = [SELECT Id, Name FROM Account WHERE Name = :contact.Department LIMIT 1];
+                if (listAccount.size() > 0) {
+                    accToUse = listAccount.get(0);
+                }
                 contact.Volunteer_Organization__c = contact.Department;
             }
 
             // if company found, use it
             if (accToUse != null) {
                 contact.AccountId = accToUse.Id;
-            } else { // otherwise use the bucket account (which may be null and imply the 1:1 model in NPSP)
+            } else {
+                // otherwise use the bucket account (which may be null and imply the 1:1 model in NPSP)
                 contact.AccountId = VOL_SharedCode.SettingsBucketAccountId;
             }
             access.checkCreateAccess('Contact', setFlds);
             access.insertRecords(new List<Contact>{ contact }, dmlDuplicateOptions);
             return contact.Id;
-        } else { // No Match found, create a Lead
-            Lead lead = new lead();
-            lead.FirstName = contact.FirstName;
-            lead.LastName = contact.LastName;
-            lead.Company = (contact.Department == null ? '[not provided]' : contact.Department);
-            lead.Email = contact.Email;
-            lead.Phone = contact.Phone;
-            lead.MobilePhone = contact.HomePhone; // leads don't have a home phone!
-            lead.Volunteer_Availability__c = contact.Volunteer_Availability__c;
-            lead.Volunteer_Notes__c = contact.Volunteer_Notes__c;
-            lead.Volunteer_Skills__c = contact.Volunteer_Skills__c;
-            lead.Volunteer_Status__c = 'New Sign Up';
-            lead.LeadSource = 'Web Volunteer Signup';
-            UTIL_Describe.checkCreateAccess('Lead',
-                new Set<String>{'FirstName','LastName','Company','Email','Phone','MobilePhone','LeadSource',
+        } else {
+            // No Match found, create a Lead
+            Lead ld = new lead();
+            ld.FirstName = contact.FirstName;
+            ld.LastName = contact.LastName;
+            ld.Company = (contact.Department == null ? '[not provided]' : contact.Department);
+            ld.Email = contact.Email;
+            ld.Phone = contact.Phone;
+            ld.MobilePhone = contact.HomePhone; // leads don't have a home phone!
+            ld.Volunteer_Availability__c = contact.Volunteer_Availability__c;
+            ld.Volunteer_Notes__c = contact.Volunteer_Notes__c;
+            ld.Volunteer_Skills__c = contact.Volunteer_Skills__c;
+            ld.Volunteer_Status__c = 'New Sign Up';
+            ld.LeadSource = 'Web Volunteer Signup';
+            UTIL_Describe.checkCreateAccess(
+                'Lead',
+                new Set<String>{
+                    'FirstName',
+                    'LastName',
+                    'Company',
+                    'Email',
+                    'Phone',
+                    'MobilePhone',
+                    'LeadSource',
                     UTIL_Describe.StrTokenNSPrefix('Volunteer_Availability__c'),
                     UTIL_Describe.StrTokenNSPrefix('Volunteer_Notes__c'),
                     UTIL_Describe.StrTokenNSPrefix('Volunteer_Skills__c'),
-                    UTIL_Describe.StrTokenNSPrefix('Volunteer_Status__c')});
-            Database.insert(lead, dmlDuplicateOptions);
-            return lead.Id;
+                    UTIL_Describe.StrTokenNSPrefix('Volunteer_Status__c')
+                }
+            );
+            Database.insert(ld, dmlDuplicateOptions);
+            return ld.Id;
         }
     }
 
     // global code to verify the passed in ContactId is valid, as well as the email
     // exists on the Contact record.
-    global static boolean isValidContactIdAndEmail(ID contactId, string strEmail) {
+    global static Boolean isValidContactIdAndEmail(Id contactId, String strEmail) {
         if (!Contact.getSObjectType().getDescribe().isAccessible()) {
             return false;
         }
 
-        string strSoql = 'select Id from Contact where Id = :contactId ';
+        String strSoql = 'SELECT Id from Contact where Id = :contactId ';
         if (VolunteersSettings.Personal_Site_Requires_URL_Email_Match__c) {
-            if (strEmail == null || strEmail == '' || !Contact.Email.getDescribe().isAccessible())
+            if (strEmail == null || strEmail == '' || !Contact.Email.getDescribe().isAccessible()) {
                 return false;
+            }
             strEmail = strEmail.escapeHtml4();
-            strSoql += 'and (Email= :strEmail';
+            strSoql += 'AND (Email = :strEmail';
             // any additional email fields to check
             Map<String, SObjectField> fieldByName = Contact.getSObjectType().getDescribe().fields.getMap();
             if (VolunteersSettings.Contact_Match_Email_Fields__c != null) {
-                list<string> listStrEmail = new list<string>();
+                List<String> listStrEmail = new List<String>();
                 listStrEmail = VolunteersSettings.Contact_Match_Email_Fields__c.split(';');
 
-                for (string str : listStrEmail) {
+                for (String str : listStrEmail) {
                     if (fieldByName.containsKey(str)) {
                         strSoql += ' or ' + str + ' = :strEmail ';
                     }
                 }
-                
             }
             // handle NPSP email fields
             if (IsNPSPInstalled) {
-                if (fieldByName.containsKey('npe01__AlternateEmail__c') && fieldByName.get('npe01__AlternateEmail__c').getDescribe().isAccessible()) {
-                    strSoql += ' or npe01__AlternateEmail__c = :strEmail '; 
+                if (
+                    fieldByName.containsKey('npe01__AlternateEmail__c') &&
+                    fieldByName.get('npe01__AlternateEmail__c').getDescribe().isAccessible()
+                ) {
+                    strSoql += ' or npe01__AlternateEmail__c = :strEmail ';
                 }
-                if (fieldByName.containsKey('npe01__HomeEmail__c') && fieldByName.get('npe01__HomeEmail__c').getDescribe().isAccessible()) {
-                    strSoql += ' or npe01__HomeEmail__c = :strEmail '; 
+                if (
+                    fieldByName.containsKey('npe01__HomeEmail__c') &&
+                    fieldByName.get('npe01__HomeEmail__c').getDescribe().isAccessible()
+                ) {
+                    strSoql += ' or npe01__HomeEmail__c = :strEmail ';
                 }
-                if (fieldByName.containsKey('npe01__WorkEmail__c') && fieldByName.get('npe01__WorkEmail__c').getDescribe().isAccessible()) {
-                    strSoql += ' or npe01__WorkEmail__c = :strEmail '; 
+                if (
+                    fieldByName.containsKey('npe01__WorkEmail__c') &&
+                    fieldByName.get('npe01__WorkEmail__c').getDescribe().isAccessible()
+                ) {
+                    strSoql += ' or npe01__WorkEmail__c = :strEmail ';
                 }
-                
-                
             }
             strSoql += ') ';
         }
-        list<Contact> listCon = Database.Query(strSoql);
+        List<Contact> listCon = Database.query(strSoql);
         return listCon.size() > 0;
     }
 
     // global code to lookup an existing contact
     // listStrFields are optional fields to include in the soql call
-    global static list<Contact> LookupContact(Contact contactRecord, list<string> listStrFields) {
+    global static List<Contact> lookupContact(Contact contactRecord, List<String> listStrFields) {
         // let's see if we can find any matching Contacts.
         // we need to use dynamic soql, since we allow the user to modify the FieldSet of fields to edit.
-        string strSoql = 'select ';
-        string strComma = '';
+        String strSoql = 'SELECT ';
+        String strComma = '';
         if (listStrFields == null) {
             strSoql += 'Id';
         } else {
-            for (string strF : listStrFields) {
+            for (String strF : listStrFields) {
                 strSoql += strComma + strF;
                 strComma = ', ';
             }
         }
         strSoql += ' from Contact ';
-        string strAnd = ' where ';
+        String strAnd = ' where ';
 
         // make sure their settings haven't been completely cleared
         if (VolunteersSettings.Contact_Matching_Rule__c == null || VolunteersSettings.Contact_Matching_Rule__c == '') {
@@ -470,9 +597,9 @@ global with sharing class VOL_SharedCode {
 
             // any additional firstname fields to check
             if (VolunteersSettings.Contact_Match_First_Name_Fields__c != null) {
-                list<string> listStrFname = new list<string>();
+                List<String> listStrFname = new List<String>();
                 listStrFname = VolunteersSettings.Contact_Match_First_Name_Fields__c.split(';');
-                for (string str : listStrFname) {
+                for (String str : listStrFname) {
                     strSoql += ' or ' + str + '=\'' + StrEscape(contactRecord.FirstName) + '\'';
                 }
             }
@@ -483,9 +610,9 @@ global with sharing class VOL_SharedCode {
             strAnd = ' and ';
             // any additional email fields to check
             if (VolunteersSettings.Contact_Match_Email_Fields__c != null) {
-                list<string> listStrEmail = new list<string>();
+                List<String> listStrEmail = new List<String>();
                 listStrEmail = VolunteersSettings.Contact_Match_Email_Fields__c.split(';');
-                for (string str : listStrEmail) {
+                for (String str : listStrEmail) {
                     strSoql += ' or ' + str + '=\'' + contactRecord.Email + '\'';
                 }
             }
@@ -498,7 +625,7 @@ global with sharing class VOL_SharedCode {
             strSoql += ') ';
         }
         strSoql += ' limit 999 ';
-        list<Contact> listCon = Database.Query(strSoql);
+        List<Contact> listCon = Database.query(strSoql);
         return listCon;
     }
 
@@ -507,30 +634,41 @@ global with sharing class VOL_SharedCode {
     // if creating a new Contact, it uses the custom setting for the bucket account, but takes parameters for
     // the account name to try to lookup and match.
     // It also takes the list of fields on the contact object to copy over.
-    global static ID CreateOrUpdateContactFS(string contactIdExisting, Contact contact, string strAccountName, list<string> listStrFields) {
+    global static Id createOrUpdateContactFS( //NOPMD
+        String contactIdExisting,
+        Contact contact,
+        String strAccountName,
+        List<String> listStrFields
+    ) {
         return CreateOrUpdateContactFS(contactIdExisting, contact, strAccountName, listStrFields, true);
     }
 
-    global static ID CreateOrUpdateContactFS(string contactIdExisting, Contact contact, string strAccountName, list<string> listStrFields, boolean setLastWebSignup) {
+    global static Id createOrUpdateContactFS( //NOPMD
+        String contactIdExisting,
+        Contact contact,
+        String strAccountName,
+        List<String> listStrFields,
+        Boolean setLastWebSignup
+    ) {
         // listStrFields is the specific list of fields on the form's fieldset, which we should assume we want to save.
         // we also need to special case several fields we will potentially set, but we also need to know,
         // if they are in the fieldset or not.
-        set<string> setStrFields = new set<string>();
+        Set<String> setStrFields = new Set<String>();
 
         // store all fields in lower case
-        for (string strField : listStrFields)
+        for (String strField : listStrFields) {
             setStrFields.add(strField.toLowerCase());
-
-        boolean isStatusInFS = !setStrFields.add(VOL_SharedCode.StrTokenNSPrefix('volunteer_status__c').tolowerCase());
-        boolean isNotesInFS = !setStrFields.add(VOL_SharedCode.StrTokenNSPrefix('volunteer_notes__c').toLowerCase());
+        }
+        Boolean isStatusInFS = !setStrFields.add(VOL_SharedCode.StrTokenNSPrefix('volunteer_status__c').tolowerCase());
+        Boolean isNotesInFS = !setStrFields.add(VOL_SharedCode.StrTokenNSPrefix('volunteer_notes__c').toLowerCase());
 
         // create a new list with all the fields
-        list<string> listStrFieldsAll = new list<string>(setStrFields);
+        List<String> listStrFieldsAll = new List<String>(setStrFields);
 
         // we will check perms on the fields in this set, so remove Id
         setStrFields.remove('id');
 
-        list<Contact> listCon = LookupContact(contact, listStrFieldsAll);
+        List<Contact> listCon = LookupContact(contact, listStrFieldsAll);
 
         // if we found a match
         if (listCon.size() > 0) {
@@ -538,9 +676,10 @@ global with sharing class VOL_SharedCode {
 
             // match the one that has the same Id
             if (contactIdExisting != null && contactIdExisting != '') {
-                for (integer i = 0; i < listCon.size(); i++) {
-                    if (listCon[i].Id == contactIdExisting)
+                for (Integer i = 0; i < listCon.size(); i++) {
+                    if (listCon[i].Id == contactIdExisting) {
                         conExisting = listCon[i];
+                    }
                 }
             }
             // use first one if no match found.
@@ -550,9 +689,16 @@ global with sharing class VOL_SharedCode {
 
             // special case appending Volunteer Notes, rather than overwriting.
             if (isNotesInFS) {
-                if (contact.Volunteer_Notes__c != null && contact.Volunteer_Notes__c != conExisting.Volunteer_Notes__c) {
-                    contact.Volunteer_Notes__c = (conExisting.Volunteer_Notes__c != null ? (conExisting.Volunteer_Notes__c + '  ') : '') +
-                        '[' + string.valueof(System.today()) + ']: ' + contact.Volunteer_Notes__c;
+                if (
+                    contact.Volunteer_Notes__c != null &&
+                    contact.Volunteer_Notes__c != conExisting.Volunteer_Notes__c
+                ) {
+                    contact.Volunteer_Notes__c =
+                        (conExisting.Volunteer_Notes__c != null ? (conExisting.Volunteer_Notes__c + '  ') : '') +
+                        '[' +
+                        String.valueOf(System.today()) +
+                        ']: ' +
+                        contact.Volunteer_Notes__c;
                 } else {
                     contact.Volunteer_Notes__c = conExisting.Volunteer_Notes__c;
                 }
@@ -568,16 +714,16 @@ global with sharing class VOL_SharedCode {
             // now copy over all the non-null fields from the form's contact to the existing contact.
             // avoid overwriting existing first name or existing email, since we might match it from in a different field.
             // special case address fields
-            boolean hasMailingAddress = false;
-            boolean hasOtherAddress = false;
-            for (string strF : listStrFields) {
+            Boolean hasMailingAddress = false;
+            Boolean hasOtherAddress = false;
+            for (String strF : listStrFields) {
                 strF = strF.toLowerCase();
                 // we actually still want to copy email if it is currently empty
                 if (strF == 'email' && conExisting.Email == null) {
                     conExisting.Email = contact.Email;
                     continue;
                 }
-                if (strF != 'id' && strF != 'firstname' && strF != 'email' && contact.get(strF) != null) {
+                if (strF != 'Id' && strF != 'firstname' && strF != 'email' && contact.get(strF) != null) {
                     if (isMailingAddressField(strF)) {
                         hasMailingAddress = true;
                         continue;
@@ -589,21 +735,23 @@ global with sharing class VOL_SharedCode {
                     conExisting.put(strF, contact.get(strF));
                 }
             }
-            if (hasMailingAddress)
+            if (hasMailingAddress) {
                 VOL_StateCountryPicklists.copyAddressStdSObj(contact, 'Mailing', conExisting, 'Mailing');
-            if (hasOtherAddress)
+            }
+            if (hasOtherAddress) {
                 VOL_StateCountryPicklists.copyAddressStdSObj(contact, 'Other', conExisting, 'Other');
-
-            if (setLastWebSignup)
-                conExisting.Volunteer_Last_Web_Signup_Date__c = system.today();
-
+            }
+            if (setLastWebSignup) {
+                conExisting.Volunteer_Last_Web_Signup_Date__c = System.today();
+            }
             checkUpdateAccessSites('Contact', setStrFields);
             access.updateRecords(new List<Contact>{ conExisting }, dmlDuplicateOptions);
 
             // null out notes, so another update won't append them again!
             contact.Volunteer_Notes__c = null;
             return conExisting.Id;
-        } else  {  // No Match found, create a Contact
+        } else {
+            // No Match found, create a Contact
 
             // don't assume the contact object wasn't already used.
             // since we can't null out Id for the insert, copy all
@@ -611,11 +759,11 @@ global with sharing class VOL_SharedCode {
             Contact conNew = new Contact();
             //  now copy over all the non-null fields from the form's contact to the existing contact.
             // special case address fields
-            boolean hasMailingAddress = false;
-            boolean hasOtherAddress = false;
-            for (string strF : listStrFields) {
+            Boolean hasMailingAddress = false;
+            Boolean hasOtherAddress = false;
+            for (String strF : listStrFields) {
                 strF = strF.toLowerCase();
-                if (strF != 'id' && contact.get(strF) != null) {
+                if (strF != 'Id' && contact.get(strF) != null) {
                     if (isMailingAddressField(strF)) {
                         hasMailingAddress = true;
                         continue;
@@ -627,29 +775,33 @@ global with sharing class VOL_SharedCode {
                     conNew.put(strF, contact.get(strF));
                 }
             }
-            if (hasMailingAddress)
+            if (hasMailingAddress) {
                 VOL_StateCountryPicklists.copyAddressStdSObj(contact, 'Mailing', conNew, 'Mailing');
-            if (hasOtherAddress)
+            }
+            if (hasOtherAddress) {
                 VOL_StateCountryPicklists.copyAddressStdSObj(contact, 'Other', conNew, 'Other');
-
+            }
             // see if we can find their company
             Account accToUse = null;
-            if (strAccountName != null
-                && Account.getSObjectType().getDescribe().isAccessible()) {
+            if (strAccountName != null && Account.getSObjectType().getDescribe().isAccessible()) {
                 strAccountName = strAccountName.escapeHtml4();
-                list<Account> listAccount = [select Id, Name from Account where Name = :strAccountName limit 1];
-                if (listAccount.size() > 0) accToUse = listAccount.get(0);
+                List<Account> listAccount = [SELECT Id, Name FROM Account WHERE Name = :strAccountName LIMIT 1];
+                if (listAccount.size() > 0) {
+                    accToUse = listAccount.get(0);
+                }
             }
 
             // if company found, use it
             if (accToUse != null) {
                 conNew.AccountId = accToUse.Id;
-            } else { // otherwise use the bucket account (which may be null and imply the 1:1 model in NPSP)
+            } else {
+                // otherwise use the bucket account (which may be null and imply the 1:1 model in NPSP)
                 conNew.AccountId = VOL_SharedCode.SettingsBucketAccountId;
             }
 
-            if (setLastWebSignup)
-                conNew.Volunteer_Last_Web_Signup_Date__c = system.today();
+            if (setLastWebSignup) {
+                conNew.Volunteer_Last_Web_Signup_Date__c = System.today();
+            }
             conNew.LeadSource = 'Web Volunteer Signup';
             conNew.Volunteer_Status__c = 'New Sign Up';
 
@@ -663,42 +815,44 @@ global with sharing class VOL_SharedCode {
     }
 
     /*******************************************************************************************************
-    * @description detects standard mailing address fields
-    * @param strField The field to check against
-    * @return Boolean True if it is a standard mailing address field, false if not.
-    */
+     * @description detects standard mailing address fields
+     * @param strField The field to check against
+     * @return Boolean True if it is a standard mailing address field, false if not.
+     */
     public static Boolean isMailingAddressField(String strField) {
         return (strField.containsIgnoreCase('mailing') && !strField.endsWith('__c'));
     }
 
     /*******************************************************************************************************
-    * @description detects standard other address fields
-    * @param strField The field to check against
-    * @return Boolean True if it is a standard other address field, false if not.
-    */
+     * @description detects standard other address fields
+     * @param strField The field to check against
+     * @return Boolean True if it is a standard other address field, false if not.
+     */
     public static Boolean isOtherAddressField(String strField) {
-        return (strField.containsIgnoreCase('other') && !strField.endsWith('__c') && !strField.equalsIgnoreCase('otherphone'));
+        return (strField.containsIgnoreCase('other') &&
+        !strField.endsWith('__c') &&
+        !strField.equalsIgnoreCase('otherphone'));
     }
 
-    // global utility to escape a string.
-    global static string StrEscape(string str) {
-        if (str == null) return null;
-        return string.escapeSingleQuotes(str);
+    // global utility to escape a .
+    global static String strEscape(String str) {
+        if (str == null) {
+            return null;
+        }
+        return String.escapeSingleQuotes(str);
     }
 
     // global utility to load up an existing object and copy it to the provided object
-    global static void LoadAndCopyObject(ID id, SObject sobj) {
-        LoadAndCopyObject(id, sobj, null);
+    global static void loadAndCopyObject(Id Id, SObject sobj) {
+        loadAndCopyObject(id, sobj, null);
     }
 
-    public static SObject LoadAndCopyObject(ID id, SObject sobj, list<String> listStrFields) {
-        
-
+    public static SObject loadAndCopyObject(Id Id, SObject sobj, List<String> listStrFields) {
         Schema.DescribeSObjectResult des = sobj.getSObjectType().getDescribe();
 
         // if fields not provided, get all Contact fields
         if (listStrFields == null) {
-            listStrFields = new list<string>();
+            listStrFields = new List<String>();
             // get the fields for the object
             Map<String, Schema.SObjectField> mapS = des.fields.getMap().clone();
             // avoid any of the API version 30 compound fields
@@ -707,26 +861,27 @@ global with sharing class VOL_SharedCode {
             mapS.remove('otheraddress');
             listStrFields.addAll(mapS.keySet());
         }
-        
-        string strSoql = 'select ';
-        string strComma = '';
-        for (string strF : listStrFields) {
+
+        String strSoql = 'SELECT ';
+        String strComma = '';
+        for (String strF : listStrFields) {
             strSoql += strComma + strF;
             strComma = ', ';
         }
         strSoql += ' from ' + des.getName() + ' where Id = :id ';
-        strSoql += ' limit 1';      
-        list<SObject> listSObj = Security.stripInaccessible(AccessType.READABLE, Database.Query(strSoql)).getRecords(); 
-        
-        if (listSObj.size() > 0) {          
+        strSoql += ' limit 1';
+        List<SObject> listSObj = Security.stripInaccessible(AccessType.READABLE, Database.query(strSoql)).getRecords();
+
+        if (listSObj.size() > 0) {
             SObject sobjT = listSObj[0];
             //  now copy over all the non-null fields from the form's contact to the existing contact.
-            for (string strF : listStrFields) {
+            for (String strF : listStrFields) {
                 if (sobjT.get(strF) != null) {
                     try {
                         sobj.put(strF, sobjT.get(strF));
-                    } catch(exception ex) { 
-                        
+                    }
+                    // prettier-ignore
+                    catch (exception ex) { //NOPMD
                     }
                 }
             }
@@ -735,8 +890,11 @@ global with sharing class VOL_SharedCode {
         return null;
     }
 
-    public static void VolunteerHoursTrigger(list<Volunteer_Hours__c> listHoursOld, list<Volunteer_Hours__c> listHoursNew, boolean resetTotals) {
-
+    public static void volunteerHoursTrigger(
+        List<Volunteer_Hours__c> listHoursOld,
+        List<Volunteer_Hours__c> listHoursNew,
+        Boolean resetTotals
+    ) {
         // consider both newMap and oldMap.
         // for each hours object, there are two potential shifts it interacts with.
         // within a batch of hours changes (import scenario), multiple hours can affect the same shift.
@@ -746,49 +904,63 @@ global with sharing class VOL_SharedCode {
         // Delete scenario: status=Confirmed or Completed.  Shift <> null. Number of Volunteers <> null.
         // Update scenario: just treat as a delete and an insert, since we already have to handle multiple changes to same job!
 
-
         // WARNING: deleting, undeleting, or merging a Contact, does NOT call any trigger on the Hours!
         // thus I've manually called this from the before delete & after undelete trigger on Contacts (VOL_Contact_MaintainHours).
-        map<Id, Double> mpShiftIdDelta = new map<Id, Double>();
+        Map<Id, Double> mpShiftIdDelta = new Map<Id, Double>();
 
         // first we go through the new hours, and add up the number of volunteers per shift
         if (listHoursNew != null) {
             for (Volunteer_Hours__c hr : listHoursNew) {
-                if ((hr.Status__c == 'Confirmed' || hr.Status__c == 'Completed') &&
-                    (hr.Volunteer_Shift__c <> null && hr.Number_Of_Volunteers__c != null)) {
-                        Double numVols = mpShiftIdDelta.get(hr.Volunteer_Shift__c);
-                        if (numVols == null) numVols = 0;
-                        numVols += hr.Number_of_Volunteers__c;
-                        mpShiftIdDelta.put(hr.Volunteer_Shift__c, numVols);
+                if (
+                    (hr.Status__c == 'Confirmed' || hr.Status__c == 'Completed') &&
+                    (hr.Volunteer_Shift__c <> null &&
+                    hr.Number_Of_Volunteers__c != null)
+                ) {
+                    Double numVols = mpShiftIdDelta.get(hr.Volunteer_Shift__c);
+                    if (numVols == null) {
+                        numVols = 0;
                     }
+                    numVols += hr.Number_of_Volunteers__c;
+                    mpShiftIdDelta.put(hr.Volunteer_Shift__c, numVols);
+                }
             }
         }
 
         // second we go through the old hours, and subtract the number of volunteers per shift
         if (listHoursOld != null) {
             for (Volunteer_Hours__c hr : listHoursOld) {
-                if ((hr.Status__c == 'Confirmed' || hr.Status__c == 'Completed') &&
-                    (hr.Volunteer_Shift__c <> null && hr.Number_Of_Volunteers__c != null)) {
-                        Double numVols = mpShiftIdDelta.get(hr.Volunteer_Shift__c);
-                        if (numVols == null) numVols = 0;
-                        numVols -= hr.Number_of_Volunteers__c;
-                        mpShiftIdDelta.put(hr.Volunteer_Shift__c, numVols);
+                if (
+                    (hr.Status__c == 'Confirmed' || hr.Status__c == 'Completed') &&
+                    (hr.Volunteer_Shift__c <> null &&
+                    hr.Number_Of_Volunteers__c != null)
+                ) {
+                    Double numVols = mpShiftIdDelta.get(hr.Volunteer_Shift__c);
+                    if (numVols == null) {
+                        numVols = 0;
                     }
+                    numVols -= hr.Number_of_Volunteers__c;
+                    mpShiftIdDelta.put(hr.Volunteer_Shift__c, numVols);
+                }
             }
         }
 
         // bail out if nothing found (to avoid runtime error!)
-        if (mpShiftIdDelta.size() == 0)
+        if (mpShiftIdDelta.size() == 0) {
             return;
-
+        }
         // now that we have the Id's of the shifts, let's get them from the database, update them by the number of volunteers, and then commit.
-        //list<Volunteer_Shift__c> listShifts = new list<Volunteer_Shift__c>();
-        for (list<Volunteer_Shift__c> listShifts : [select Id, Total_Volunteers__c from Volunteer_Shift__c where Id in :mpShiftIdDelta.keySet()]) {
-
+        //List<Volunteer_Shift__c> listShifts = new List<Volunteer_Shift__c>();
+        for (List<Volunteer_Shift__c> listShifts : [
+            SELECT Id, Total_Volunteers__c
+            FROM Volunteer_Shift__c
+            WHERE Id IN :mpShiftIdDelta.keySet()
+        ]) {
             // loop through and update them
             for (Volunteer_Shift__c shift : listShifts) {
                 Double numVols = shift.Total_Volunteers__c;
-                if (numVols == null || resetTotals) numVols = 0;
+                if (numVols == null || resetTotals) {
+                    numVols = 0;
+                }
                 shift.Total_Volunteers__c = numVols + mpShiftIdDelta.get(shift.Id);
             }
             // Note: We will not check CRUD / FLS for this process so that rollups are always in sync regardless of user
@@ -796,10 +968,9 @@ global with sharing class VOL_SharedCode {
         }
     }
 
-
     // global utility used to detect whether the Non Profit Starter Pack is installed in this instance.
-    private static boolean fCheckedForNPSP = false;
-    global static boolean IsNPSPInstalled {
+    private static Boolean fCheckedForNPSP = false;
+    global static Boolean IsNPSPInstalled {
         get {
             if (!fCheckedForNPSP) {
                 Schema.SObjectType token = Schema.getGlobalDescribe().get('npe01__OppPayment__c');
@@ -812,8 +983,8 @@ global with sharing class VOL_SharedCode {
     }
 
     // global utility used to detect whether the Volunteers is running in a managed instance or unmanaged instance
-    private static boolean fCheckedForVolunteersNamespace = false;
-    global static boolean IsManagedCode {
+    private static Boolean fCheckedForVolunteersNamespace = false;
+    global static Boolean IsManagedCode {
         get {
             if (!fCheckedForVolunteersNamespace) {
                 // in order for this call to work as expected, we must be API Version 28, but we
@@ -831,17 +1002,17 @@ global with sharing class VOL_SharedCode {
     }
 
     /******************************************************************************************************
-    * @description String helper property for getNamespace() method.
-    *******************************************************************************************************/
-    private static string plainNamespace;
+     * @description String helper property for getNamespace() method.
+     *******************************************************************************************************/
+    private String plainNamespace;
 
     /*******************************************************************************************************
-    * @description Finds the namespace for the current context.
-    * @return string The current namespace as a string, or a blank string if we're not in a namespaced context.
-    ********************************************************************************************************/
-    public static string getNamespace() {
+     * @description Finds the namespace for the current context.
+     * @return  The current namespace as a , or a blank  if we're not in a namespaced context.
+     ********************************************************************************************************/
+    public static String getNamespace() {
         if (plainNamespace == null) {
-            string withDotNotation = VOL_SharedCode.class.getName();
+            withDotNotation = VOL_SharedCode.class.getName();
 
             if (withDotNotation.contains('.')) {
                 plainNamespace = withDotNotation.substringBefore('.');
@@ -853,14 +1024,16 @@ global with sharing class VOL_SharedCode {
     }
 
     /*******************************************************************************************************
-    * @description Static method that takes a string
-    * If we are in a managed package, tokens in dynamic SOQL must include the package namespace prefix.
-    * If you ever deploy this package as unmanaged, this routine will do nothing!
-    * @param str token name
-    * @return token name, with namespace prefix, if required.
-    ********************************************************************************************************/
-    global static string StrTokenNSPrefix(string str) {
-        if (getNamespace() == '') return str;
+     * @description Static method that takes a string
+     * If we are in a managed package, tokens in dynamic SOQL must include the package namespace prefix.
+     * If you ever deploy this package as unmanaged, this routine will do nothing!
+     * @param str token name
+     * @return token name, with namespace prefix, if required.
+     ********************************************************************************************************/
+    global static String strTokenNSPrefix(String str) {
+        if (getNamespace() == '') {
+            return str;
+        }
         str = getNamespace() + '__' + str;
         return str;
     }
@@ -868,36 +1041,43 @@ global with sharing class VOL_SharedCode {
     // utility to verify all the specified fields are accessible to the current user.
     // fields that are not accessible will have a pageMessage added to the current page
     // so the warning is displayed to the user.
-    global static void testObjectFieldVisibility(string strObj, list<string>listStrField) {
-
+    global static void testObjectFieldVisibility(String strObj, List<String> listStrField) {
         Map<String, Schema.SObjectType> gd;
         Schema.DescribeSObjectResult sobjDescr;
         Map<String, Schema.SObjectField> mapFieldDesc;
 
         // Obtaining the field name/token map for the object
         gd = Schema.getGlobalDescribe();
-        if (gd != null)
+        if (gd != null) {
             sobjDescr = gd.get(strObj).getDescribe();
-        if (sobjDescr != null)
+        }
+        if (sobjDescr != null) {
             mapFieldDesc = sobjDescr.fields.getMap();
-        if (mapFieldDesc !=  null)
+        }
+        if (mapFieldDesc != null) {
             for (String strField : listStrField) {
                 // Check if the user has access on the each field
                 // note that fields in our own package must not have their prefix for the Describe Field Map
                 Schema.SObjectField fld = mapFieldDesc.get(strField.replace(StrTokenNSPrefix(''), ''));
                 if (fld != null && !fld.getDescribe().isAccessible()) {
-                    ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.FATAL, 'Field ' + strObj + '.' + strField +
-                        ' You need to enable field level security for this field on the Site\'s Guest User profile.'));
+                    ApexPages.addMessage(
+                        new ApexPages.Message(
+                            ApexPages.Severity.FATAL,
+                            // prettier-ignore
+                            'Field ' + strObj + '.' + strField + ' You need to enable field level security for this field on the Site\'s Guest User profile.'
+                        )
+                    );
                 }
             }
+        }
     }
 
     /*******************************************************************************************************
-    * @description Static method checks if running user has field update access for a set of fields
-    * @param objectName the name of the object the field belongs to
-    * @param fieldNames the set of field names to check update access
-    * @return void
-    ********************************************************************************************************/
+     * @description Static method checks if running user has field update access for a set of fields
+     * @param objectName the name of the object the field belongs to
+     * @param fieldNames the set of field names to check update access
+     * @return void
+     ********************************************************************************************************/
     public static void checkUpdateAccessSites(String objectName, Set<String> fieldNames) {
         // for backward compatibility with 1000's of nonprofit customers, we can
         // only enforce create permissions on the Sites user for Contacts.
@@ -908,9 +1088,10 @@ global with sharing class VOL_SharedCode {
         }
     }
 
-    /** Description: DML options to allow overriding duplicate rules to create contacts, while throwing
-    * exceptions for validation rules, required fields, etc.
-    */
+    /**
+     * @description DML options to allow overriding duplicate rules to create contacts, while throwing
+     * exceptions for validation rules, required fields, etc.
+     */
     private static Database.DMLOptions dmlDuplicateOptions {
         get {
             if (dmlDuplicateOptions == null) {
@@ -927,31 +1108,35 @@ global with sharing class VOL_SharedCode {
     // seems. This method will get all campaigns in hierarchy, and keeps the logic in a single query
 
     /*******************************************************************************************************
-    * @description Static method that takes an Id
-    * Return a list of Campaign Ids that are children/grand-children &c of the given Campaign.
-    * @param Id for any campaign
-    * @return List<Id> of child campaigns
-    ********************************************************************************************************/
+     * @description Static method that takes an Id
+     * Return a list of Campaign Ids that are children/grand-children &c of the given Campaign.
+     * @param Id for any campaign
+     * @return List<Id> of child campaigns
+     ********************************************************************************************************/
     global static List<Id> listIdsCampaignsInHierarchy(Id campaignId) {
-        Map<Id,Campaign> campaignsInHierarchy = new Map<Id,Campaign>(
-            [SELECT Id,Name FROM Campaign WHERE IsActive =:true
-             AND RecordTypeId =: recordtypeIdVolunteersCampaign AND
-            (Id =: campaignId
-             OR ParentId =: campaignId
-             OR Parent.ParentId =: campaignId
-             OR Parent.Parent.ParentId =: campaignId
-             OR Parent.Parent.Parent.ParentId =: campaignId
-             OR Parent.Parent.Parent.Parent.ParentId =: campaignId)]
+        Map<Id, Campaign> campaignsInHierarchy = new Map<Id, Campaign>(
+            [
+                SELECT Id, Name
+                FROM Campaign
+                WHERE
+                    IsActive = :true
+                    AND RecordTypeId = :recordtypeIdVolunteersCampaign
+                    AND (Id = :campaignId
+                    OR ParentId = :campaignId
+                    OR Parent.ParentId = :campaignId
+                    OR Parent.Parent.ParentId = :campaignId
+                    OR Parent.Parent.Parent.ParentId = :campaignId
+                    OR Parent.Parent.Parent.Parent.ParentId = :campaignId)
+            ]
         );
         return new List<Id>(campaignsInHierarchy.keySet());
     }
 
     /*******************************************************************************************************
-    * @description keeps references to old labels that have been packaged, that we no longer use.
-    * @return void
-    ********************************************************************************************************/
+     * @description keeps references to old labels that have been packaged, that we no longer use.
+     ********************************************************************************************************/
     private static void keepUnusedLabelsInPackage() {
-        string str;
+        String str;
         str = Label.labelCalendarConfirmed;
         str = Label.labelContactInfoRankText;
         str = Label.labelHide;
@@ -969,5 +1154,4 @@ global with sharing class VOL_SharedCode {
         str = Label.labelContactLookupSuccess;
         str = Label.labelContactLookupNotFound;
     }
-
 }

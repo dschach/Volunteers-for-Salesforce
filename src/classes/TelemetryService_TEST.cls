@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2019, Salesforce.org
     All rights reserved.
 
@@ -26,7 +26,7 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 @IsTest // (IsParallel=true) - Cannot run test in parallel when sending feature params to LMO
 private class TelemetryService_TEST {
     private static TelemetryService telemetryService = new TelemetryService();
@@ -37,7 +37,11 @@ private class TelemetryService_TEST {
     private static void configReturnsAllTelemetryRequests() {
         Integer actualTelemetries = telemetryService.telemetries.size();
 
-        System.assertEquals(TOTAL_TELEMETRIES, actualTelemetries, 'Expected the config to return the total number of telemetries.');
+        System.assertEquals(
+            TOTAL_TELEMETRIES,
+            actualTelemetries,
+            'Expected the config to return the total number of telemetries.'
+        );
     }
 
     @IsTest
@@ -53,11 +57,7 @@ private class TelemetryService_TEST {
 
     @IsTest
     private static void sendMetricsIntegrationTest() {
-        Campaign campaignRecord = new Campaign(
-            IsActive = true,
-            Status = 'In Progress',
-            Name = 'Telemetry Campaign'
-        );
+        Campaign campaignRecord = new Campaign(IsActive = true, Status = 'In Progress', Name = 'Telemetry Campaign');
         insert campaignRecord;
 
         Volunteer_Job__c job = new Volunteer_Job__c(
@@ -73,8 +73,5 @@ private class TelemetryService_TEST {
 
         // Unable to assert the future job was added to async jobs in test context or the results of Feature Management.
         // We can only verify that an exception is not thrown.
-
     }
-
-
 }

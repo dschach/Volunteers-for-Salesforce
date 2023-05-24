@@ -12,7 +12,10 @@ public with sharing class VOL_Access_TEST {
         }
 
         System.runAs(guestSiteUser) {
-            System.assert(VOL_Access.getInstance().isGuestUser, 'Expected isGuestUser to be true for a guest site users.');
+            System.assert(
+                VOL_Access.getInstance().isGuestUser,
+                'Expected isGuestUser to be true for a guest site users.'
+            );
         }
     }
 
@@ -21,7 +24,10 @@ public with sharing class VOL_Access_TEST {
         User standardGuest = UTIL_UnitTest.createGuestUser();
 
         System.runAs(standardGuest) {
-            System.assert(VOL_Access.getInstance().isGuestUser, 'Expected isGuestUser to be true for a standard guest user.');
+            System.assert(
+                VOL_Access.getInstance().isGuestUser,
+                'Expected isGuestUser to be true for a standard guest user.'
+            );
         }
     }
 
@@ -30,7 +36,10 @@ public with sharing class VOL_Access_TEST {
         User standardUser = UTIL_UnitTest.createStandardUser();
 
         System.runAs(standardUser) {
-            System.assert(!VOL_Access.getInstance().isGuestUser, 'Expected isGuestUser to be false for a standard users.');
+            System.assert(
+                !VOL_Access.getInstance().isGuestUser,
+                'Expected isGuestUser to be false for a standard users.'
+            );
         }
     }
 
@@ -46,7 +55,11 @@ public with sharing class VOL_Access_TEST {
                 actualException = ex.getMessage();
             }
         }
-        System.assertEquals(String.format(Label.PermissionCreateException, new List<String>{ 'Contact.LastName' }), actualException, 'Expected the create permission exception to be thrown.');
+        System.assertEquals(
+            String.format(Label.PermissionCreateException, new List<String>{ 'Contact.LastName' }),
+            actualException,
+            'Expected the create permission exception to be thrown.'
+        );
     }
 
     @IsTest
@@ -62,7 +75,11 @@ public with sharing class VOL_Access_TEST {
             }
         }
 
-        System.assertEquals(String.format(Label.PermissionUpdateException, new List<String>{ 'Contact.LastName' }), actualException, 'Expected the update permission exception to be thrown.');
+        System.assertEquals(
+            String.format(Label.PermissionUpdateException, new List<String>{ 'Contact.LastName' }),
+            actualException,
+            'Expected the update permission exception to be thrown.'
+        );
     }
 
     @IsTest
@@ -76,7 +93,8 @@ public with sharing class VOL_Access_TEST {
                 actualExceptions.add(ex.getMessage());
             }
 
-            VOL_Access.getInstance().elevateGuestUserAccessSetting = !VOL_Access.getInstance().elevateGuestUserAccessSetting;
+            VOL_Access.getInstance().elevateGuestUserAccessSetting = !VOL_Access.getInstance()
+                .elevateGuestUserAccessSetting;
             try {
                 VOL_Access.getInstance().checkCreateAccess('Contact', new Set<String>{ 'LastName' });
             } catch (Exception ex) {
@@ -85,7 +103,11 @@ public with sharing class VOL_Access_TEST {
         }
 
         for (String actualException : actualExceptions) {
-            System.assertEquals(String.format(Label.PermissionCreateException, new List<String>{ 'Contact.LastName' }), actualException, 'Expected the create permission exception to be thrown.');
+            System.assertEquals(
+                String.format(Label.PermissionCreateException, new List<String>{ 'Contact.LastName' }),
+                actualException,
+                'Expected the create permission exception to be thrown.'
+            );
         }
     }
 
@@ -100,7 +122,8 @@ public with sharing class VOL_Access_TEST {
                 actualExceptions.add(ex.getMessage());
             }
 
-            VOL_Access.getInstance().elevateGuestUserAccessSetting = !VOL_Access.getInstance().elevateGuestUserAccessSetting;
+            VOL_Access.getInstance().elevateGuestUserAccessSetting = !VOL_Access.getInstance()
+                .elevateGuestUserAccessSetting;
             try {
                 VOL_Access.getInstance().checkUpdateAccess('Contact', new Set<String>{ 'LastName' });
             } catch (Exception ex) {
@@ -109,7 +132,11 @@ public with sharing class VOL_Access_TEST {
         }
 
         for (String actualException : actualExceptions) {
-            System.assertEquals(String.format(Label.PermissionUpdateException, new List<String>{ 'Contact.LastName' }), actualException, 'Expected the update permission exception to be thrown.');
+            System.assertEquals(
+                String.format(Label.PermissionUpdateException, new List<String>{ 'Contact.LastName' }),
+                actualException,
+                'Expected the update permission exception to be thrown.'
+            );
         }
     }
 
@@ -124,7 +151,8 @@ public with sharing class VOL_Access_TEST {
                 actualExceptions.add(ex.getMessage());
             }
 
-            VOL_Access.getInstance().elevateGuestUserAccessSetting = !VOL_Access.getInstance().elevateGuestUserAccessSetting;
+            VOL_Access.getInstance().elevateGuestUserAccessSetting = !VOL_Access.getInstance()
+                .elevateGuestUserAccessSetting;
             try {
                 VOL_Access.getInstance().checkCreateAccess('Contact', new Set<String>{ 'LastName' });
             } catch (Exception ex) {
@@ -133,7 +161,11 @@ public with sharing class VOL_Access_TEST {
         }
 
         for (String actualException : actualExceptions) {
-            System.assertEquals(String.format(Label.PermissionCreateException, new List<String>{ 'Contact.LastName' }), actualException, 'Expected the create permission exception to be thrown.');
+            System.assertEquals(
+                String.format(Label.PermissionCreateException, new List<String>{ 'Contact.LastName' }),
+                actualException,
+                'Expected the create permission exception to be thrown.'
+            );
         }
     }
 
@@ -146,7 +178,11 @@ public with sharing class VOL_Access_TEST {
             VOL_Access.getInstance().updateRecords(contacts);
         }
 
-        System.assertEquals(1, dmlMock.countByMethodName.get('updateRecords'), 'Expected update records in database dml to have been called.');
+        System.assertEquals(
+            1,
+            dmlMock.countByMethodName.get('updateRecords'),
+            'Expected update records in database dml to have been called.'
+        );
     }
 
     @IsTest
@@ -158,7 +194,11 @@ public with sharing class VOL_Access_TEST {
             VOL_Access.getInstance().updateRecords(contacts, new Database.DMLOptions());
         }
 
-        System.assertEquals(1, dmlMock.countByMethodName.get('updateRecords'), 'Expected update records in database dml to have been called.');
+        System.assertEquals(
+            1,
+            dmlMock.countByMethodName.get('updateRecords'),
+            'Expected update records in database dml to have been called.'
+        );
     }
 
     @IsTest
@@ -170,7 +210,11 @@ public with sharing class VOL_Access_TEST {
             VOL_Access.getInstance().insertRecords(contacts);
         }
 
-        System.assertEquals(1, dmlMock.countByMethodName.get('insertRecords'), 'Expected insert records in database dml to have been called.');
+        System.assertEquals(
+            1,
+            dmlMock.countByMethodName.get('insertRecords'),
+            'Expected insert records in database dml to have been called.'
+        );
     }
 
     @IsTest
@@ -182,7 +226,11 @@ public with sharing class VOL_Access_TEST {
             VOL_Access.getInstance().insertRecords(contacts, new Database.DMLOptions());
         }
 
-        System.assertEquals(1, dmlMock.countByMethodName.get('insertRecords'), 'Expected insert records in database dml to have been called.');
+        System.assertEquals(
+            1,
+            dmlMock.countByMethodName.get('insertRecords'),
+            'Expected insert records in database dml to have been called.'
+        );
     }
 
     @IsTest
@@ -197,8 +245,16 @@ public with sharing class VOL_Access_TEST {
             VOL_Access.getInstance().updateRecords(contacts);
         }
 
-        System.assertEquals(0, dmlMock.countByMethodName.get('updateRecords'), 'Did not expect update records in database dml to have been called.');
-        System.assertEquals(1, [SELECT Id FROM Contact WHERE LastName = 'After Update'].size(), 'Expected the last name to have been updated on the contact record.');
+        System.assertEquals(
+            0,
+            dmlMock.countByMethodName.get('updateRecords'),
+            'Did not expect update records in database dml to have been called.'
+        );
+        System.assertEquals(
+            1,
+            [SELECT Id FROM Contact WHERE LastName = 'After Update'].size(),
+            'Expected the last name to have been updated on the contact record.'
+        );
     }
 
     @IsTest
@@ -213,8 +269,16 @@ public with sharing class VOL_Access_TEST {
             VOL_Access.getInstance().updateRecords(contacts);
         }
 
-        System.assertEquals(0, dmlMock.countByMethodName.get('updateRecords'), 'Did not expect update records in database dml to have been called.');
-        System.assertEquals(1, [SELECT Id FROM Contact WHERE LastName = 'After Update With Options'].size(), 'Expected the last name to have been updated on the contact record.');
+        System.assertEquals(
+            0,
+            dmlMock.countByMethodName.get('updateRecords'),
+            'Did not expect update records in database dml to have been called.'
+        );
+        System.assertEquals(
+            1,
+            [SELECT Id FROM Contact WHERE LastName = 'After Update With Options'].size(),
+            'Expected the last name to have been updated on the contact record.'
+        );
     }
 
     @IsTest
@@ -227,7 +291,11 @@ public with sharing class VOL_Access_TEST {
             VOL_Access.getInstance().insertRecords(contacts);
         }
 
-        System.assertEquals(0, dmlMock.countByMethodName.get('insertRecords'), 'Did not expect insert records in database dml to have been called.');
+        System.assertEquals(
+            0,
+            dmlMock.countByMethodName.get('insertRecords'),
+            'Did not expect insert records in database dml to have been called.'
+        );
         System.assertNotEquals(null, contactRecord.Id, 'Expected the insert to be performed directly.');
     }
 
@@ -241,10 +309,13 @@ public with sharing class VOL_Access_TEST {
             VOL_Access.getInstance().insertRecords(contacts);
         }
 
-        System.assertEquals(0, dmlMock.countByMethodName.get('insertRecords'), 'Did not expect insert records in database dml to have been called.');
+        System.assertEquals(
+            0,
+            dmlMock.countByMethodName.get('insertRecords'),
+            'Did not expect insert records in database dml to have been called.'
+        );
         System.assertNotEquals(null, contactRecord.Id, 'Expected the insert with options to be performed directly.');
     }
-
 
     @IsTest
     private static void updateThrowsExceptionForGuestUserWithElevateSettingUnchecked() {
@@ -263,8 +334,15 @@ public with sharing class VOL_Access_TEST {
             }
         }
 
-        System.assertEquals(0, dmlMock.countByMethodName.get('updateRecords'), 'Did not expect update records in database dml to have been called.');
-        System.assert(actualException.contains('INSUFFICIENT_ACCESS_ON_CROSS_REFERENCE_ENTITY'), 'Expected a cross reference exception to be thrown. ' + actualException);
+        System.assertEquals(
+            0,
+            dmlMock.countByMethodName.get('updateRecords'),
+            'Did not expect update records in database dml to have been called.'
+        );
+        System.assert(
+            actualException.contains('INSUFFICIENT_ACCESS_ON_CROSS_REFERENCE_ENTITY'),
+            'Expected a cross reference exception to be thrown. ' + actualException
+        );
     }
 
     @IsTest
@@ -284,8 +362,15 @@ public with sharing class VOL_Access_TEST {
             }
         }
 
-        System.assertEquals(0, dmlMock.countByMethodName.get('updateRecords'), 'Did not expect update records in database dml to have been called.');
-        System.assert(actualException.contains('INSUFFICIENT_ACCESS_ON_CROSS_REFERENCE_ENTITY'), 'Expected a cross reference exception to be thrown. ' + actualException);
+        System.assertEquals(
+            0,
+            dmlMock.countByMethodName.get('updateRecords'),
+            'Did not expect update records in database dml to have been called.'
+        );
+        System.assert(
+            actualException.contains('INSUFFICIENT_ACCESS_ON_CROSS_REFERENCE_ENTITY'),
+            'Expected a cross reference exception to be thrown. ' + actualException
+        );
     }
 
     @IsTest
@@ -299,7 +384,11 @@ public with sharing class VOL_Access_TEST {
             VOL_Access.getInstance().insertRecords(contacts);
         }
 
-        System.assertEquals(0, dmlMock.countByMethodName.get('insertRecords'), 'Did not expect insert records in database dml to have been called.');
+        System.assertEquals(
+            0,
+            dmlMock.countByMethodName.get('insertRecords'),
+            'Did not expect insert records in database dml to have been called.'
+        );
         System.assertNotEquals(null, contactRecord.Id, 'Expected the insert to be performed directly.');
     }
 
@@ -314,7 +403,11 @@ public with sharing class VOL_Access_TEST {
             VOL_Access.getInstance().insertRecords(contacts);
         }
 
-        System.assertEquals(0, dmlMock.countByMethodName.get('insertRecords'), 'Did not expect insert records in database dml to have been called.');
+        System.assertEquals(
+            0,
+            dmlMock.countByMethodName.get('insertRecords'),
+            'Did not expect insert records in database dml to have been called.'
+        );
         System.assertNotEquals(null, contactRecord.Id, 'Expected the insert to be performed directly.');
     }
 
@@ -332,7 +425,7 @@ public with sharing class VOL_Access_TEST {
     public class Stub implements System.StubProvider {
         public Map<String, Set<SObjectType>> sObjectTypesByMethodName = new Map<String, Set<SObjectType>>();
 
-        public Object handleMethodCall(
+        public Object handleMethodCall( //NOPMD
             Object stubbedObject,
             String stubbedMethodName,
             Type returnType,
@@ -350,8 +443,17 @@ public with sharing class VOL_Access_TEST {
                 return;
             }
 
-            System.assert(sObjectTypesByMethodName.containsKey(stubbedMethodName), 'Expected the method, ' + stubbedMethodName + ', to have been called with ' + sObjType + ' records.');
-            System.assert(sObjectTypesByMethodName.get(stubbedMethodName).contains(sObjType), 'Expected ' + sObjType + ' records to have been passed in. ' + sObjectTypesByMethodName.get(stubbedMethodName));
+            System.assert(
+                sObjectTypesByMethodName.containsKey(stubbedMethodName),
+                'Expected the method, ' + stubbedMethodName + ', to have been called with ' + sObjType + ' records.'
+            );
+            System.assert(
+                sObjectTypesByMethodName.get(stubbedMethodName).contains(sObjType),
+                'Expected ' +
+                    sObjType +
+                    ' records to have been passed in. ' +
+                    sObjectTypesByMethodName.get(stubbedMethodName)
+            );
         }
 
         private void addSObjectType(String stubbedMethodName, List<Object> listOfArgs) {
@@ -380,14 +482,12 @@ public with sharing class VOL_Access_TEST {
                 sObjectTypes.add(sObjType);
 
                 sObjectTypesByMethodName.put(stubbedMethodName, sObjectTypes);
-
             } else if (arg instanceof String) {
-                SObjectType sObjType = ((SObject)(Type.forName('Schema.' + arg).newInstance())).getSObjectType();
+                SObjectType sObjType = ((SObject) (Type.forName('Schema.' + arg).newInstance())).getSObjectType();
                 sObjectTypes.add(sObjType);
 
                 sObjectTypesByMethodName.put(stubbedMethodName, sObjectTypes);
             }
         }
     }
-
 }

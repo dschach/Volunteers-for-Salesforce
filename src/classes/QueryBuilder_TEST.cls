@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2019, Salesforce.org
     All rights reserved.
 
@@ -26,17 +26,17 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 @IsTest(IsParallel=true)
 private class QueryBuilder_TEST {
     private static QueryBuilder queryBuilder = new QueryBuilder(Account.SObjectType);
     private static final Integer NUMBER_OF_ACCOUNTS = 2;
 
     @TestSetup
-    private static void makeData(){
+    private static void makeData() {
         List<Account> accounts = new List<Account>{
-            new Account(Name = 'Find Me', Type='Prospect'),
-            new Account(Name = 'Hide Me', Type='Customer')
+            new Account(Name = 'Find Me', Type = 'Prospect'),
+            new Account(Name = 'Hide Me', Type = 'Customer')
         };
 
         insert accounts;
@@ -46,7 +46,11 @@ private class QueryBuilder_TEST {
     private static void countQueryShouldIncludeWhereClauseWhenConditionProvided() {
         String expectedCountQuery = 'SELECT COUNT() FROM Account WHERE Type = \'Prospect\'';
         String actualCountQuery = queryBuilder.withCondition('Type = \'Prospect\'').buildCount();
-        System.assertEquals(expectedCountQuery, actualCountQuery, 'Expected the where clause to be part of the count query.');
+        System.assertEquals(
+            expectedCountQuery,
+            actualCountQuery,
+            'Expected the where clause to be part of the count query.'
+        );
         System.assertEquals(1, Database.countQuery(actualCountQuery), 'Expected one account to be found.');
     }
 
@@ -54,8 +58,15 @@ private class QueryBuilder_TEST {
     private static void countQueryShouldNotIncludeWhereClause() {
         String expectedCountQuery = 'SELECT COUNT() FROM Account';
         String actualCountQuery = queryBuilder.buildCount();
-        System.assertEquals(expectedCountQuery, actualCountQuery, 'Expected count query to be returned without a WHERE clause.');
-        System.assertEquals(NUMBER_OF_ACCOUNTS, Database.countQuery(actualCountQuery), 'Expected all accounts to be found.');
+        System.assertEquals(
+            expectedCountQuery,
+            actualCountQuery,
+            'Expected count query to be returned without a WHERE clause.'
+        );
+        System.assertEquals(
+            NUMBER_OF_ACCOUNTS,
+            Database.countQuery(actualCountQuery),
+            'Expected all accounts to be found.'
+        );
     }
-
 }

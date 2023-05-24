@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2022, Salesforce.org
     All rights reserved.
 
@@ -26,7 +26,7 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 /*
     This class checks to see if the current user is a guest site user and
     whether or not the admin has elevated the guest site user access. All
@@ -34,9 +34,11 @@
 */
 /* sfge-disable ApexFlsViolationRule */
 public with sharing virtual class VOL_Access {
-    protected VOL_Access() {}
+    protected VOL_Access() {
+    }
 
-    @TestVisible private static VOL_Access instance = null;
+    @TestVisible
+    private static VOL_Access instance = null;
 
     public static VOL_Access getInstance() {
         if (instance == null) {
@@ -46,9 +48,9 @@ public with sharing virtual class VOL_Access {
     }
 
     /*******************************************************************************************************
-    * @description Calls UserInfo to determine whether the current user is the Sites Guest User
-    * @return boolean value indicating whether current user is a guest user
-    ********************************************************************************************************/
+     * @description Calls UserInfo to determine whether the current user is the Sites Guest User
+     * @return Boolean value indicating whether current user is a guest user
+     ********************************************************************************************************/
     @TestVisible
     private Boolean isGuestUser {
         get {
@@ -109,9 +111,9 @@ public with sharing virtual class VOL_Access {
     }
 
     /*******************************************************************************************************
-    * @description Routes the DML to the DatabaseDml class for elevated users
-    * @param List of SObjects to update
-    ********************************************************************************************************/
+     * @description Routes the DML to the DatabaseDml class for elevated users
+     * @param List of SObjects to update
+     ********************************************************************************************************/
     public void updateRecords(List<SObject> sObjects) {
         if (isElevated) {
             DatabaseDml.getInstance().updateRecords(sObjects);
@@ -122,10 +124,10 @@ public with sharing virtual class VOL_Access {
     }
 
     /*******************************************************************************************************
-    * @description Routes the DML to the DatabaseDml class for elevated users
-    * @param List of SObjects to update
-    * @param DML Options for handling duplicates
-    ********************************************************************************************************/
+     * @description Routes the DML to the DatabaseDml class for elevated users
+     * @param List of SObjects to update
+     * @param DML Options for handling duplicates
+     ********************************************************************************************************/
     public void updateRecords(List<SObject> sObjects, Database.DMLOptions dmlDuplicateOptions) {
         if (isElevated) {
             DatabaseDml.getInstance().updateRecords(sObjects, dmlDuplicateOptions);
@@ -136,9 +138,9 @@ public with sharing virtual class VOL_Access {
     }
 
     /*******************************************************************************************************
-    * @description Routes the DML to the DatabaseDml class for elevated users
-    * @param List of SObjects to insert
-    ********************************************************************************************************/
+     * @description Routes the DML to the DatabaseDml class for elevated users
+     * @param List of SObjects to insert
+     ********************************************************************************************************/
     public void insertRecords(List<SObject> sObjects) {
         if (isElevated) {
             DatabaseDml.getInstance().insertRecords(sObjects);
@@ -149,10 +151,10 @@ public with sharing virtual class VOL_Access {
     }
 
     /*******************************************************************************************************
-    * @description Routes the DML to the DatabaseDml class for elevated users
-    * @param List of SObjects to insert
-    * @param DML Options for handling duplicates
-    ********************************************************************************************************/
+     * @description Routes the DML to the DatabaseDml class for elevated users
+     * @param List of SObjects to insert
+     * @param DML Options for handling duplicates
+     ********************************************************************************************************/
     public void insertRecords(List<SObject> sObjects, Database.DMLOptions dmlDuplicateOptions) {
         if (isElevated) {
             DatabaseDml.getInstance().insertRecords(sObjects, dmlDuplicateOptions);

@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2019, Salesforce.org
     All rights reserved.
 
@@ -26,7 +26,7 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 public without sharing class TelemetryService {
     @TestVisible
     private Config config {
@@ -101,7 +101,10 @@ public without sharing class TelemetryService {
         private List<Telemetry> createVolunteerShiftTelemetries() {
             return new List<Telemetry>{
                 new Telemetry(Volunteer_Shift__c.SObjectType, Telemetry.DeveloperName.VOLUNTEER_SHIFTS),
-                new Telemetry(Volunteer_Shift__c.SObjectType, Telemetry.DeveloperName.VOLUNTEER_SHIFTS_CREATED_LAST_YEAR)
+                new Telemetry(
+                        Volunteer_Shift__c.SObjectType,
+                        Telemetry.DeveloperName.VOLUNTEER_SHIFTS_CREATED_LAST_YEAR
+                    )
                     .withCriteria('CreatedDate = LAST_N_DAYS:365')
             };
         }
@@ -120,30 +123,28 @@ public without sharing class TelemetryService {
         }
     }
 
-
     //////////////////// -------------------- ////////////////////
 
     public class Stub implements System.StubProvider {
         public Integer sendCount = 0;
 
-        public Object handleMethodCall(
+        public Object handleMethodCall( //NOPMD
             Object stubbedObject,
             String stubbedMethodName,
             Type returnType,
             List<Type> listOfParamTypes,
             List<String> listOfParamNames,
             List<Object> listOfArgs
-        ){
+        ) {
             switch on stubbedMethodName {
                 when 'sendUsageMetrics' {
                     sendCount++;
                     return null;
-
-                } when else {
+                }
+                when else {
                     return null;
                 }
             }
         }
     }
-
 }

@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2016, Salesforce.org
     All rights reserved.
     
@@ -26,46 +26,45 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 
+@SuppressWarnings('PMD.AvoidGlobalModifier')
 global abstract with sharing class PageControllerBase {
-	
-  	private ComponentControllerBase componentController;
-	
-  	public virtual ComponentControllerBase getComponentController() {
-    	return componentController;
-  	}
+    private ComponentControllerBase componentController;
 
-  	public virtual void setComponentController(ComponentControllerBase compController) {
-    	componentController = compController;
-  	}
-	
-  	public PageControllerBase getThis() {
-    	return this;
-  	}
-	
-	abstract global string getStrSoql();
-	
-	public list<string> strFields { get; set; } 
-	
-	public string strNameField { get; set; }
-	
-	public string strObjectType { get; set; }
+    public virtual ComponentControllerBase getComponentController() {
+        return componentController;
+    }
 
-	abstract global PageReference NewItem();
-	
-	public SoqlListView ctrlSoqlListView {
-		get {
-			if (ctrlSoqlListView == null) {
-				ctrlSoqlListView = (SoqlListView) getComponentController();
-			}
-			return ctrlSoqlListView;
-		}
-		set;
-	}
-	
-	public virtual PageReference EditItem(ID idItem) {
-		return new PageReference('/' + idItem + '/e?retURL=' + ApexPages.currentPage().getURL());
-	}	
+    public virtual void setComponentController(ComponentControllerBase compController) {
+        componentController = compController;
+    }
 
+    public PageControllerBase getThis() {
+        return this;
+    }
+
+    abstract global getStrSoql();
+
+    public List<String> strFields { get; set; }
+
+    public String strNameField { get; set; }
+
+    public String strObjectType { get; set; }
+
+    abstract global PageReference newItem();
+
+    public SoqlListView ctrlSoqlListView {
+        get {
+            if (ctrlSoqlListView == null) {
+                ctrlSoqlListView = (SoqlListView) getComponentController();
+            }
+            return ctrlSoqlListView;
+        }
+        set;
+    }
+
+    public virtual PageReference editItem(Id idItem) {
+        return new PageReference('/' + idItem + '/e?retURL=' + ApexPages.currentPage().getURL());
+    }
 }

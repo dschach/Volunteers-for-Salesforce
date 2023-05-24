@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2016, Salesforce.org
     All rights reserved.
 
@@ -26,12 +26,12 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 /**
-* @author Salesforce.org
-* @group Utilities
-* @description Controller for SLDS styled page messages component
-*/
+ * @author Salesforce.org
+ * @group Utilities
+ * @description Controller for SLDS styled page messages component
+ */
 public with sharing class UTIL_PageMessages_CTRL {
     /**
      * @description Get the current context's page messages in the form of a
@@ -56,10 +56,10 @@ public with sharing class UTIL_PageMessages_CTRL {
      * This allows this data to be accessed within a Visualforce page.
      */
     public class Message {
-        public MessageSeverity severity {get; set;}
-        public String summary {get; set;}
-        public String detail {get; set;}
-        public String componentLabel {get; set;}
+        public MessageSeverity severity { get; set; }
+        public String summary { get; set; }
+        public String detail { get; set; }
+        public String componentLabel { get; set; }
 
         /**
          * @description Construct a Message data container object from a given
@@ -93,7 +93,7 @@ public with sharing class UTIL_PageMessages_CTRL {
          * @description A helper method for use in Visualforce pages that
          * translates MessageSeverity enums into SLDS theme names.
          *
-         * @return string
+         * @return
          */
         public String getSeverityTheme() {
             if (MessageSeverity.CONFIRM == severity) {
@@ -115,7 +115,7 @@ public with sharing class UTIL_PageMessages_CTRL {
          * @description A helper method for use in Visualforce pages that
          * translates MessageSeverity enums into localized text labels
          *
-         * @return string
+         * @return
          */
         public String getSeverityLabel() {
             if (MessageSeverity.CONFIRM == severity) {

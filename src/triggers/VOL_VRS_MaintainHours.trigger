@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2016, Salesforce.org
     All rights reserved.
     
@@ -26,15 +26,19 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 
-trigger VOL_VRS_MaintainHours on Volunteer_Recurrence_Schedule__c (after insert, after undelete, after update, before delete) {
+trigger VOL_VRS_MaintainHours on Volunteer_Recurrence_Schedule__c(
+	after insert,
+	after undelete,
+	after update,
+	before delete
+) {
+	if (Trigger.isInsert || Trigger.isUpdate || Trigger.isUnDelete) {
+		VOL_VRS.ProcessListVRS(Trigger.new, Trigger.old, true);
+	}
 
-    if (trigger.isInsert || trigger.isUpdate || trigger.isUnDelete) {
-        VOL_VRS.ProcessListVRS(trigger.new, trigger.old, true);
-    }
-
-    if (trigger.isDelete) {
-        VOL_VRS.DeleteListVRS(trigger.old);        
-    }
+	if (Trigger.isDelete) {
+		VOL_VRS.DeleteListVRS(Trigger.old);
+	}
 }

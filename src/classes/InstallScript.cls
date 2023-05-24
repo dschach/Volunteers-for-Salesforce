@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2019, Salesforce.org
     All rights reserved.
 
@@ -26,13 +26,13 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 public without sharing class InstallScript implements InstallHandler {
     private static final String EMAIL_REPLY_TO = 'donotreply@salesforce.org';
     private static final String EMAIL_TO = 'errors@salesforcefoundation.org';
     private static final String EMAIL_SUBJECT = 'V4S Install Errors';
     private static final String EMAIL_SENDER = 'V4S Install Script';
-    private static final String EMAIL_MESSAGE = 'Org ID {0} encountered this error: {1}';
+    private static final String EMAIL_MESSAGE = 'Org Id {0} encountered this error: {1}';
     private InstallContext context;
 
     @TestVisible
@@ -55,7 +55,6 @@ public without sharing class InstallScript implements InstallHandler {
         if (isUpgrade()) {
             sendUsageMetrics();
         }
-
     }
 
     private Boolean isUpgrade() {
@@ -67,7 +66,7 @@ public without sharing class InstallScript implements InstallHandler {
         PackageSettings__c packageSettings = PackageSettings__c.getOrgDefaults();
 
         if (packageSettings.Id != null) {
-          return;
+            return;
         }
 
         packageSettings.NamespacePrefix__c = VOL_SharedCode.StrTokenNSPrefix('');
@@ -78,15 +77,9 @@ public without sharing class InstallScript implements InstallHandler {
     private void sendUsageMetrics() {
         try {
             telemetryService.sendUsageMetrics();
-
         } catch (Exception ex) {
             // Email error and allow the install to continue.
-            sendError(
-                String.format(
-                    EMAIL_MESSAGE,
-                    new List<String>{ context.organizationId(), ex.getMessage() }
-                )
-            );
+            sendError(String.format(EMAIL_MESSAGE, new List<String>{ context.organizationId(), ex.getMessage() }));
         }
     }
 
@@ -98,13 +91,13 @@ public without sharing class InstallScript implements InstallHandler {
             mail.setReplyTo(EMAIL_REPLY_TO);
             mail.setSenderDisplayName(EMAIL_SENDER);
             mail.setSubject(EMAIL_SUBJECT);
-            mail.setToAddresses(new List<String> { EMAIL_TO });
+            mail.setToAddresses(new List<String>{ EMAIL_TO });
             mail.setPlainTextBody(message);
 
-            Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
+            Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{ mail });
         } catch (Exception ex) {
             // We do not want to block install when the email cannot be sent, allow the install to continue.
+            System.debug('');
         }
-
     }
 }

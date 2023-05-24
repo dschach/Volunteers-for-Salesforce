@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2019, Salesforce.org
     All rights reserved.
 
@@ -26,7 +26,7 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 public inherited sharing class QueryBuilder {
     private static final String COUNT = 'COUNT()';
     private SObjectType sObjType;
@@ -43,11 +43,8 @@ public inherited sharing class QueryBuilder {
 
     public String buildCount() {
         return String.format(
-            'SELECT {0} FROM {1}{2}', new List<String>{
-                COUNT,
-                String.valueOf(sObjType),
-                buildWhereClause()
-            }
+            'SELECT {0} FROM {1}{2}',
+            new List<String>{ COUNT, String.valueOf(sObjType), buildWhereClause() }
         );
     }
 
@@ -58,7 +55,6 @@ public inherited sharing class QueryBuilder {
 
         return ' WHERE ' + condition;
     }
-
 
     //////////////////// -------------------- ////////////////////
 
@@ -71,7 +67,7 @@ public inherited sharing class QueryBuilder {
             return this;
         }
 
-        public Object handleMethodCall(
+        public Object handleMethodCall( //NOPMD
             Object stubbedObject,
             String stubbedMethodName,
             Type returnType,
@@ -83,15 +79,14 @@ public inherited sharing class QueryBuilder {
                 when 'withCondition' {
                     condition = (String) listOfArgs[0];
                     return null;
-
-                } when 'buildCount' {
+                }
+                when 'buildCount' {
                     return countQuery;
-
-                } when else {
+                }
+                when else {
                     return null;
                 }
             }
         }
     }
-
 }

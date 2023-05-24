@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2019, Salesforce.org
     All rights reserved.
 
@@ -26,7 +26,7 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 /**
  * @author Salesforce.org
  * @date 2019
@@ -44,7 +44,7 @@ public with sharing class UTIL_JavaScriptSanitizer {
         "MediumBlue","Green","DarkRed", "Purple", "DarkSlateGray", "MidnightBlue"
     * To prevent XSS issues, instead of evaluating that as JavaScript in Visualforce, converting this to a
     * valid JSON string so that it can be JS ENCODED and parsed on the front end.
-    * @param toParse string that contains key/value pairs
+    * @param toParse String that contains key/value pairs
     * @return String as a serialized object
     ********************************************************************************************************/
     public String buildSerializedList(String toParse) {
@@ -69,7 +69,7 @@ public with sharing class UTIL_JavaScriptSanitizer {
         day:      'day'
     * To prevent XSS issues, instead of evaluating that as JavaScript in Visualforce, converting this to
     * a valid JSON string instead to be parsed on the front end.
-    * @param toParse string that contains key/value pairs
+    * @param toParse String that contains key/value pairs
     * @return String as a JS escaped serialized object
     ********************************************************************************************************/
     public String buildSerializedObject(String toParse) {
@@ -78,21 +78,18 @@ public with sharing class UTIL_JavaScriptSanitizer {
         List<String> pairings = toParse.split(SPLIT_DELIMITER);
         for (String s : pairings) {
             List<String> keyValue = s.split(':', 2);
-            keyPairings.put(
-                trimStartAndEndQuotes(keyValue[0]),
-                trimStartAndEndQuotes(keyValue[1])
-            );
+            keyPairings.put(trimStartAndEndQuotes(keyValue[0]), trimStartAndEndQuotes(keyValue[1]));
         }
 
         return JSON.serialize(keyPairings).escapeEcmaScript();
     }
 
     /********************************************************************************************************
-    * @description Replaces commas that separate the values within a custom label (that are also not
-    * within the quotes of a value) with a delimiter that can be use to split on
-    * @param toParse string to replace commas in
-    * @return String with commas replaced with a more distinct delimiter
-    ********************************************************************************************************/
+     * @description Replaces commas that separate the values within a custom label (that are also not
+     * within the quotes of a value) with a delimiter that can be use to split on
+     * @param toParse String to replace commas in
+     * @return String with commas replaced with a more distinct delimiter
+     ********************************************************************************************************/
     private String replaceCommasWithSplitMarkers(String toParse) {
         Boolean inQuotes = false;
         String openQuoteChar;
@@ -121,10 +118,10 @@ public with sharing class UTIL_JavaScriptSanitizer {
     }
 
     /********************************************************************************************************
-    * @description Removes start and end quotes from a string so they are not included as the value of the string
-    * @param toTrim string to remove start and end quotes from
-    * @return String with start and end quotes removed
-    ********************************************************************************************************/
+     * @description Removes start and end quotes from a string so they are not included as the value of the string
+     * @param toTrim String to remove start and end quotes from
+     * @return String with start and end quotes removed
+     ********************************************************************************************************/
     private String trimStartAndEndQuotes(String toTrim) {
         toTrim = toTrim.trim();
         //Trim single or double quote from beginning
@@ -137,7 +134,7 @@ public with sharing class UTIL_JavaScriptSanitizer {
         //Trim single or double quote from end
         if (toTrim.indexOf('\'') == toTrim.length() - 1) {
             toTrim = toTrim.removeEnd('\'');
-        } else if (toTrim.indexOf('"') == toTrim.length() -1) {
+        } else if (toTrim.indexOf('"') == toTrim.length() - 1) {
             toTrim = toTrim.removeEnd('"');
         }
 

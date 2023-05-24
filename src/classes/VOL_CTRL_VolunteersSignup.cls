@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2016, Salesforce.org
     All rights reserved.
     
@@ -26,46 +26,54 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 
+@SuppressWarnings('PMD.AvoidGlobalModifier')
 global virtual with sharing class VOL_CTRL_VolunteersSignup {
-            
-    global Contact contact { 
+    global Contact contact {
         get {
-            if (contact == null) contact = new Contact();
+            if (contact == null) {
+                contact = new Contact();
+            }
             return contact;
-        }       
-        set; 
+        }
+        set;
     }
-    
-    global string strURLtoCSSFile { 
-        get { 
+
+    global String strURLtoCSSFile {
+        get {
             if (strURLtoCSSFile == null) {
-                list<Document> listDocs = [SELECT Name, Id From Document WHERE Name = 'VolunteersSignupCSS.css' LIMIT 1 ];
+                List<Document> listDocs = [
+                    SELECT Name, Id
+                    FROM Document
+                    WHERE Name = 'VolunteersSignupCSS.css'
+                    LIMIT 1
+                ];
                 if (listDocs.size() > 0) {
                     Document doc = listDocs[0];
-                    string imageid = doc.id;
-                    imageid = imageid.substring(0,15);
+                    imageid = doc.id;
+                    imageid = imageid.substring(0, 15);
                     strURLToCSSFile = '/servlet/servlet.FileDownload?file=' + imageid;
                 }
             }
             return strURLtoCSSFile;
-        }  
-        
+        }
         set;
-    }  
-        
-    global virtual PageReference Save() {
+    }
+
+    global virtual PageReference save() {
         // Save behavior is modified by using Custom Settings:
         // Signup_Matches_Existing_Contacts__c
         // Signup_Creates_Contacts_If_No_Match__c
         // Signup_Bucket_Account_On_Create__c
 
         try {
-            VOL_SharedCode.CreateContactOrLead(contact,
+            VOL_SharedCode.CreateContactOrLead(
+                contact,
                 VOL_SharedCode.VolunteersSettings.Signup_Matches_Existing_Contacts__c,
-                VOL_SharedCode.VolunteersSettings.Signup_Creates_Contacts_If_No_Match__c);
-            StrSaveResult = system.label.labelVolunteerSignupThankYou;
+                VOL_SharedCode.VolunteersSettings.Signup_Creates_Contacts_If_No_Match__c
+            );
+            StrSaveResult = System.Label.labelVolunteerSignupThankYou;
             contact = null; // so fields get reset to null.
         } catch (exception ex) {
             strSaveResult = ex.getMessage();
@@ -74,10 +82,11 @@ global virtual with sharing class VOL_CTRL_VolunteersSignup {
         return null;
     }
 
-    global String StrSaveResult { get; set; }
+    global String strSaveResult { get; set; }
 
-	// this was a testmethod which can't be compiled in this class under api 31.  
-	// but because it was marked global, it could not be completely removed.
-    global static void CodeCoverageTests() {}
-    
+    // this was a testmethod which can't be compiled in this class under api 31.
+    // but because it was marked global, it could not be completely removed.
+    @SuppressWarnings('PMD.EmptyStatementBlock')
+    global static void codeCoverageTests() {
+    }
 }

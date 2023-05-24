@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2019, Salesforce.org
     All rights reserved.
 
@@ -26,14 +26,14 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 @IsTest
 public with sharing class DatabaseDml_TEST {
     private static List<SObject> setupSObjects = new List<SObject>();
 
     /**
-    * Creates base data used throughout the different test scenarios
-    */
+     * Creates base data used throughout the different test scenarios
+     */
     @TestSetup
     private static void generateData() {
         UTIL_UnitTest.generateData();
@@ -110,9 +110,11 @@ public with sharing class DatabaseDml_TEST {
         try {
             DatabaseDml.getInstance().updateRecords(records, allOrNoneOption);
             System.assert(false, 'An exception should have been thrown.');
-
         } catch (Exception ex) {
-            System.assert(ex.getMessage().contains('REQUIRED_FIELD_MISSING'), 'Expected the missing required field to cause an exception.');
+            System.assert(
+                ex.getMessage().contains('REQUIRED_FIELD_MISSING'),
+                'Expected the missing required field to cause an exception.'
+            );
         }
 
         System.assertNotEquals(name, getCampaigns()[0].Name, 'The campaign name should not have been updated.');
@@ -141,7 +143,6 @@ public with sharing class DatabaseDml_TEST {
 
         try {
             DatabaseDml.getInstance().updateRecords(records, allOrNoneOption);
-
         } catch (Exception ex) {
             System.assert(false, 'An exception should not have been thrown. ' + ex.getMessage());
         }
@@ -164,9 +165,11 @@ public with sharing class DatabaseDml_TEST {
         try {
             DatabaseDml.getInstance().insertRecords(records, allOrNoneOption);
             System.assert(false, 'An exception should have been thrown.');
-
         } catch (Exception ex) {
-            System.assert(ex.getMessage().contains('REQUIRED_FIELD_MISSING'), 'Expected the missing required field to cause an exception.');
+            System.assert(
+                ex.getMessage().contains('REQUIRED_FIELD_MISSING'),
+                'Expected the missing required field to cause an exception.'
+            );
         }
 
         System.assertEquals(null, records[0].get('Id'), 'The campaign should not have been created.');
@@ -186,7 +189,6 @@ public with sharing class DatabaseDml_TEST {
 
         try {
             DatabaseDml.getInstance().insertRecords(records, allOrNoneOption);
-
         } catch (Exception ex) {
             System.assert(false, 'An exception should not have been thrown. ' + ex.getMessage());
         }
@@ -196,11 +198,9 @@ public with sharing class DatabaseDml_TEST {
         System.assertEquals(null, records[2].get('Id'), 'The job should not have been created.');
     }
 
-
     /////////////////
     /// Helpers
     /////////////////
-
 
     private static void setSetupSObjects() {
         setupSObjects.addAll(getCampaigns());
@@ -220,7 +220,6 @@ public with sharing class DatabaseDml_TEST {
         return [SELECT Id, FirstName, LastName FROM Contact];
     }
 
-
     /*******************************************************************************************************************
      * @description Stub for DatabaseDml instance
      */
@@ -230,7 +229,7 @@ public with sharing class DatabaseDml_TEST {
             'insertRecords' => 0
         };
 
-        public Object handleMethodCall(
+        public Object handleMethodCall( //NOPMD
             Object stubbedObject,
             String stubbedMethodName,
             Type returnType,

@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2020 Salesforce.org
     All rights reserved.
     
@@ -26,19 +26,19 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 /**
-* @author Salesforce.org
-* @date 2020
-* @group Utilities
-* @description Unit tests for UTIL_HtmlOutput class
-*/
-@isTest(IsParallel=true)
+ * @author Salesforce.org
+ * @date 2020
+ * @group Utilities
+ * @description Unit tests for UTIL_HtmlOutput class
+ */
+@IsTest(IsParallel=true)
 public with sharing class UTIL_HtmlOutput_TEST {
     /*******************************************************************************************************
-    * @description Verifies a string with allowlisted tag with extra space is returned without escaping
-    */
-    @isTest
+     * @description Verifies a string with allowlisted tag with extra space is returned without escaping
+     */
+    @IsTest
     private static void shouldReturnOriginalTagWithSpace() {
         String html = '<b> Bold is allowed </ b>';
         UTIL_HtmlOutput_CTRL controller = new UTIL_HtmlOutput_CTRL();
@@ -50,9 +50,9 @@ public with sharing class UTIL_HtmlOutput_TEST {
     }
 
     /*******************************************************************************************************
-    * @description Verifies a string with allowlisted tag is returned without escaping
-    */
-    @isTest
+     * @description Verifies a string with allowlisted tag is returned without escaping
+     */
+    @IsTest
     private static void shouldReturnOriginalTag() {
         String html = '<b> Bold is allowed </b>';
         UTIL_HtmlOutput_CTRL controller = new UTIL_HtmlOutput_CTRL();
@@ -64,9 +64,9 @@ public with sharing class UTIL_HtmlOutput_TEST {
     }
 
     /*******************************************************************************************************
-    * @description Verifies a string with a tag that is not allowlisted is returned escaped
-    */
-    @isTest
+     * @description Verifies a string with a tag that is not allowlisted is returned escaped
+     */
+    @IsTest
     private static void shouldReturnEscapedTag() {
         String html = '<img src=x onerror=alert(document.domain)>';
         UTIL_HtmlOutput_CTRL controller = new UTIL_HtmlOutput_CTRL();
@@ -80,9 +80,9 @@ public with sharing class UTIL_HtmlOutput_TEST {
     }
 
     /*******************************************************************************************************
-    * @description Verifies a string with allowlisted url is returned without escaping
-    */
-    @isTest
+     * @description Verifies a string with allowlisted url is returned without escaping
+     */
+    @IsTest
     private static void shouldReturnOriginalUrl() {
         String html = '<a href="/ui/setup/apex/batch/ScheduleBatchApexPage">';
         UTIL_HtmlOutput_CTRL controller = new UTIL_HtmlOutput_CTRL();
@@ -94,9 +94,9 @@ public with sharing class UTIL_HtmlOutput_TEST {
     }
 
     /*******************************************************************************************************
-    * @description Verifies a string with allowlisted url with extra space is returned without escaping
-    */
-    @isTest
+     * @description Verifies a string with allowlisted url with extra space is returned without escaping
+     */
+    @IsTest
     private static void shouldReturnOriginalUrlWithSpace() {
         String html = '<a href="/ui/setup/apex/batch/ScheduleBatchApexPage" >';
         UTIL_HtmlOutput_CTRL controller = new UTIL_HtmlOutput_CTRL();
@@ -108,9 +108,9 @@ public with sharing class UTIL_HtmlOutput_TEST {
     }
 
     /*******************************************************************************************************
-    * @description Verifies a string with a url that is not allowlisted is returned escaped
-    */
-    @isTest
+     * @description Verifies a string with a url that is not allowlisted is returned escaped
+     */
+    @IsTest
     private static void shouldReturnEscapedUrl() {
         String html = '<a href="www.google.com">';
         UTIL_HtmlOutput_CTRL controller = new UTIL_HtmlOutput_CTRL();

@@ -1,4 +1,4 @@
-/*
+/**
     Copyright (c) 2016, Salesforce.org
     All rights reserved.
     
@@ -26,32 +26,37 @@
     LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
     POSSIBILITY OF SUCH DAMAGE.
-*/
+**/
 
-@isTest
+@IsTest
 private class VOL_TEST_Campaign_Trigger {
-
     static testMethod void myUnitTest() {
-
         // test creating a single campaign.
-        Campaign cmp = new Campaign(recordtypeid=VOL_SharedCode.recordtypeIdVolunteersCampaign, name='Test Campaign', IsActive=true);
+        Campaign cmp = new Campaign(
+            recordtypeid = VOL_SharedCode.recordtypeIdVolunteersCampaign,
+            name = 'Test Campaign',
+            IsActive = true
+        );
         insert cmp;
-        list<CampaignMemberStatus> listCMS = [Select Id From CampaignMemberStatus WHERE CampaignId = :cmp.Id];
+        List<CampaignMemberStatus> listCMS = [SELECT Id FROM CampaignMemberStatus WHERE CampaignId = :cmp.Id];
         System.Assert(listCMS.Size() == 5);
-        
+
         // test creating multiple campaigns.
-        list<Campaign> listCmp = new list<Campaign>();
-        for (integer i = 0; i < 10; i++) {
-            Campaign cmpI = new Campaign(recordtypeid=VOL_SharedCode.recordtypeIdVolunteersCampaign, name='Test Campaign' + i, IsActive=true);
+        List<Campaign> listCmp = new List<Campaign>();
+        for (Integer i = 0; i < 10; i++) {
+            Campaign cmpI = new Campaign(
+                recordtypeid = VOL_SharedCode.recordtypeIdVolunteersCampaign,
+                name = 'Test Campaign' + i,
+                IsActive = true
+            );
             listCmp.add(cmpI);
         }
         insert listCmp;
-        set<ID> setCmpId = new set<ID>();
+        Set<Id> setCmpId = new Set<Id>();
         for (Campaign cmpT : listCmp) {
             setCmpId.add(cmpT.Id);
         }
-        list<CampaignMemberStatus> listCMS2 = [Select Id From CampaignMemberStatus WHERE CampaignId in :setCmpId];
+        List<CampaignMemberStatus> listCMS2 = [SELECT Id FROM CampaignMemberStatus WHERE CampaignId IN :setCmpId];
         System.Assert(listCMS2.Size() == 50);
-        
     }
 }
