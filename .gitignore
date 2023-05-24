@@ -3,6 +3,7 @@
 .python-version
 .settings
 .sfdx
+.sf
 /browser_tests
 /test_results.xml
 build.properties
@@ -17,3 +18,6 @@ src/workflows/User.workflow
 **/.vscode/
 .cci
 test_results.*
+node_modules
+.DS_Store
+.pmdCache

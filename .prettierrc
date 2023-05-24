@@ -1,0 +1,25 @@
+{
+	"trailingComma": "none",
+	"singleQuote": true,
+	"tabWidth": 4,
+	"printWidth": 120,
+	"useTabs": true,
+	"bracketSpacing": true,
+	"apexInsertFinalNewline": false,
+	"bracketSameLine": true,
+	"overrides": [
+		{
+			"files": "**/lwc/**/*.html",
+			"options": { "parser": "lwc" }
+		},
+		{
+			"files": "*.{cmp,page,component}",
+			"options": { "parser": "html" }
+		},
+		{
+			"files": "*.{yml,yaml}",
+			"options": { "tabWidth": 2, "useTabs": false }
+		},
+		{ "files": "*.cls", "options": { "useTabs": false } }
+	]
+}
