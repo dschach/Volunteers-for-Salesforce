@@ -1,9 +1,51 @@
+# This file is used for Git repositories to specify intentionally untracked files that Git should ignore. 
+# If you are not using git, you can delete this file. For more information see: https://git-scm.com/docs/gitignore
+# For useful gitignore templates see: https://github.com/github/gitignore
+
+# Salesforce cache
+.sf/
+.sfdx/
+.vscode/
+.localdevserver/
+deploy-options.json
+
+# LWC VSCode autocomplete
+**/lwc/jsconfig.json
+
+# LWC Jest coverage reports
+coverage/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+
+# Eslint cache
+.eslintcache
+
+# MacOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Local environment variables
+.env
+.pmdCache
+
+
 .appcloud
 .appcloud/.project
 .python-version
 .settings
-.sfdx
-.sf
 /browser_tests
 /test_results.xml
 build.properties
@@ -14,10 +56,5 @@ src/profiles/Customer Community User.profile
 src/profiles/Partner Community Login User.profile
 src/profiles/Partner Community User.profile
 src/workflows/User.workflow
-**/.sfdx/
-**/.vscode/
 .cci
 test_results.*
-node_modules
-.DS_Store
-.pmdCache
