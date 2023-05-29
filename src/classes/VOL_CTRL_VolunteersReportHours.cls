@@ -134,7 +134,7 @@ global virtual with sharing class VOL_CTRL_VolunteersReportHours {
                 ];
                 if (listDocs.size() > 0) {
                     Document doc = listDocs[0];
-                    imageid = doc.id;
+                    String imageid = doc.Id;
                     imageid = imageid.substring(0, 15);
                     strURLToCSSFile = '/servlet/servlet.FileDownload?file=' + imageid;
                 }

@@ -1004,7 +1004,7 @@ global with sharing class VOL_SharedCode {
     /******************************************************************************************************
      * @description String helper property for getNamespace() method.
      *******************************************************************************************************/
-    private String plainNamespace;
+    private static String plainNamespace;
 
     /*******************************************************************************************************
      * @description Finds the namespace for the current context.
@@ -1012,7 +1012,7 @@ global with sharing class VOL_SharedCode {
      ********************************************************************************************************/
     public static String getNamespace() {
         if (plainNamespace == null) {
-            withDotNotation = VOL_SharedCode.class.getName();
+            String withDotNotation = VOL_SharedCode.class.getName();
 
             if (withDotNotation.contains('.')) {
                 plainNamespace = withDotNotation.substringBefore('.');
@@ -1101,6 +1101,7 @@ global with sharing class VOL_SharedCode {
             }
             return dmlDuplicateOptions;
         }
+        set;
     }
 
     // This massively nested SOQL where statement looks hard coded and dumb, but as it turns out

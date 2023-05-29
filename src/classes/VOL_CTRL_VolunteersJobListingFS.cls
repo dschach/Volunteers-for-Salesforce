@@ -137,7 +137,7 @@ global virtual with sharing class VOL_CTRL_VolunteersJobListingFS {
                 ];
                 if (listDocs.size() > 0) {
                     Document doc = listDocs[0];
-                    imageid = doc.id;
+                    String imageid = doc.id;
                     imageid = imageid.substring(0, 15);
                     strURLToCSSFile = '/servlet/servlet.FileDownload?file=' + imageid;
                 }
@@ -230,9 +230,7 @@ global virtual with sharing class VOL_CTRL_VolunteersJobListingFS {
         if (p == '1') {
             ShowNumberAvailable = true;
         }
-        {
-        }
-        String p = params.get('Language');
+        p = params.get('Language');
         if (p != null && p != '') {
             strLanguage = p;
         }
@@ -717,6 +715,7 @@ global virtual with sharing class VOL_CTRL_VolunteersJobListingFS {
                                 vhFieldsToUpdate.add(strF);
                             } catch (exception ex) {
                                 // ignore and continue;
+                                System.debug('Empty catch');
                             }
                         }
                     }

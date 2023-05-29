@@ -129,7 +129,7 @@ global with sharing class VOL_CTRL_JobCalendar {
             }
 
             fPrint = false;
-            String p = params.get('Print');
+            p = params.get('Print');
             if (p == '1') {
                 fPrint = true;
             }
@@ -141,7 +141,7 @@ global with sharing class VOL_CTRL_JobCalendar {
             fWeb = (Site.getName() != null);
 
             strLanguage = fWeb ? 'en-us' : null; // don't set language if viewing in SF.  Let SF decide.
-            String p = params.get('Language');
+            p = params.get('Language');
             if (p != null && p != '') {
                 strLanguage = p;
             }

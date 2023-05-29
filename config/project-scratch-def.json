@@ -1,0 +1,26 @@
+{
+	"orgName": "volunteers-4-salesforce",
+	"edition": "Developer",
+	"features": ["EnableSetPasswordInApi"],
+	"hasSampleData": true,
+	"settings": {
+		"lightningExperienceSettings": {
+			"enableS1DesktopEnabled": true
+		},
+		"mobileSettings": {
+			"enableS1EncryptedStoragePref2": false
+		},
+		"userManagementSettings": {
+			"permsetsInFieldCreation": true,
+			"enableEnhancedPermsetMgmt": true
+		},
+		"languageSettings": {
+			"enableTranslationWorkbench": true
+		},
+		"objectSettings": {
+			"campaign": {
+				"defaultRecordType": "Volunteers_Campaign"
+			}
+		}
+	}
+}

@@ -27,6 +27,7 @@
     ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 **/
+@SuppressWarnings('PMD.ApexUnitTestClassShouldHaveAsserts')
 @IsTest(IsParallel=true)
 private class InstallScript_TEST {
     private static TelemetryService.Stub mockTelemetryService = new TelemetryService.Stub();

@@ -44,7 +44,7 @@ global abstract with sharing class PageControllerBase {
         return this;
     }
 
-    abstract global getStrSoql();
+    abstract global String getStrSoql();
 
     public List<String> strFields { get; set; }
 
