@@ -8,6 +8,27 @@
         <plural>true</plural>
         <value>Horas Voluntarias</value>
     </caseValues>
+    <gender>Feminine</gender>
+    <layouts>
+        <layout>Volunteer Hours Layout</layout>
+        <sections>
+            <label>Links personalizados</label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>HoursID</nameFieldLabel>
+    <validationRules>
+        <errorMessage>Por favor especifique las Horas Trabajadas cuando modifique su Estado a Completado</errorMessage>
+        <name>HoursRequiredOnCompletion</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>Por favor especifique un valor de Estado</errorMessage>
+        <name>StatusMustBeSet</name>
+    </validationRules>
+    <webLinks>
+        <label>Edición Masiva de las Horas Voluntarias</label>
+        <name>Mass_Edit_Volunteer_Hours</name>
+    </webLinks>
     <fields>
         <label>Comentarios</label>
         <name>Comments__c</name>
@@ -110,25 +131,4 @@
         <name>Volunteer_Shift__c</name>
         <relationshipLabel>Horas Voluntarias</relationshipLabel>
     </fields>
-    <gender>Feminine</gender>
-    <layouts>
-        <layout>Volunteer Hours Layout</layout>
-        <sections>
-            <label>Links personalizados</label>
-            <section>Custom Links</section>
-        </sections>
-    </layouts>
-    <nameFieldLabel>HoursID</nameFieldLabel>
-    <validationRules>
-        <errorMessage>Por favor especifique las Horas Trabajadas cuando modifique su Estado a Completado</errorMessage>
-        <name>HoursRequiredOnCompletion</name>
-    </validationRules>
-    <validationRules>
-        <errorMessage>Por favor especifique un valor de Estado</errorMessage>
-        <name>StatusMustBeSet</name>
-    </validationRules>
-    <webLinks>
-        <label>Edición Masiva de las Horas Voluntarias</label>
-        <name>Mass_Edit_Volunteer_Hours</name>
-    </webLinks>
 </CustomObjectTranslation>

@@ -2,12 +2,14 @@
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <caseValues>
         <plural>false</plural>
-        <value><!-- Volunteers Settings --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value><!-- Volunteers Settings --></value>
+        <value></value>
     </caseValues>
+    <gender></gender>
+    <startsWith></startsWith>
     <fields>
         <help>Une liste séparée par des &apos;;&apos; de champs emails additionnels pour essayer de les relier à un contact existant. Note: ces champs sont déclarés avec leur nom complet de développeur, incluant le &apos;namespace prefix&apos;. Les emails du &apos;npsp&apos; sont auto. utilisés.</help>
         <label>Champs d&apos;email de match de contact</label>
@@ -63,6 +65,4 @@
         <label>Inscription correspond Contacts existant</label>
         <name>Signup_Matches_Existing_Contacts__c</name>
     </fields>
-    <gender><!-- Masculine --></gender>
-    <startsWith><!-- Consonant --></startsWith>
 </CustomObjectTranslation>

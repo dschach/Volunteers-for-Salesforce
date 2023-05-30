@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Volunteers for Salesforce</fullName>
     <types>
         <members>ComponentControllerBase</members>
         <members>DatabaseDml</members>
@@ -180,8 +179,8 @@
         <members>Volunteer_Job__c.Location_City__c</members>
         <members>Volunteer_Job__c.Location_Information__c</members>
         <members>Volunteer_Job__c.Location_Street__c</members>
-        <members>Volunteer_Job__c.Location__c</members>
         <members>Volunteer_Job__c.Location_Zip_Postal_Code__c</members>
+        <members>Volunteer_Job__c.Location__c</members>
         <members>Volunteer_Job__c.Number_of_Completed_Hours__c</members>
         <members>Volunteer_Job__c.Number_of_Shifts__c</members>
         <members>Volunteer_Job__c.Number_of_Volunteers_Still_Needed__c</members>
@@ -516,13 +515,13 @@
     </types>
     <types>
         <members>Volunteers_Documents</members>
-        <members>Volunteers_Documents/JobCalendarCSS_css.css</members>
-        <members>Volunteers_Documents/VolunteersJobListingCSS_css.css</members>
-        <members>Volunteers_Documents/VolunteersPersonalSiteCSS_css.css</members>
-        <members>Volunteers_Documents/VolunteersReportHoursCSS_css.css</members>
-        <members>Volunteers_Documents/VolunteersSignupCSS_css.css</members>
-        <members>Volunteers_Documents/Volunteers_Logo.gif</members>
-        <members>Volunteers_Documents/Volunteers_Logo_V3.gif</members>
+        <members>Volunteers_Documents/JobCalendarCSS_css</members>
+        <members>Volunteers_Documents/VolunteersJobListingCSS_css</members>
+        <members>Volunteers_Documents/VolunteersPersonalSiteCSS_css</members>
+        <members>Volunteers_Documents/VolunteersReportHoursCSS_css</members>
+        <members>Volunteers_Documents/VolunteersSignupCSS_css</members>
+        <members>Volunteers_Documents/Volunteers_Logo</members>
+        <members>Volunteers_Documents/Volunteers_Logo_V3</members>
         <name>Document</name>
     </types>
     <types>
@@ -713,6 +712,17 @@
         <name>WebLink</name>
     </types>
     <types>
+        <members>Contact</members>
+        <members>Job_Recurrence_Schedule__c</members>
+        <members>Lead</members>
+        <members>Volunteer_Hours__c</members>
+        <members>Volunteer_Job__c</members>
+        <members>Volunteer_Recurrence_Schedule__c</members>
+        <members>Volunteer_Shift__c</members>
+        <members>Volunteers_Settings__c</members>
+        <name>Workflow</name>
+    </types>
+    <types>
         <members>Contact.Volunteer_Signup_Notification_Email_Alert_Contact</members>
         <members>Contact.Volunteer_Signup_Thank_You_Email_Alert_Contact</members>
         <members>Lead.Volunteer_Signup_Notification_Email_Alert_Lead</members>
@@ -730,9 +740,9 @@
     <types>
         <members>Contact.Volunteer Signup - Contact</members>
         <members>Lead.Volunteer Signup - Lead</members>
-        <members>Volunteer_Hours__c.Volunteer Hours Reminder Email</members>
         <members>Volunteer_Hours__c.Volunteer Hours - Set End Date</members>
         <members>Volunteer_Hours__c.Volunteer Hours - Set Planned Start Date %26 Time</members>
+        <members>Volunteer_Hours__c.Volunteer Hours Reminder Email</members>
         <members>Volunteer_Hours__c.Volunteer Job Signup</members>
         <name>WorkflowRule</name>
     </types>
@@ -741,5 +751,5 @@
         <members>Lead.Volunteer_Signup_Thank_You_Sent_Lead</members>
         <name>WorkflowTask</name>
     </types>
-    <version>40.0</version>
+    <version>57.0</version>
 </Package>

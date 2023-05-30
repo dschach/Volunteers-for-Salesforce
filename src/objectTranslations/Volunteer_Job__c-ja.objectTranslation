@@ -4,6 +4,46 @@
         <plural>false</plural>
         <value>ボランティアの仕事</value>
     </caseValues>
+    <layouts>
+        <layout>Volunteer Job Layout</layout>
+        <sections>
+            <label>カスタムリンク</label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>説明</label>
+            <section>Description</section>
+        </sections>
+        <sections>
+            <label>場所</label>
+            <section>Location</section>
+        </sections>
+        <sections>
+            <label>場所情報</label>
+            <section>Location Information</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>ボランティアの仕事  名</nameFieldLabel>
+    <webLinks>
+        <label>ボランティアの検索</label>
+        <name>Find_Volunteers</name>
+    </webLinks>
+    <webLinks>
+        <label>ボランティア名簿</label>
+        <name>JobRoster</name>
+    </webLinks>
+    <webLinks>
+        <label>シフトカレンダー</label>
+        <name>Job_Shift_Calendar</name>
+    </webLinks>
+    <webLinks>
+        <label>(未使用)</label>
+        <name>Mass_Edit_Volunteer_Hours</name>
+    </webLinks>
+    <webLinks>
+        <label>ボランティアの一括編集</label>
+        <name>Mass_Email_Volunteers</name>
+    </webLinks>
     <fields>
         <label>キャンペーン</label>
         <name>Campaign__c</name>
@@ -418,7 +458,7 @@
         </picklistValues>
         <picklistValues>
             <masterLabel>GMT</masterLabel>
-            <translation><!-- GMT --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Pacific/Auckland</masterLabel>
@@ -465,44 +505,4 @@
             <translation>太平洋/トンガタプ</translation>
         </picklistValues>
     </fields>
-    <layouts>
-        <layout>Volunteer Job Layout</layout>
-        <sections>
-            <label>カスタムリンク</label>
-            <section>Custom Links</section>
-        </sections>
-        <sections>
-            <label>説明</label>
-            <section>Description</section>
-        </sections>
-        <sections>
-            <label>場所</label>
-            <section>Location</section>
-        </sections>
-        <sections>
-            <label>場所情報</label>
-            <section>Location Information</section>
-        </sections>
-    </layouts>
-    <nameFieldLabel>ボランティアの仕事  名</nameFieldLabel>
-    <webLinks>
-        <label>ボランティアの検索</label>
-        <name>Find_Volunteers</name>
-    </webLinks>
-    <webLinks>
-        <label>ボランティア名簿</label>
-        <name>JobRoster</name>
-    </webLinks>
-    <webLinks>
-        <label>シフトカレンダー</label>
-        <name>Job_Shift_Calendar</name>
-    </webLinks>
-    <webLinks>
-        <label>(未使用)</label>
-        <name>Mass_Edit_Volunteer_Hours</name>
-    </webLinks>
-    <webLinks>
-        <label>ボランティアの一括編集</label>
-        <name>Mass_Email_Volunteers</name>
-    </webLinks>
 </CustomObjectTranslation>

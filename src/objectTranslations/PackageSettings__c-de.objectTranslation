@@ -3,47 +3,47 @@
     <caseValues>
         <caseType>Nominative</caseType>
         <plural>false</plural>
-        <value><!-- Volunteers Package Settings --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <caseType>Nominative</caseType>
         <plural>true</plural>
-        <value><!-- Volunteers Package Settings --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <caseType>Accusative</caseType>
         <plural>false</plural>
-        <value><!-- Volunteers Package Settings --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <caseType>Accusative</caseType>
         <plural>true</plural>
-        <value><!-- Volunteers Package Settings --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <caseType>Genitive</caseType>
         <plural>false</plural>
-        <value><!-- Volunteers Package Settings --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <caseType>Genitive</caseType>
         <plural>true</plural>
-        <value><!-- Volunteers Package Settings --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <caseType>Dative</caseType>
         <plural>false</plural>
-        <value><!-- Volunteers Package Settings --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <caseType>Dative</caseType>
         <plural>true</plural>
-        <value><!-- Volunteers Package Settings --></value>
+        <value></value>
     </caseValues>
+    <gender></gender>
     <fields>
-        <help><!-- The active package namespace prefix for Volunteers. Do not edit manually. --></help>
-        <label><!-- Namespace Prefix --></label>
+        <help></help>
+        <label></label>
         <name>NamespacePrefix__c</name>
     </fields>
-    <gender><!-- Neuter --></gender>
 </CustomObjectTranslation>

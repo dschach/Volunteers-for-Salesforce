@@ -3,23 +3,24 @@
     <caseValues>
         <article>None</article>
         <plural>false</plural>
-        <value><!-- Volunteers Settings --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <article>Definite</article>
         <plural>false</plural>
-        <value><!-- הVolunteers Settings --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <article>None</article>
         <plural>true</plural>
-        <value><!-- Volunteers Settings --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <article>Definite</article>
         <plural>true</plural>
-        <value><!-- הVolunteers Settings --></value>
+        <value></value>
     </caseValues>
+    <gender></gender>
     <fields>
         <help>רשימה מופרדת בסימני נקודה-פסיק של שדות דואר אלקטרוני נוספים של אנשי קשר, לצורך התאמת אנשי קשר. שים לב שהשדות מצוינים על-ידי שם המפתח המלא שלהם, כולל קידומת מרחב שמות. שדות דואר אלקטרוני של NPSP נבדקים באופן אוטומטי.</help>
         <label>שדות דואר אלקטרוני להתאמת אנשי קשר</label>
@@ -75,5 +76,4 @@
         <label>הרישום תואם לאנשי קשר קיימים</label>
         <name>Signup_Matches_Existing_Contacts__c</name>
     </fields>
-    <gender><!-- Masculine --></gender>
 </CustomObjectTranslation>

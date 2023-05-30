@@ -50,11 +50,13 @@ $RECYCLE.BIN/
 /test_results.xml
 build.properties
 salesforce.schema
-src/layouts/Global-Global Layout.layout
-src/profiles/Customer Community Login User.profile
-src/profiles/Customer Community User.profile
-src/profiles/Partner Community Login User.profile
-src/profiles/Partner Community User.profile
-src/workflows/User.workflow
+Global-Global Layout.layout
+Customer Community Login User.profile
+Customer Community User.profile
+Partner Community Login User.profile
+Partner Community User.profile
+User.workflow
 .cci
 test_results.*
+
+temp/

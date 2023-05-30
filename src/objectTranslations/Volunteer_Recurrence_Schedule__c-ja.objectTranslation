@@ -4,6 +4,22 @@
         <plural>false</plural>
         <value>ボランティアの定期的なスケジュール</value>
     </caseValues>
+    <layouts>
+        <layout>Volunteer Recurrence Schedule Layout</layout>
+        <sections>
+            <label>カスタムリンク</label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>VRS 身元</nameFieldLabel>
+    <validationRules>
+        <errorMessage>[曜日] に少なくとも 1 つの値を指定してください</errorMessage>
+        <name>VRS_Days_of_Week_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>[毎週の回数] に少なくとも 1 つの値を指定してください</errorMessage>
+        <name>VRS_Weekly_Occurrence_Required</name>
+    </validationRules>
     <fields>
         <help>この [ボランティアの定期的なスケジュール] で作成されたすべての時間の [ボランティア時間コメント] 項目にコピーされるテキスト。</help>
         <label>コメント</label>
@@ -121,20 +137,4 @@
             <translation>毎週</translation>
         </picklistValues>
     </fields>
-    <layouts>
-        <layout>Volunteer Recurrence Schedule Layout</layout>
-        <sections>
-            <label>カスタムリンク</label>
-            <section>Custom Links</section>
-        </sections>
-    </layouts>
-    <nameFieldLabel>VRS 身元</nameFieldLabel>
-    <validationRules>
-        <errorMessage>[曜日] に少なくとも 1 つの値を指定してください</errorMessage>
-        <name>VRS_Days_of_Week_Required</name>
-    </validationRules>
-    <validationRules>
-        <errorMessage>[毎週の回数] に少なくとも 1 つの値を指定してください</errorMessage>
-        <name>VRS_Weekly_Occurrence_Required</name>
-    </validationRules>
 </CustomObjectTranslation>

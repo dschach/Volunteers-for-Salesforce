@@ -4,7 +4,7 @@ project:
   package:
     name: Volunteers for Salesforce
     namespace: GW_Volunteers
-    api_version: "40.0"
+    api_version: '57.0'
     install_class: InstallScript
   git:
     prefix_release: rel/
@@ -94,9 +94,9 @@ tasks:
   run_tests:
     options:
       retry_failures:
-        - "unable to obtain exclusive access to this record"
-        - "UNABLE_TO_LOCK_ROW"
-        - "connection was cancelled here"
+        - 'unable to obtain exclusive access to this record'
+        - 'UNABLE_TO_LOCK_ROW'
+        - 'connection was cancelled here'
       retry_always: True
 
 flows:
@@ -157,11 +157,11 @@ flows:
         task: deploy_tab_config
         checks:
           - when: "'GW_Volunteers' in tasks.get_installed_packages()" # Cached at start
-            action: "hide"
+            action: 'hide'
         options:
           unmanaged: False
         ui_options:
-          name: "Install Volunteers for Salesforce Tabs"
+          name: 'Install Volunteers for Salesforce Tabs'
       4:
         task: deploy_npsp_v4s_page_layouts
         checks:
@@ -170,7 +170,7 @@ flows:
         options:
           unmanaged: False
         ui_options:
-          name: "Install Page Layouts (NPSP)"
+          name: 'Install Page Layouts (NPSP)'
           is_required: False
         when: "org_config.has_minimum_package_version('npsp', '1.0')"
       5:
@@ -181,7 +181,7 @@ flows:
         options:
           unmanaged: False
         ui_options:
-          name: "Install Page Layouts (V4S)"
+          name: 'Install Page Layouts (V4S)'
           is_required: False
         when: "not org_config.has_minimum_package_version('npsp', '1.0')"
 
@@ -210,7 +210,7 @@ plans:
     tier: additional
     is_listed: False
     preflight_message: "This installer upgrades this package and any required dependencies to the latest version in your org. This installer isn't supported and has risks. Please don't run this installer unless you're aware of its specific use cases and considerations."
-    post_install_message: "Installation complete and package is on the latest version."
+    post_install_message: 'Installation complete and package is on the latest version.'
     steps:
       1:
         task: update_dependencies

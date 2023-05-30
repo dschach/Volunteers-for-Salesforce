@@ -3,6 +3,8 @@
     <customSettingsType>Hierarchy</customSettingsType>
     <description>Custom settings used by Volunteers for Salesforce.</description>
     <enableFeeds>false</enableFeeds>
+    <label>Volunteers Settings</label>
+    <visibility>Public</visibility>
     <fields>
         <fullName>Contact_Match_Email_Fields__c</fullName>
         <externalId>false</externalId>
@@ -132,6 +134,4 @@
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
     </fields>
-    <label>Volunteers Settings</label>
-    <visibility>Public</visibility>
 </CustomObject>

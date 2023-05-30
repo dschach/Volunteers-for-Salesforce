@@ -8,6 +8,28 @@
         <plural>true</plural>
         <value>Heures de Bénévoles</value>
     </caseValues>
+    <gender>Feminine</gender>
+    <layouts>
+        <layout>Volunteer Hours Layout</layout>
+        <sections>
+            <label>Liens personnalisés</label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>HoursID</nameFieldLabel>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage>S&apos;il vous plaît indiquer les heures travaillées lors de la configuration État complété.</errorMessage>
+        <name>HoursRequiredOnCompletion</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>S&apos;il vous plaît spécifier une valeur d&apos;état.</errorMessage>
+        <name>StatusMustBeSet</name>
+    </validationRules>
+    <webLinks>
+        <label>Modifier les Heures de Bénévolat en masse</label>
+        <name>Mass_Edit_Volunteer_Hours</name>
+    </webLinks>
     <fields>
         <label>Commentaires</label>
         <name>Comments__c</name>
@@ -110,26 +132,4 @@
         <name>Volunteer_Shift__c</name>
         <relationshipLabel>Heures de Bénévolat</relationshipLabel>
     </fields>
-    <gender>Feminine</gender>
-    <layouts>
-        <layout>Volunteer Hours Layout</layout>
-        <sections>
-            <label>Liens personnalisés</label>
-            <section>Custom Links</section>
-        </sections>
-    </layouts>
-    <nameFieldLabel>HoursID</nameFieldLabel>
-    <startsWith>Consonant</startsWith>
-    <validationRules>
-        <errorMessage>S&apos;il vous plaît indiquer les heures travaillées lors de la configuration État complété.</errorMessage>
-        <name>HoursRequiredOnCompletion</name>
-    </validationRules>
-    <validationRules>
-        <errorMessage>S&apos;il vous plaît spécifier une valeur d&apos;état.</errorMessage>
-        <name>StatusMustBeSet</name>
-    </validationRules>
-    <webLinks>
-        <label>Modifier les Heures de Bénévolat en masse</label>
-        <name>Mass_Edit_Volunteer_Hours</name>
-    </webLinks>
 </CustomObjectTranslation>

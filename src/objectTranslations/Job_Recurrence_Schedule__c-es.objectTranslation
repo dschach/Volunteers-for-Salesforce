@@ -8,6 +8,23 @@
         <plural>true</plural>
         <value>Horarios de Trabajo de recurrencia</value>
     </caseValues>
+    <gender>Masculine</gender>
+    <layouts>
+        <layout>Volunteer Job Recurrence Schedule Layout</layout>
+        <sections>
+            <label>Links personalizados</label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>JRS ID</nameFieldLabel>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>JRS_Days_Of_Week_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>JRS_Weekly_Occurrence_Required</name>
+    </validationRules>
     <fields>
         <label>Días de la Semana</label>
         <name>Days_of_Week__c</name>
@@ -99,21 +116,4 @@
             <translation>Todos</translation>
         </picklistValues>
     </fields>
-    <gender>Masculine</gender>
-    <layouts>
-        <layout>Volunteer Job Recurrence Schedule Layout</layout>
-        <sections>
-            <label>Links personalizados</label>
-            <section>Custom Links</section>
-        </sections>
-    </layouts>
-    <nameFieldLabel>JRS ID</nameFieldLabel>
-    <validationRules>
-        <errorMessage><!-- You must specify at least one value for Days of Week. --></errorMessage>
-        <name>JRS_Days_Of_Week_Required</name>
-    </validationRules>
-    <validationRules>
-        <errorMessage><!-- You must specify at least one value for Weekly Occurrence --></errorMessage>
-        <name>JRS_Weekly_Occurrence_Required</name>
-    </validationRules>
 </CustomObjectTranslation>

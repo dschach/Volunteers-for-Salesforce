@@ -20,6 +20,27 @@
         <plural>true</plural>
         <value>שעות התנדבות</value>
     </caseValues>
+    <gender>Masculine</gender>
+    <layouts>
+        <layout>Volunteer Hours Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel></nameFieldLabel>
+    <validationRules>
+        <errorMessage>ציין את שעות העבודה בפועל בעת הגדרת המצב כ&apos;הושלם&apos;.</errorMessage>
+        <name>HoursRequiredOnCompletion</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>ציין ערך מצב.</errorMessage>
+        <name>StatusMustBeSet</name>
+    </validationRules>
+    <webLinks>
+        <label>עריכת פריטים מרובים של שעות התנדבות</label>
+        <name>Mass_Edit_Volunteer_Hours</name>
+    </webLinks>
     <fields>
         <label>הערות</label>
         <name>Comments__c</name>
@@ -122,25 +143,4 @@
         <name>Volunteer_Shift__c</name>
         <relationshipLabel>שעות התנדבות</relationshipLabel>
     </fields>
-    <gender>Masculine</gender>
-    <layouts>
-        <layout>Volunteer Hours Layout</layout>
-        <sections>
-            <label><!-- Custom Links --></label>
-            <section>Custom Links</section>
-        </sections>
-    </layouts>
-    <nameFieldLabel><!-- HoursID --></nameFieldLabel>
-    <validationRules>
-        <errorMessage>ציין את שעות העבודה בפועל בעת הגדרת המצב כ&apos;הושלם&apos;.</errorMessage>
-        <name>HoursRequiredOnCompletion</name>
-    </validationRules>
-    <validationRules>
-        <errorMessage>ציין ערך מצב.</errorMessage>
-        <name>StatusMustBeSet</name>
-    </validationRules>
-    <webLinks>
-        <label>עריכת פריטים מרובים של שעות התנדבות</label>
-        <name>Mass_Edit_Volunteer_Hours</name>
-    </webLinks>
 </CustomObjectTranslation>

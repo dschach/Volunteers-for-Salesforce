@@ -8,6 +8,23 @@
         <plural>true</plural>
         <value>Horarios de Voluntarios de recurrencia</value>
     </caseValues>
+    <gender>Masculine</gender>
+    <layouts>
+        <layout>Volunteer Recurrence Schedule Layout</layout>
+        <sections>
+            <label>Links personalizados</label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>VRS ID</nameFieldLabel>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>VRS_Days_of_Week_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage></errorMessage>
+        <name>VRS_Weekly_Occurrence_Required</name>
+    </validationRules>
     <fields>
         <help>Texto que se copian al campo Horas comentario Voluntarios por todas las horas creados por esta recurrencia Horario Voluntarios.</help>
         <label>Comentarios</label>
@@ -125,21 +142,4 @@
             <translation>Todos</translation>
         </picklistValues>
     </fields>
-    <gender>Masculine</gender>
-    <layouts>
-        <layout>Volunteer Recurrence Schedule Layout</layout>
-        <sections>
-            <label>Links personalizados</label>
-            <section>Custom Links</section>
-        </sections>
-    </layouts>
-    <nameFieldLabel>VRS ID</nameFieldLabel>
-    <validationRules>
-        <errorMessage><!-- You must specify at least one value for Days of Week --></errorMessage>
-        <name>VRS_Days_of_Week_Required</name>
-    </validationRules>
-    <validationRules>
-        <errorMessage><!-- You must specify at least one value for Weekly Occurrence --></errorMessage>
-        <name>VRS_Weekly_Occurrence_Required</name>
-    </validationRules>
 </CustomObjectTranslation>

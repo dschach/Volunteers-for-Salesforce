@@ -64,7 +64,7 @@
         <shortDescription>PermissionUpdateException</shortDescription>
         <value>You don&apos;&apos;t have the permissions required to update {0}. Please contact the system administrator.</value>
     </labels>
-     <labels>
+    <labels>
         <fullName>TelemetryException</fullName>
         <categories>Exceptions</categories>
         <language>en_US</language>
@@ -509,8 +509,8 @@ day:      &apos;day&apos;</value>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>label displayed on PersonalSiteContactInfo after lookup is complete</shortDescription>
-        <value>If your contact information was found, we'll send a unique volunteer link to the email we have on file.</value>
-    </labels>    
+        <value>If your contact information was found, we&apos;ll send a unique volunteer link to the email we have on file.</value>
+    </labels>
     <labels>
         <fullName>labelCopySchedule</fullName>
         <categories>NewAndEditVRS</categories>

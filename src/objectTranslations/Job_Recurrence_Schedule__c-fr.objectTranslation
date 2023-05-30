@@ -2,12 +2,30 @@
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
     <caseValues>
         <plural>false</plural>
-        <value><!-- Job Recurrence Schedule --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <plural>true</plural>
-        <value><!-- Job Recurrence Schedule --></value>
+        <value></value>
     </caseValues>
+    <gender></gender>
+    <layouts>
+        <layout>Volunteer Job Recurrence Schedule Layout</layout>
+        <sections>
+            <label>Liens personnalisés</label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel></nameFieldLabel>
+    <startsWith></startsWith>
+    <validationRules>
+        <errorMessage>Vous devez indiquer au moins une valeur pour les jours de la semaine.</errorMessage>
+        <name>JRS_Days_Of_Week_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>Vous devez indiquer au moins une valeur pour l’occurrence hebdomadaire</errorMessage>
+        <name>JRS_Weekly_Occurrence_Required</name>
+    </validationRules>
     <fields>
         <label>Jours de la Semaine</label>
         <name>Days_of_Week__c</name>
@@ -99,22 +117,4 @@
             <translation>Toutes</translation>
         </picklistValues>
     </fields>
-    <gender><!-- Masculine --></gender>
-    <layouts>
-        <layout>Volunteer Job Recurrence Schedule Layout</layout>
-        <sections>
-            <label>Liens personnalisés</label>
-            <section>Custom Links</section>
-        </sections>
-    </layouts>
-    <nameFieldLabel><!-- JRS ID --></nameFieldLabel>
-    <startsWith><!-- Consonant --></startsWith>
-    <validationRules>
-        <errorMessage>Vous devez indiquer au moins une valeur pour les jours de la semaine.</errorMessage>
-        <name>JRS_Days_Of_Week_Required</name>
-    </validationRules>
-    <validationRules>
-        <errorMessage>Vous devez indiquer au moins une valeur pour l’occurrence hebdomadaire</errorMessage>
-        <name>JRS_Weekly_Occurrence_Required</name>
-    </validationRules>
 </CustomObjectTranslation>

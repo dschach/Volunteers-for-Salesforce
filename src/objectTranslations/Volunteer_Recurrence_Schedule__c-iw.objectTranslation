@@ -20,6 +20,23 @@
         <plural>true</plural>
         <value>לוח זמנים של התנדבות חוזרת</value>
     </caseValues>
+    <gender>Masculine</gender>
+    <layouts>
+        <layout>Volunteer Recurrence Schedule Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel></nameFieldLabel>
+    <validationRules>
+        <errorMessage>עליך לציין לפחות ערך אחד עבור &apos;ימי חול&apos;</errorMessage>
+        <name>VRS_Days_of_Week_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>עליך לציין לפחות ערך אחד עבור &apos;התרחשות שבועית&apos;</errorMessage>
+        <name>VRS_Weekly_Occurrence_Required</name>
+    </validationRules>
     <fields>
         <help>טקסט שיועתק אל שדה ההערות לשעות התנדבות, עבור כל השעות שנוצרו על-ידי לוח הזמנים של התנדבות חוזרת.</help>
         <label>הערות</label>
@@ -137,21 +154,4 @@
             <translation>כל</translation>
         </picklistValues>
     </fields>
-    <gender>Masculine</gender>
-    <layouts>
-        <layout>Volunteer Recurrence Schedule Layout</layout>
-        <sections>
-            <label><!-- Custom Links --></label>
-            <section>Custom Links</section>
-        </sections>
-    </layouts>
-    <nameFieldLabel><!-- VRS ID --></nameFieldLabel>
-    <validationRules>
-        <errorMessage>עליך לציין לפחות ערך אחד עבור &apos;ימי חול&apos;</errorMessage>
-        <name>VRS_Days_of_Week_Required</name>
-    </validationRules>
-    <validationRules>
-        <errorMessage>עליך לציין לפחות ערך אחד עבור &apos;התרחשות שבועית&apos;</errorMessage>
-        <name>VRS_Weekly_Occurrence_Required</name>
-    </validationRules>
 </CustomObjectTranslation>

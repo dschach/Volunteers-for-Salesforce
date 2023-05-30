@@ -51,6 +51,30 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
+    <label>Volunteer Job</label>
+    <nameField>
+        <label>Volunteer Job Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Volunteer Jobs</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>Campaign__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Ongoing__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Description__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Campaign__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Ongoing__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Description__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Campaign__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Ongoing__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Description__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>Campaign__c</searchFilterFields>
+        <searchFilterFields>Ongoing__c</searchFilterFields>
+        <searchResultsAdditionalFields>Campaign__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Ongoing__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Description__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
     <fields>
         <fullName>Campaign__c</fullName>
         <externalId>false</externalId>
@@ -631,7 +655,6 @@
             </valueSetDefinition>
         </valueSet>
     </fields>
-    <label>Volunteer Job</label>
     <listViews>
         <fullName>All_Jobs</fullName>
         <columns>NAME</columns>
@@ -681,29 +704,14 @@
         </filters>
         <label>Ongoing Jobs</label>
     </listViews>
-    <nameField>
-        <label>Volunteer Job Name</label>
-        <type>Text</type>
-    </nameField>
-    <pluralLabel>Volunteer Jobs</pluralLabel>
-    <searchLayouts>
-        <customTabListAdditionalFields>Campaign__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>Ongoing__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>Description__c</customTabListAdditionalFields>
-        <lookupDialogsAdditionalFields>Campaign__c</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>Ongoing__c</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>Description__c</lookupDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>Campaign__c</lookupPhoneDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>Ongoing__c</lookupPhoneDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>Description__c</lookupPhoneDialogsAdditionalFields>
-        <searchFilterFields>NAME</searchFilterFields>
-        <searchFilterFields>Campaign__c</searchFilterFields>
-        <searchFilterFields>Ongoing__c</searchFilterFields>
-        <searchResultsAdditionalFields>Campaign__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Ongoing__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Description__c</searchResultsAdditionalFields>
-    </searchLayouts>
-    <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>ValidateExternalSignupUrl</fullName>
+        <active>true</active>
+        <description>Validates that the External Signup URL field begins with an expected URI Scheme.</description>
+        <errorConditionFormula>NOT(OR(ISBLANK(External_Signup_Url__c), REGEX(External_Signup_Url__c,&quot;^(http|https|mailto).*&quot;)))</errorConditionFormula>
+        <errorDisplayField>External_Signup_Url__c</errorDisplayField>
+        <errorMessage>The External Signup Url value must begin with http, https, or mailto.</errorMessage>
+    </validationRules>
     <webLinks>
         <fullName>Find_Volunteers</fullName>
         <availability>online</availability>
@@ -762,12 +770,4 @@
         <protected>false</protected>
         <url>/apex/{!$Setup.PackageSettings__c.NamespacePrefix__c}SendBulkEmail?jobId={!Volunteer_Job__c.Id}</url>
     </webLinks>
-    <validationRules>
-        <fullName>ValidateExternalSignupUrl</fullName>
-        <active>true</active>
-        <description>Validates that the External Signup URL field begins with an expected URI Scheme.</description>
-        <errorConditionFormula>NOT(OR(ISBLANK(External_Signup_Url__c), REGEX(External_Signup_Url__c,"^(http|https|mailto).*")))</errorConditionFormula>
-        <errorDisplayField>External_Signup_Url__c</errorDisplayField>
-        <errorMessage>The External Signup Url value must begin with http, https, or mailto.</errorMessage>
-    </validationRules>
 </CustomObject>

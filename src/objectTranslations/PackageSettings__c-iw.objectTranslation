@@ -3,27 +3,27 @@
     <caseValues>
         <article>None</article>
         <plural>false</plural>
-        <value><!-- Volunteers Package Settings --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <article>Definite</article>
         <plural>false</plural>
-        <value><!-- הVolunteers Package Settings --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <article>None</article>
         <plural>true</plural>
-        <value><!-- Volunteers Package Settings --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <article>Definite</article>
         <plural>true</plural>
-        <value><!-- הVolunteers Package Settings --></value>
+        <value></value>
     </caseValues>
+    <gender></gender>
     <fields>
-        <help><!-- The active package namespace prefix for Volunteers. Do not edit manually. --></help>
-        <label><!-- Namespace Prefix --></label>
+        <help></help>
+        <label></label>
         <name>NamespacePrefix__c</name>
     </fields>
-    <gender><!-- Masculine --></gender>
 </CustomObjectTranslation>

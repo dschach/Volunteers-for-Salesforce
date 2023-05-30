@@ -40,6 +40,23 @@
         <plural>true</plural>
         <value>Zeitpläne für wiederkehrende Freiwillige</value>
     </caseValues>
+    <gender>Neuter</gender>
+    <layouts>
+        <layout>Volunteer Recurrence Schedule Layout</layout>
+        <sections>
+            <label>Benutzerdefinierte Links</label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel></nameFieldLabel>
+    <validationRules>
+        <errorMessage>Sie müssen mindestens einen Wert für Wochentage angeben.</errorMessage>
+        <name>VRS_Days_of_Week_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>Sie müssen mindestens einen Wert für wöchentliches Vorkommen angeben.</errorMessage>
+        <name>VRS_Weekly_Occurrence_Required</name>
+    </validationRules>
     <fields>
         <help>Text, der in das Kommentarfeld der Freiwilligenstunden für alle von diesem Zeitplan für wiederkehrende Freiwillige erstellten Stunden kopiert wird</help>
         <label>Kommentare</label>
@@ -157,21 +174,4 @@
             <translation>Jeder</translation>
         </picklistValues>
     </fields>
-    <gender>Neuter</gender>
-    <layouts>
-        <layout>Volunteer Recurrence Schedule Layout</layout>
-        <sections>
-            <label>Benutzerdefinierte Links</label>
-            <section>Custom Links</section>
-        </sections>
-    </layouts>
-    <nameFieldLabel><!-- VRS ID --></nameFieldLabel>
-    <validationRules>
-        <errorMessage>Sie müssen mindestens einen Wert für Wochentage angeben.</errorMessage>
-        <name>VRS_Days_of_Week_Required</name>
-    </validationRules>
-    <validationRules>
-        <errorMessage>Sie müssen mindestens einen Wert für wöchentliches Vorkommen angeben.</errorMessage>
-        <name>VRS_Weekly_Occurrence_Required</name>
-    </validationRules>
 </CustomObjectTranslation>

@@ -20,6 +20,35 @@
         <plural>true</plural>
         <value>משמרות התנדבות</value>
     </caseValues>
+    <gender>Masculine</gender>
+    <layouts>
+        <layout>Volunteer Shift Layout</layout>
+        <sections>
+            <label></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>שדות מערכת - נא לא לערוך</label>
+            <section>System Fields - DO NOT EDIT</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel></nameFieldLabel>
+    <webLinks>
+        <label>מצא מתנדבים</label>
+        <name>Find_Volunteers</name>
+    </webLinks>
+    <webLinks>
+        <label>דואר אלקטרוני המוני למתנדבים</label>
+        <name>Mass_Email_Volunteers</name>
+    </webLinks>
+    <webLinks>
+        <label>רשימת מתנדבים</label>
+        <name>Roster</name>
+    </webLinks>
+    <webLinks>
+        <label>יומן משמרות</label>
+        <name>Shift_Calendar</name>
+    </webLinks>
     <fields>
         <label>תיאור</label>
         <name>Description__c</name>
@@ -78,33 +107,4 @@
         <name>Volunteer_Job__c</name>
         <relationshipLabel>משמרות התנדבות</relationshipLabel>
     </fields>
-    <gender>Masculine</gender>
-    <layouts>
-        <layout>Volunteer Shift Layout</layout>
-        <sections>
-            <label><!-- Custom Links --></label>
-            <section>Custom Links</section>
-        </sections>
-        <sections>
-            <label>שדות מערכת - נא לא לערוך</label>
-            <section>System Fields - DO NOT EDIT</section>
-        </sections>
-    </layouts>
-    <nameFieldLabel><!-- ShiftID --></nameFieldLabel>
-    <webLinks>
-        <label>מצא מתנדבים</label>
-        <name>Find_Volunteers</name>
-    </webLinks>
-    <webLinks>
-        <label>דואר אלקטרוני המוני למתנדבים</label>
-        <name>Mass_Email_Volunteers</name>
-    </webLinks>
-    <webLinks>
-        <label>רשימת מתנדבים</label>
-        <name>Roster</name>
-    </webLinks>
-    <webLinks>
-        <label>יומן משמרות</label>
-        <name>Shift_Calendar</name>
-    </webLinks>
 </CustomObjectTranslation>

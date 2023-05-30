@@ -40,6 +40,35 @@
         <plural>true</plural>
         <value>Freiwillige Stunden</value>
     </caseValues>
+    <gender>Feminine</gender>
+    <layouts>
+        <layout>Volunteer Shift Layout</layout>
+        <sections>
+            <label>Benutzerdefinierte Links</label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>Systemfelder - NICHT BEARBEITEN</label>
+            <section>System Fields - DO NOT EDIT</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>Stunde ID</nameFieldLabel>
+    <webLinks>
+        <label>Freiwillige suchen</label>
+        <name>Find_Volunteers</name>
+    </webLinks>
+    <webLinks>
+        <label>Massen-E-Mail an Freiwillige</label>
+        <name>Mass_Email_Volunteers</name>
+    </webLinks>
+    <webLinks>
+        <label>Freiwilligendienstplan</label>
+        <name>Roster</name>
+    </webLinks>
+    <webLinks>
+        <label>Schichtkalender</label>
+        <name>Shift_Calendar</name>
+    </webLinks>
     <fields>
         <label>Beschreibung</label>
         <name>Description__c</name>
@@ -98,33 +127,4 @@
         <name>Volunteer_Job__c</name>
         <relationshipLabel>Freiwilligenschichten</relationshipLabel>
     </fields>
-    <gender>Feminine</gender>
-    <layouts>
-        <layout>Volunteer Shift Layout</layout>
-        <sections>
-            <label>Benutzerdefinierte Links</label>
-            <section>Custom Links</section>
-        </sections>
-        <sections>
-            <label>Systemfelder - NICHT BEARBEITEN</label>
-            <section>System Fields - DO NOT EDIT</section>
-        </sections>
-    </layouts>
-    <nameFieldLabel>Stunde ID</nameFieldLabel>
-    <webLinks>
-        <label>Freiwillige suchen</label>
-        <name>Find_Volunteers</name>
-    </webLinks>
-    <webLinks>
-        <label>Massen-E-Mail an Freiwillige</label>
-        <name>Mass_Email_Volunteers</name>
-    </webLinks>
-    <webLinks>
-        <label>Freiwilligendienstplan</label>
-        <name>Roster</name>
-    </webLinks>
-    <webLinks>
-        <label>Schichtkalender</label>
-        <name>Shift_Calendar</name>
-    </webLinks>
 </CustomObjectTranslation>

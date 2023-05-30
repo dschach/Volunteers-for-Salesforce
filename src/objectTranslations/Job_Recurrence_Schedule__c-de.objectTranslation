@@ -40,6 +40,23 @@
         <plural>true</plural>
         <value>Zeitpläne für wiederkehrende Aufträge</value>
     </caseValues>
+    <gender>Neuter</gender>
+    <layouts>
+        <layout>Volunteer Job Recurrence Schedule Layout</layout>
+        <sections>
+            <label>Benutzerdefinierte Links</label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel></nameFieldLabel>
+    <validationRules>
+        <errorMessage>Sie müssen mindestens einen Wert für Wochentage angeben.</errorMessage>
+        <name>JRS_Days_Of_Week_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>Sie müssen mindestens einen Wert für wöchentliches Vorkommen angeben.</errorMessage>
+        <name>JRS_Weekly_Occurrence_Required</name>
+    </validationRules>
     <fields>
         <label>Wochentage</label>
         <name>Days_of_Week__c</name>
@@ -131,21 +148,4 @@
             <translation>Jeder</translation>
         </picklistValues>
     </fields>
-    <gender>Neuter</gender>
-    <layouts>
-        <layout>Volunteer Job Recurrence Schedule Layout</layout>
-        <sections>
-            <label>Benutzerdefinierte Links</label>
-            <section>Custom Links</section>
-        </sections>
-    </layouts>
-    <nameFieldLabel><!-- JRS ID --></nameFieldLabel>
-    <validationRules>
-        <errorMessage>Sie müssen mindestens einen Wert für Wochentage angeben.</errorMessage>
-        <name>JRS_Days_Of_Week_Required</name>
-    </validationRules>
-    <validationRules>
-        <errorMessage>Sie müssen mindestens einen Wert für wöchentliches Vorkommen angeben.</errorMessage>
-        <name>JRS_Weekly_Occurrence_Required</name>
-    </validationRules>
 </CustomObjectTranslation>

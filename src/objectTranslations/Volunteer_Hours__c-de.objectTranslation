@@ -40,6 +40,27 @@
         <plural>true</plural>
         <value>Freiwilligenstunden</value>
     </caseValues>
+    <gender>Masculine</gender>
+    <layouts>
+        <layout>Volunteer Hours Layout</layout>
+        <sections>
+            <label>Benutzerdefinierte Links</label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>Dienststunden ID</nameFieldLabel>
+    <validationRules>
+        <errorMessage>Geben Sie die Arbeitsstunden an, wenn Sie den Status auf &quot;Abgeleistet&quot; festlegen.</errorMessage>
+        <name>HoursRequiredOnCompletion</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>Geben Sie einen Statuswert an.</errorMessage>
+        <name>StatusMustBeSet</name>
+    </validationRules>
+    <webLinks>
+        <label>Freiwilligenstunden für Massenbearbeitung</label>
+        <name>Mass_Edit_Volunteer_Hours</name>
+    </webLinks>
     <fields>
         <label>Kommentare</label>
         <name>Comments__c</name>
@@ -80,7 +101,7 @@
         <name>Start_Date__c</name>
     </fields>
     <fields>
-        <label><!-- Status --></label>
+        <label></label>
         <name>Status__c</name>
         <picklistValues>
             <masterLabel>Canceled</masterLabel>
@@ -142,25 +163,4 @@
         <name>Volunteer_Shift__c</name>
         <relationshipLabel>Freiwilligenstunden</relationshipLabel>
     </fields>
-    <gender>Masculine</gender>
-    <layouts>
-        <layout>Volunteer Hours Layout</layout>
-        <sections>
-            <label>Benutzerdefinierte Links</label>
-            <section>Custom Links</section>
-        </sections>
-    </layouts>
-    <nameFieldLabel>Dienststunden ID</nameFieldLabel>
-    <validationRules>
-        <errorMessage>Geben Sie die Arbeitsstunden an, wenn Sie den Status auf &quot;Abgeleistet&quot; festlegen.</errorMessage>
-        <name>HoursRequiredOnCompletion</name>
-    </validationRules>
-    <validationRules>
-        <errorMessage>Geben Sie einen Statuswert an.</errorMessage>
-        <name>StatusMustBeSet</name>
-    </validationRules>
-    <webLinks>
-        <label>Freiwilligenstunden für Massenbearbeitung</label>
-        <name>Mass_Edit_Volunteer_Hours</name>
-    </webLinks>
 </CustomObjectTranslation>

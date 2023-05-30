@@ -1,73 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <workflowTasks>
+        <description></description>
+        <name>Volunteer_Signup_Thank_You_Sent_Lead</name>
+        <subject></subject>
+    </workflowTasks>
     <fields>
-        <label><!-- Volunteer Availability --></label>
+        <label></label>
         <name>Volunteer_Availability__c</name>
         <picklistValues>
             <masterLabel>Afternoon</masterLabel>
-            <translation><!-- Afternoon --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Morning</masterLabel>
-            <translation><!-- Morning --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Weekdays</masterLabel>
-            <translation><!-- Weekdays --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Weekends</masterLabel>
-            <translation><!-- Weekends --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Weekly</masterLabel>
-            <translation><!-- Weekly --></translation>
+            <translation></translation>
         </picklistValues>
     </fields>
     <fields>
-        <label><!-- Volunteer Notes --></label>
+        <label></label>
         <name>Volunteer_Notes__c</name>
     </fields>
     <fields>
-        <help><!-- Select the skill(s) this person has that should be used to find volunteer jobs. --></help>
-        <label><!-- Volunteer Skills --></label>
+        <help></help>
+        <label></label>
         <name>Volunteer_Skills__c</name>
         <picklistValues>
             <masterLabel>Computer usage</masterLabel>
-            <translation><!-- Computer usage --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Event Planning</masterLabel>
-            <translation><!-- Event Planning --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Fundraising</masterLabel>
-            <translation><!-- Fundraising --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Landscaping</masterLabel>
-            <translation><!-- Landscaping --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Manual labor</masterLabel>
-            <translation><!-- Manual labor --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>Marketing</masterLabel>
-            <translation><!-- Marketing --></translation>
+            <translation></translation>
         </picklistValues>
     </fields>
     <fields>
-        <label><!-- Volunteer Status --></label>
+        <label></label>
         <name>Volunteer_Status__c</name>
         <picklistValues>
             <masterLabel>New Sign Up</masterLabel>
-            <translation><!-- New Sign Up --></translation>
+            <translation></translation>
         </picklistValues>
     </fields>
-    <workflowTasks>
-        <description><!-- An automatic email has been sent to the lead thanking them for signing up to be a volunteer. --></description>
-        <name>Volunteer_Signup_Thank_You_Sent_Lead</name>
-        <subject><!-- Volunteer Signup Thank You Sent - Lead --></subject>
-    </workflowTasks>
 </CustomObjectTranslation>

@@ -40,6 +40,47 @@
         <plural>true</plural>
         <value>Freiwilligenaufträge</value>
     </caseValues>
+    <gender>Neuter</gender>
+    <layouts>
+        <layout>Volunteer Job Layout</layout>
+        <sections>
+            <label>Benutzerdefinierte Links</label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label>Beschreibung</label>
+            <section>Description</section>
+        </sections>
+        <sections>
+            <label>Standort</label>
+            <section>Location</section>
+        </sections>
+        <sections>
+            <label>Standortinformationen</label>
+            <section>Location Information</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>Name der Freiwillegenarbeit</nameFieldLabel>
+    <webLinks>
+        <label>Freiwillige suchen</label>
+        <name>Find_Volunteers</name>
+    </webLinks>
+    <webLinks>
+        <label>Freiwilligendienstplan</label>
+        <name>JobRoster</name>
+    </webLinks>
+    <webLinks>
+        <label>Schichtkalender</label>
+        <name>Job_Shift_Calendar</name>
+    </webLinks>
+    <webLinks>
+        <label></label>
+        <name>Mass_Edit_Volunteer_Hours</name>
+    </webLinks>
+    <webLinks>
+        <label>Massen-E-Mail an Freiwillige</label>
+        <name>Mass_Email_Volunteers</name>
+    </webLinks>
     <fields>
         <label>Kampagne</label>
         <name>Campaign__c</name>
@@ -137,7 +178,7 @@
         </picklistValues>
         <picklistValues>
             <masterLabel>Marketing</masterLabel>
-            <translation><!-- Marketing --></translation>
+            <translation></translation>
         </picklistValues>
         <picklistValues>
             <masterLabel>basic accounting</masterLabel>
@@ -501,45 +542,4 @@
             <translation>Pazifik/Tongatapu</translation>
         </picklistValues>
     </fields>
-    <gender>Neuter</gender>
-    <layouts>
-        <layout>Volunteer Job Layout</layout>
-        <sections>
-            <label>Benutzerdefinierte Links</label>
-            <section>Custom Links</section>
-        </sections>
-        <sections>
-            <label>Beschreibung</label>
-            <section>Description</section>
-        </sections>
-        <sections>
-            <label>Standort</label>
-            <section>Location</section>
-        </sections>
-        <sections>
-            <label>Standortinformationen</label>
-            <section>Location Information</section>
-        </sections>
-    </layouts>
-    <nameFieldLabel>Name der Freiwillegenarbeit</nameFieldLabel>
-    <webLinks>
-        <label>Freiwillige suchen</label>
-        <name>Find_Volunteers</name>
-    </webLinks>
-    <webLinks>
-        <label>Freiwilligendienstplan</label>
-        <name>JobRoster</name>
-    </webLinks>
-    <webLinks>
-        <label>Schichtkalender</label>
-        <name>Job_Shift_Calendar</name>
-    </webLinks>
-    <webLinks>
-        <label><!-- Mass_Edit_Volunteer_Hours --></label>
-        <name>Mass_Edit_Volunteer_Hours</name>
-    </webLinks>
-    <webLinks>
-        <label>Massen-E-Mail an Freiwillige</label>
-        <name>Mass_Email_Volunteers</name>
-    </webLinks>
 </CustomObjectTranslation>

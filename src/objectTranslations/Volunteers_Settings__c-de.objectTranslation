@@ -3,43 +3,44 @@
     <caseValues>
         <caseType>Nominative</caseType>
         <plural>false</plural>
-        <value><!-- Volunteers Settings --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <caseType>Nominative</caseType>
         <plural>true</plural>
-        <value><!-- Volunteers Settings --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <caseType>Accusative</caseType>
         <plural>false</plural>
-        <value><!-- Volunteers Settings --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <caseType>Accusative</caseType>
         <plural>true</plural>
-        <value><!-- Volunteers Settings --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <caseType>Genitive</caseType>
         <plural>false</plural>
-        <value><!-- Volunteers Settings --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <caseType>Genitive</caseType>
         <plural>true</plural>
-        <value><!-- Volunteers Settings --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <caseType>Dative</caseType>
         <plural>false</plural>
-        <value><!-- Volunteers Settings --></value>
+        <value></value>
     </caseValues>
     <caseValues>
         <caseType>Dative</caseType>
         <plural>true</plural>
-        <value><!-- Volunteers Settings --></value>
+        <value></value>
     </caseValues>
+    <gender></gender>
     <fields>
         <help>Durch Semikolon getrennte Liste der zusätzlichen Kontakt-E-Mail-Felder, beim Kontaktabgleich zu berücksichtigen. Felder werden durch den vollständigen Entwicklernamen einschließlich Namenspräfix angegeben. NPSP-E-Mail-Felder werden automatisch aktiviert.</help>
         <label>Kontakt-E-Mail-Felder für den Abgleich</label>
@@ -95,5 +96,4 @@
         <label>Anmeldung gleicht vorhand. Kontakte ab.</label>
         <name>Signup_Matches_Existing_Contacts__c</name>
     </fields>
-    <gender><!-- Neuter --></gender>
 </CustomObjectTranslation>

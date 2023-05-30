@@ -4,6 +4,22 @@
         <plural>false</plural>
         <value>仕事の定期的なスケジュール</value>
     </caseValues>
+    <layouts>
+        <layout>Volunteer Job Recurrence Schedule Layout</layout>
+        <sections>
+            <label>カスタムリンク</label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <nameFieldLabel>仕事の定期的なスケジュール  身元</nameFieldLabel>
+    <validationRules>
+        <errorMessage>[曜日] に少なくとも 1 つの値を指定してください。</errorMessage>
+        <name>JRS_Days_Of_Week_Required</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>[毎週の回数] に少なくとも 1 つの値を指定してください</errorMessage>
+        <name>JRS_Weekly_Occurrence_Required</name>
+    </validationRules>
     <fields>
         <label>曜日</label>
         <name>Days_of_Week__c</name>
@@ -95,20 +111,4 @@
             <translation>毎</translation>
         </picklistValues>
     </fields>
-    <layouts>
-        <layout>Volunteer Job Recurrence Schedule Layout</layout>
-        <sections>
-            <label>カスタムリンク</label>
-            <section>Custom Links</section>
-        </sections>
-    </layouts>
-    <nameFieldLabel>仕事の定期的なスケジュール  身元</nameFieldLabel>
-    <validationRules>
-        <errorMessage>[曜日] に少なくとも 1 つの値を指定してください。</errorMessage>
-        <name>JRS_Days_Of_Week_Required</name>
-    </validationRules>
-    <validationRules>
-        <errorMessage>[毎週の回数] に少なくとも 1 つの値を指定してください</errorMessage>
-        <name>JRS_Weekly_Occurrence_Required</name>
-    </validationRules>
 </CustomObjectTranslation>

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <workflowTasks>
+        <description></description>
+        <name>Volunteer_Signup_Thank_You_Sent_Contact</name>
+        <subject></subject>
+    </workflowTasks>
     <fields>
         <help>תאריך ההתחלה של שעות ההתנדבות הראשונות</help>
         <label>תאריך התנדבות ראשון</label>
@@ -117,9 +122,4 @@
             <translation>פוטנציאלי</translation>
         </picklistValues>
     </fields>
-    <workflowTasks>
-        <description><!-- An automatic thank you email has been sent to the contact for signing up to be a volunteer. --></description>
-        <name>Volunteer_Signup_Thank_You_Sent_Contact</name>
-        <subject><!-- Volunteer Signup Thank You Sent - Contact --></subject>
-    </workflowTasks>
 </CustomObjectTranslation>

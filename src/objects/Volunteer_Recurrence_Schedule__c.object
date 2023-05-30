@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionOverrides>
         <actionName>Accept</actionName>
@@ -56,6 +56,41 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
+    <label>Volunteer Recurrence Schedule</label>
+    <nameField>
+        <displayFormat>VRS-{00000}</displayFormat>
+        <label>VRS ID</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Volunteer Recurrence Schedules</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>Contact__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Volunteer_Job__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Weekly_Occurrence__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Days_of_Week__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Schedule_Start_Date_Time__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Contact__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Volunteer_Job__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Weekly_Occurrence__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Days_of_Week__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Schedule_Start_Date_Time__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Contact__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Volunteer_Job__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Weekly_Occurrence__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Days_of_Week__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Schedule_Start_Date_Time__c</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>Contact__c</searchFilterFields>
+        <searchFilterFields>Volunteer_Job__c</searchFilterFields>
+        <searchFilterFields>Weekly_Occurrence__c</searchFilterFields>
+        <searchFilterFields>Days_of_Week__c</searchFilterFields>
+        <searchFilterFields>Schedule_Start_Date_Time__c</searchFilterFields>
+        <searchResultsAdditionalFields>Contact__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Volunteer_Job__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Weekly_Occurrence__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Days_of_Week__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Schedule_Start_Date_Time__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
     <fieldSets>
         <fullName>NewAndEditVRSFS</fullName>
         <availableFields>
@@ -327,7 +362,6 @@
         </valueSet>
         <visibleLines>8</visibleLines>
     </fields>
-    <label>Volunteer Recurrence Schedule</label>
     <listViews>
         <fullName>AllVRS</fullName>
         <columns>NAME</columns>
@@ -341,40 +375,6 @@
         <label>All</label>
         <language>en_US</language>
     </listViews>
-    <nameField>
-        <displayFormat>VRS-{00000}</displayFormat>
-        <label>VRS ID</label>
-        <type>AutoNumber</type>
-    </nameField>
-    <pluralLabel>Volunteer Recurrence Schedules</pluralLabel>
-    <searchLayouts>
-        <customTabListAdditionalFields>Contact__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>Volunteer_Job__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>Weekly_Occurrence__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>Days_of_Week__c</customTabListAdditionalFields>
-        <customTabListAdditionalFields>Schedule_Start_Date_Time__c</customTabListAdditionalFields>
-        <lookupDialogsAdditionalFields>Contact__c</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>Volunteer_Job__c</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>Weekly_Occurrence__c</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>Days_of_Week__c</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>Schedule_Start_Date_Time__c</lookupDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>Contact__c</lookupPhoneDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>Volunteer_Job__c</lookupPhoneDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>Weekly_Occurrence__c</lookupPhoneDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>Days_of_Week__c</lookupPhoneDialogsAdditionalFields>
-        <lookupPhoneDialogsAdditionalFields>Schedule_Start_Date_Time__c</lookupPhoneDialogsAdditionalFields>
-        <searchFilterFields>Contact__c</searchFilterFields>
-        <searchFilterFields>Volunteer_Job__c</searchFilterFields>
-        <searchFilterFields>Weekly_Occurrence__c</searchFilterFields>
-        <searchFilterFields>Days_of_Week__c</searchFilterFields>
-        <searchFilterFields>Schedule_Start_Date_Time__c</searchFilterFields>
-        <searchResultsAdditionalFields>Contact__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Volunteer_Job__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Weekly_Occurrence__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Days_of_Week__c</searchResultsAdditionalFields>
-        <searchResultsAdditionalFields>Schedule_Start_Date_Time__c</searchResultsAdditionalFields>
-    </searchLayouts>
-    <sharingModel>ControlledByParent</sharingModel>
     <validationRules>
         <fullName>VRS_Days_of_Week_Required</fullName>
         <active>true</active>
